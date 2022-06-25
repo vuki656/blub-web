@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "allowJs": true,
+        "module": "commonjs",
+        "alwaysStrict": true,
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "exclude": ["./node_modules"]
+}

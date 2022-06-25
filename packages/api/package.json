@@ -9,7 +9,7 @@
         "generate": "ts-node ./generator",
         "database:setup": "docker-compose run --rm migrations",
         "database:sync": "prisma db pull && prettier --write './src/database/schema.prisma'",
-        "database:seed": "PGPASSWORD=password psql -h localhost -U username -d banker < ./src/database/dump.sql",
+        "database:seed": "prisma db seed",
         "database:migrate": "docker-compose run --no-deps --rm migrations",
         "orm:generate": "prisma generate",
         "schema:build": "ts-node './src/server/generateSchemaFile.ts'"
@@ -27,9 +27,6 @@
     },
     "devDependencies": {
         "@faker-js/faker": "^7.3.0",
-        "@graphql-codegen/cli": "^2.6.2",
-        "@graphql-codegen/gql-tag-operations-preset": "^1.4.0",
-        "@types/bcrypt": "^5.0.0",
         "@types/validator": "^13.7.3",
         "@types/webpack-node-externals": "^2.5.3",
         "class-validator": "^0.13.2",
