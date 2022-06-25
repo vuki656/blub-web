@@ -1,0 +1,51 @@
+{
+    "name": "@blub/api",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "nodemon",
+        "start": "NODE_ENV=production node 'dist/index.js'",
+        "build": "webpack",
+        "generate": "ts-node ./generator",
+        "database:setup": "docker-compose run --rm migrations",
+        "database:sync": "prisma db pull && prettier --write './src/database/schema.prisma'",
+        "database:seed": "PGPASSWORD=password psql -h localhost -U username -d banker < ./src/database/dump.sql",
+        "database:migrate": "docker-compose run --no-deps --rm migrations",
+        "orm:generate": "prisma generate",
+        "schema:build": "ts-node './src/server/generateSchemaFile.ts'"
+    },
+    "dependencies": {
+        "@prisma/client": "^3.15.2",
+        "apollo-server": "^3.9.0",
+        "dotenv": "^16.0.1",
+        "envalid": "^7.3.1",
+        "graphql": "15.3.0",
+        "pino": "^8.1.0",
+        "reflect-metadata": "^0.1.13",
+        "tsyringe": "^4.7.0",
+        "type-graphql": "^1.1.1"
+    },
+    "devDependencies": {
+        "@faker-js/faker": "^7.3.0",
+        "@graphql-codegen/cli": "^2.6.2",
+        "@graphql-codegen/gql-tag-operations-preset": "^1.4.0",
+        "@types/bcrypt": "^5.0.0",
+        "@types/validator": "^13.7.3",
+        "@types/webpack-node-externals": "^2.5.3",
+        "class-validator": "^0.13.2",
+        "generate-template-files": "^3.2.0",
+        "nodemon": "^2.0.18",
+        "pino-pretty": "^8.1.0",
+        "prettier-plugin-prisma": "^3.14.0",
+        "prisma": "^3.15.2",
+        "ts-loader": "^9.3.1",
+        "ts-node": "^10.8.1",
+        "webpack": "^5.73.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-node-externals": "^3.0.0"
+    },
+    "prisma": {
+        "schema": "./src/database/schema.prisma",
+        "seed": "ts-node ./src/database/seed/index.ts"
+    }
+}
