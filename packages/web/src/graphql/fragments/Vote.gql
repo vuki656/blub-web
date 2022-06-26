@@ -1,0 +1,5 @@
+fragment VotePayload on VoteType {
+    id
+    type
+    userId
+}

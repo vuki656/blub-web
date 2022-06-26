@@ -1,5 +1,13 @@
 query GetPosts {
     posts {
         ...PostPayload
+        votes {
+            positive {
+                ...VotePayload
+            }
+            negative {
+                ...VotePayload
+            }
+        }
     }
 }

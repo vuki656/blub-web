@@ -2,4 +2,5 @@ fragment PostPayload on PostType {
     id
     text
     createdAt
+    userVote
 }

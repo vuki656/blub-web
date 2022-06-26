@@ -4,4 +4,5 @@ export type ContextType = {
     request: ExpressContext['req']
     requestId: string
     response: ExpressContext['res']
+    userId: string
 }

@@ -9,5 +9,6 @@ export const context = (expressContext: ExpressContext): ContextType => {
         request: expressContext.req,
         requestId: UUID(),
         response: expressContext.res,
+        userId: expressContext.req.headers.authorization ?? '',
     }
 }

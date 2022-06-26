@@ -1,16 +1,13 @@
-import {
-    Button,
-    Paper,
-    SimpleGrid,
-    Stack,
-    Text,
-} from '@mantine/core'
-import dayjs from 'dayjs'
+import { Stack } from '@mantine/core'
 
 import { useGetPostsQuery } from '../../graphql/types.generated'
 
+import { HomePost } from './HomePost'
+
 export const Home: React.FunctionComponent = () => {
-    const { data } = useGetPostsQuery()
+    const { data } = useGetPostsQuery({
+        ssr: false,
+    })
 
     return (
         <Stack
@@ -36,37 +33,10 @@ export const Home: React.FunctionComponent = () => {
         >
             {data?.posts.map((post) => {
                 return (
-                    <Paper
+                    <HomePost
                         key={post.id}
-                        p="md"
-                        shadow="xs"
-                    >
-                        <Stack>
-                            <Text
-                                color="dimmed"
-                                size="sm"
-                            >
-                                {dayjs(post.createdAt).format('HH:MM DD.MM.YYYY')}
-                            </Text>
-                            <Text>
-                                {post.text}
-                            </Text>
-                            <SimpleGrid cols={2}>
-                                <Button
-                                    fullWidth={true}
-                                    variant="default"
-                                >
-                                    Agree
-                                </Button>
-                                <Button
-                                    fullWidth={true}
-                                    variant="default"
-                                >
-                                    Disagree
-                                </Button>
-                            </SimpleGrid>
-                        </Stack>
-                    </Paper>
+                        value={post}
+                    />
                 )
             })}
         </Stack>
