@@ -11,6 +11,7 @@ import {
     IconMoon,
     IconSun,
 } from '@tabler/icons'
+import Link from 'next/link'
 
 import { HeaderCreatePost } from './HeaderCreatePost'
 
@@ -25,21 +26,26 @@ export const Header: React.FunctionComponent = () => {
                 px={20}
                 sx={{ height: '100%' }}
             >
-                <Group spacing="sm">
-                    <IconMessageCircle2 color={theme.colors.blue[8]} />
-                    <Text
-                        size="lg"
-                        weight="bold"
+                <Link href="/?skip=0">
+                    <Group
+                        spacing="sm"
+                        sx={{ cursor: 'pointer' }}
                     >
-                        Blub
-                    </Text>
-                    <Text
-                        color="dimmed"
-                        size="sm"
-                    >
-                        What's on your mind?
-                    </Text>
-                </Group>
+                        <IconMessageCircle2 color={theme.colors.blue[8]} />
+                        <Text
+                            size="lg"
+                            weight="bold"
+                        >
+                            Blub
+                        </Text>
+                        <Text
+                            color="dimmed"
+                            size="sm"
+                        >
+                            What's on your mind?
+                        </Text>
+                    </Group>
+                </Link>
                 <Group>
                     <HeaderCreatePost />
                     <ActionIcon
