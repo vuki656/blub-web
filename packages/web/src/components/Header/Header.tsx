@@ -31,6 +31,12 @@ export const Header: React.FunctionComponent = () => {
                     >
                         Blub
                     </Text>
+                    <Text
+                        color="dimmed"
+                        size="sm"
+                    >
+                        What's on your mind?
+                    </Text>
                 </Group>
                 <ActionIcon
                     onClick={() => {
