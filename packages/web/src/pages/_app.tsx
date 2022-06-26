@@ -12,6 +12,7 @@ import Head from 'next/head'
 
 import {
     GlobalStyles,
+    Root,
     ThemeRoot,
 } from '../components'
 import introspectionGeneratedTS from '../graphql/introspection.generated.json'
@@ -42,7 +43,9 @@ const App = (props: AppProps) => {
                 <NotificationsProvider>
                     <GlobalStyles />
                     <ApolloProvider client={apollo}>
-                        <Component {...pageProps} />
+                        <Root>
+                            <Component {...pageProps} />
+                        </Root>
                     </ApolloProvider>
                 </NotificationsProvider>
             </ThemeRoot>

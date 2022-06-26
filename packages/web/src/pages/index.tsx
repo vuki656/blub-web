@@ -1,11 +1,9 @@
 import type { NextPage } from 'next'
 
-const Home: NextPage = () => {
-    return (
-        <p>
-            1
-        </p>
-    )
+import { Home } from '../modules'
+
+const HomePage: NextPage = () => {
+    return <Home />
 }
 
-export default Home
+export default HomePage
