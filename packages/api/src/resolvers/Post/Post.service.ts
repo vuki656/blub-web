@@ -1,27 +1,36 @@
 import { singleton } from 'tsyringe'
 
 import { orm } from '../../shared/orm'
-import { VoteTypeEnum } from '../Vote/enums'
+import { VoteTypeEnum } from '../Vote'
 
+import type { PostsArgs } from './args'
 import type { CreatePostInput } from './inputs'
 import type { CreatePostPayload } from './payloads'
 import { POST_DEFAULT_SELECT } from './Post.select'
-import type { PostType } from './types'
+import type { PostsType } from './types'
 
 @singleton()
 export class PostService {
-    public async findAll(userId: string): Promise<PostType[]> {
+    public async findAll(args: PostsArgs, userId: string): Promise<PostsType> {
         const posts = await orm.post.findMany({
             orderBy: {
                 createdAt: 'desc',
             },
             select: POST_DEFAULT_SELECT(),
+            skip: args.skip,
+            take: 50,
             where: {
                 isDeleted: false,
             },
         })
 
-        return posts.map((post) => {
+        const total = await orm.post.count({
+            where: {
+                isDeleted: false,
+            },
+        })
+
+        const list = posts.map((post) => {
             const userVote = post.votes.find((vote) => {
                 return vote.userId === userId
             })?.type ?? null
@@ -41,6 +50,11 @@ export class PostService {
                 votes,
             }
         })
+
+        return {
+            list,
+            total,
+        }
     }
 
     public async createOne(input: CreatePostInput, userId: string): Promise<CreatePostPayload> {

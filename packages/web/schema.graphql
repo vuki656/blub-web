@@ -5,7 +5,12 @@
 # ------------------------------------------------ #
 
 type Query {
-    posts: [PostType!]!
+    posts(args: PostsArgs!): PostsType!
+}
+
+type PostsType {
+    list: [PostType!]!
+    total: Float!
 }
 
 type PostType implements BaseType {
@@ -39,6 +44,10 @@ type VoteType implements BaseType {
 enum VoteTypeEnum {
     NEGATIVE
     POSITIVE
+}
+
+input PostsArgs {
+    skip: Float!
 }
 
 type Mutation {

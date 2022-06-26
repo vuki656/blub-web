@@ -9,20 +9,25 @@ import {
 
 import type { ContextType } from '../../shared/typescript-types'
 
+import { PostsArgs } from './args'
 import { CreatePostInput } from './inputs'
 import { CreatePostPayload } from './payloads'
 import { PostService } from './Post.service'
-import { PostType } from './types'
+import {
+    PostsType,
+    PostType,
+} from './types'
 
 @Resolver(() => PostType)
 export class PostResolver {
     private service = container.resolve(PostService)
 
-    @Query(() => [PostType])
+    @Query(() => PostsType)
     public async posts(
         @Ctx() context: ContextType,
-    ): Promise<PostType[]> {
-        return this.service.findAll(context.userId)
+        @Arg('args', () => PostsArgs) args: PostsArgs,
+    ): Promise<PostsType> {
+        return this.service.findAll(args, context.userId)
     }
 
     @Mutation(() => CreatePostPayload)

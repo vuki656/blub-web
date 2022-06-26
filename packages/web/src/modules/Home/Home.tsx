@@ -1,13 +1,41 @@
-import { Stack } from '@mantine/core'
+import {
+    Button,
+    LoadingOverlay,
+    SimpleGrid,
+    Stack,
+} from '@mantine/core'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
 
 export const Home: React.FunctionComponent = () => {
-    const { data } = useGetPostsQuery({
+    const router = useRouter()
+
+    const { data, loading } = useGetPostsQuery({
         ssr: false,
+        variables: {
+            args: {
+                skip: Number(router.query.skip),
+            },
+        },
     })
+
+    useEffect(() => {
+        if (!router.query.skip) {
+            void router.push('/?skip=0', undefined, { shallow: true })
+        }
+    }, [])
+
+    const onNextPage = () => {
+        void router.push(`/?skip=${Number(router.query.skip) + 50}`)
+    }
+
+    const onPreviousPage = () => {
+        void router.push(`/?skip=${Number(router.query.skip) - 50}`)
+    }
 
     return (
         <Stack
@@ -31,7 +59,8 @@ export const Home: React.FunctionComponent = () => {
                 overflow: 'auto',
             })}
         >
-            {data?.posts.map((post) => {
+            <LoadingOverlay visible={loading} />
+            {data?.posts.list.map((post) => {
                 return (
                     <HomePost
                         key={post.id}
@@ -39,6 +68,22 @@ export const Home: React.FunctionComponent = () => {
                     />
                 )
             })}
+            <SimpleGrid cols={2}>
+                <Button
+                    disabled={Number(router.query.skip) - 50 < 0}
+                    onClick={onPreviousPage}
+                    variant="default"
+                >
+                    Previous
+                </Button>
+                <Button
+                    disabled={Number(data?.posts.total) <= (Number(router.query.skip) + 50)}
+                    onClick={onNextPage}
+                    variant="default"
+                >
+                    Next
+                </Button>
+            </SimpleGrid>
         </Stack>
     )
 }

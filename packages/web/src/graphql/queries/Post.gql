@@ -1,13 +1,16 @@
-query GetPosts {
-    posts {
-        ...PostPayload
-        votes {
-            positive {
-                ...VotePayload
-            }
-            negative {
-                ...VotePayload
+query GetPosts($args: PostsArgs!) {
+    posts(args: $args) {
+        list {
+            ...PostPayload
+            votes {
+                positive {
+                    ...VotePayload
+                }
+                negative {
+                    ...VotePayload
+                }
             }
         }
+        total
     }
 }

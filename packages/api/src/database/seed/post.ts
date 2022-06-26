@@ -6,7 +6,7 @@ import { orm } from '../../shared/orm'
 const remove = orm.post.deleteMany()
 
 const create = orm.post.createMany({
-    data: [...new Array(150)].map(() => {
+    data: [...new Array(130)].map(() => {
         return {
             createdAt: faker.date.between(
                 dayjs()
