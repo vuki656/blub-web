@@ -60,6 +60,7 @@ export class PostService {
     public async createOne(input: CreatePostInput, userId: string): Promise<CreatePostPayload> {
         const createdPost = await orm.post.create({
             data: {
+                email: input.email,
                 text: input.text,
             },
             select: POST_DEFAULT_SELECT(),

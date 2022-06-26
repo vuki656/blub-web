@@ -30,6 +30,7 @@
         "asynciterable",
         "loglevel",
         "rimac",
-        "eslintcache"
+        "eslintcache",
+        "autosize"
     ]
 }

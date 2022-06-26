@@ -37,6 +37,15 @@
                                 },
                                 {
                                     "column": {
+                                        "name": "email",
+                                        "type": "varchar(100)",
+                                        "constraints": {
+                                            "nullable": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
                                         "name": "is_deleted",
                                         "type": "boolean",
                                         "defaultValueBoolean": false,

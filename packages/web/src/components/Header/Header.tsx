@@ -12,6 +12,8 @@ import {
     IconSun,
 } from '@tabler/icons'
 
+import { HeaderCreatePost } from './HeaderCreatePost'
+
 export const Header: React.FunctionComponent = () => {
     const theme = useMantineTheme()
     const { colorScheme, toggleColorScheme } = useMantineColorScheme()
@@ -38,15 +40,22 @@ export const Header: React.FunctionComponent = () => {
                         What's on your mind?
                     </Text>
                 </Group>
-                <ActionIcon
-                    onClick={() => {
-                        toggleColorScheme()
-                    }}
-                    size={30}
-                    variant="default"
-                >
-                    {colorScheme === 'dark' ? <IconSun size={16} /> : <IconMoon size={16} />}
-                </ActionIcon>
+                <Group>
+                    <HeaderCreatePost />
+                    <ActionIcon
+                        onClick={() => {
+                            toggleColorScheme()
+                        }}
+                        size={30}
+                        sx={{
+                            height: '36px',
+                            width: '36px',
+                        }}
+                        variant="default"
+                    >
+                        {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+                    </ActionIcon>
+                </Group>
             </Group>
         </MantineHeader>
     )

@@ -10,7 +10,7 @@ type Query {
 
 type PostsType {
     list: [PostType!]!
-    total: Float!
+    total: Int!
 }
 
 type PostType implements BaseType {
@@ -47,7 +47,7 @@ enum VoteTypeEnum {
 }
 
 input PostsArgs {
-    skip: Float!
+    skip: Int!
 }
 
 type Mutation {
@@ -71,4 +71,5 @@ type CreatePostPayload {
 
 input CreatePostInput {
     text: String!
+    email: String
 }
