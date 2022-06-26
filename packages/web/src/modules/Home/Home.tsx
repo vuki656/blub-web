@@ -18,17 +18,17 @@ export const Home: React.FunctionComponent = () => {
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
                 },
-                '@media (min-width: 601px) and (max-width: 850px)': {
-                    padding: `${theme.spacing.sm}px 15%`
-                },
-                '@media (min-width: 851px) and (max-width: 1250px)': {
-                    padding: `${theme.spacing.sm}px 20%`
-                },
                 '@media (min-width: 1251px) and (max-width: 2000px)': {
-                    padding: `${theme.spacing.sm}px 30%`
+                    padding: `${theme.spacing.sm}px 30%`,
                 },
                 '@media (min-width: 2001px)': {
-                    padding: `${theme.spacing.sm}px 35%`
+                    padding: `${theme.spacing.sm}px 35%`,
+                },
+                '@media (min-width: 601px) and (max-width: 850px)': {
+                    padding: `${theme.spacing.sm}px 15%`,
+                },
+                '@media (min-width: 851px) and (max-width: 1250px)': {
+                    padding: `${theme.spacing.sm}px 20%`,
                 },
                 flex: 1,
                 overflow: 'auto',
@@ -37,6 +37,7 @@ export const Home: React.FunctionComponent = () => {
             {data?.posts.map((post) => {
                 return (
                     <Paper
+                        key={post.id}
                         p="md"
                         shadow="xs"
                     >
