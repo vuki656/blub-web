@@ -14,11 +14,9 @@ export const Home: React.FunctionComponent = () => {
 
     return (
         <Stack
-            style={{
-                overflow: 'auto',
-                paddingLeft: '30%',
-                paddingRight: '30%',
-                paddingTop: '10px',
+            sx={{ 
+                flex: 1,
+                overflow: 'auto'
             }}
         >
             {data?.posts.map((post) => {
@@ -39,10 +37,10 @@ export const Home: React.FunctionComponent = () => {
                             </Text>
                             <SimpleGrid cols={2}>
                                 <Button fullWidth={true} variant='default'>
-                                    Disagree
+                                    Agree
                                 </Button>
                                 <Button fullWidth={true} variant='default'>
-                                    Agree
+                                    Disagree
                                 </Button>
                             </SimpleGrid>
                         </Stack>

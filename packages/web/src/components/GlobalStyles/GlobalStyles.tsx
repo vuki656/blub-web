@@ -15,6 +15,7 @@ export const GlobalStyles: React.FunctionComponent = () => {
                     margin: '0px',
                 },
                 html: {
+                    boxSize: 'border-box',
                     fontSize: '16px',
                 },
                 'html, body': {
