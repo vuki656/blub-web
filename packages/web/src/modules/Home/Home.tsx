@@ -5,13 +5,11 @@ import {
     Stack,
 } from '@mantine/core'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
-
-const ID = "posts-list"
 
 export const Home: React.FunctionComponent = () => {
     const router = useRouter()
@@ -25,6 +23,8 @@ export const Home: React.FunctionComponent = () => {
         },
     })
 
+    const rootRef = useRef<HTMLDivElement>(null)
+
     useEffect(() => {
         if (!router.query.skip) {
             void router.push('/?skip=0', undefined, { shallow: true })
@@ -34,18 +34,18 @@ export const Home: React.FunctionComponent = () => {
     const onNextPage = async () => {
         await router.push(`/?skip=${Number(router.query.skip) + 50}`)
 
-        document.getElementById(ID)?.scroll(0, 0)
+        rootRef.current?.scrollTo(0,0)
     }
 
     const onPreviousPage = async () => {
         await router.push(`/?skip=${Number(router.query.skip) - 50}`)
 
-        document.getElementById(ID)?.scroll(0, 0)
+        rootRef.current?.scrollTo(0,0)
     }
 
     return (
         <Stack
-            id={ID}
+            ref={rootRef}
             sx={(theme) => ({
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
