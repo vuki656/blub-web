@@ -11,6 +11,8 @@ import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
 
+const ID = "posts-list"
+
 export const Home: React.FunctionComponent = () => {
     const router = useRouter()
 
@@ -29,16 +31,21 @@ export const Home: React.FunctionComponent = () => {
         }
     }, [])
 
-    const onNextPage = () => {
-        void router.push(`/?skip=${Number(router.query.skip) + 50}`)
+    const onNextPage = async () => {
+        await router.push(`/?skip=${Number(router.query.skip) + 50}`)
+
+        document.getElementById(ID)?.scroll(0, 0)
     }
 
-    const onPreviousPage = () => {
-        void router.push(`/?skip=${Number(router.query.skip) - 50}`)
+    const onPreviousPage = async () => {
+        await router.push(`/?skip=${Number(router.query.skip) - 50}`)
+
+        document.getElementById(ID)?.scroll(0, 0)
     }
 
     return (
         <Stack
+            id={ID}
             sx={(theme) => ({
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
