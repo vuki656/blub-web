@@ -5,7 +5,10 @@ import {
     Stack,
 } from '@mantine/core'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import {
+    useEffect,
+    useRef,
+} from 'react'
 
 import { useGetPostsQuery } from '../../graphql/types.generated'
 
@@ -34,13 +37,13 @@ export const Home: React.FunctionComponent = () => {
     const onNextPage = async () => {
         await router.push(`/?skip=${Number(router.query.skip) + 50}`)
 
-        rootRef.current?.scrollTo(0,0)
+        rootRef.current?.scrollTo(0, 0)
     }
 
     const onPreviousPage = async () => {
         await router.push(`/?skip=${Number(router.query.skip) - 50}`)
 
-        rootRef.current?.scrollTo(0,0)
+        rootRef.current?.scrollTo(0, 0)
     }
 
     return (
