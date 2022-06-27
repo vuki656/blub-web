@@ -4,7 +4,6 @@ import {
     InMemoryCache,
 } from '@apollo/client'
 import { getDataFromTree } from '@apollo/client/react/ssr'
-import { NotificationsProvider } from '@mantine/notifications'
 import {
     getCookie,
     setCookies,
@@ -46,14 +45,12 @@ const App = (props: AppProps) => {
                 />
             </Head>
             <ThemeRoot colorScheme={colorScheme}>
-                <NotificationsProvider>
-                    <GlobalStyles />
-                    <ApolloProvider client={apollo}>
-                        <Root>
-                            <Component {...pageProps} />
-                        </Root>
-                    </ApolloProvider>
-                </NotificationsProvider>
+                <GlobalStyles />
+                <ApolloProvider client={apollo}>
+                    <Root>
+                        <Component {...pageProps} />
+                    </Root>
+                </ApolloProvider>
             </ThemeRoot>
         </>
     )
