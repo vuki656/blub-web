@@ -2,12 +2,18 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
     Button,
     Modal,
+    Notification,
     SimpleGrid,
     Stack,
     Textarea,
     TextInput,
 } from '@mantine/core'
 import { IconPencil } from '@tabler/icons'
+import {
+    getCookie,
+    setCookies,
+} from 'cookies-next'
+import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
@@ -16,6 +22,7 @@ import {
     useCreatePostMutation,
 } from '../../../graphql/types.generated'
 import {
+    COOKIE_POST_DATE,
     extractFormFieldErrors,
     useBoolean,
 } from '../../../utils'
@@ -28,9 +35,19 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
 
     const [isOpen, openActions] = useBoolean()
 
+    const postDate = getCookie(COOKIE_POST_DATE)?.toString()
+    const isBlocked = dayjs().isBefore(postDate)
+
     const [createPostMutation, { loading }] = useCreatePostMutation({
         onCompleted: () => {
             openActions.setFalse()
+
+            setCookies(
+                COOKIE_POST_DATE,
+                dayjs().endOf('day')
+                    .toISOString(),
+                { maxAge: 86_400 }
+            )
         },
         refetchQueries: [{
             query: GetPostsDocument,
@@ -91,6 +108,14 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
                 title="Make a post"
             >
                 <Stack>
+                    {isBlocked ? (
+                        <Notification
+                            disallowClose={true}
+                            title="Hey, you already posted today."
+                        >
+                            Come back tomorrow to post again.
+                        </Notification>
+                    ) : null}
                     <Textarea
                         {...register('text')}
                         {...extractFormFieldErrors(formState.errors.text)}
@@ -115,6 +140,7 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
                             Cancel
                         </Button>
                         <Button
+                            disabled={isBlocked}
                             loading={loading}
                             onClick={handleSubmit(onSubmit)}
                         >
