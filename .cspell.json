@@ -5,6 +5,7 @@
         "cacheStrategy": "content",
         "cacheLocation": "./.cspellcache"
     },
+    "ignorePaths": ["./packages/web/public/**/*"],
     "ignoreWords": [
         "sonarjs",
         "gtag",
