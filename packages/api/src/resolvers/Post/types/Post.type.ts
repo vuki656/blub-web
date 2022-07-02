@@ -28,6 +28,6 @@ export class PostType extends BaseType {
     @Field(() => VotesType)
     public votes: VotesType
 
-    @Field(() => VoteTypeEnum, { nullable: true })
+    @Field(() => VoteTypeEnum, { nullable: true }) // eslint-disable-next-line type-graphql/invalid-decorated-type
     public userVote: PrismaVoteType | null
 }

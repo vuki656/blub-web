@@ -6,6 +6,7 @@
         "cacheLocation": "./.cspellcache"
     },
     "ignoreWords": [
+        "sonarjs",
         "gtag",
         "yarnpkg",
         "blub",

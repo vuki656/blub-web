@@ -12,6 +12,6 @@ export class VoteType extends BaseType {
     @Field(() => String)
     public userId: string
 
-    @Field(() => VoteTypeEnum)
+    @Field(() => VoteTypeEnum) // eslint-disable-next-line type-graphql/invalid-decorated-type
     public type: PrismaVoteType
 }

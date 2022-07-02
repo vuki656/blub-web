@@ -18,7 +18,10 @@ import {
     useCreateVoteMutation,
     VoteTypeEnum,
 } from '../../../graphql/types.generated'
-import { COOKIE_NAME, GoogleAnalytics } from '../../../utils'
+import {
+    COOKIE_NAME,
+    GoogleAnalytics,
+} from '../../../utils'
 
 import type { HomePostProps } from './HomePost.types'
 
@@ -35,10 +38,10 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                 'vote',
                 {
                     category: 'engagement',
-                    label: response.createVote.vote.type.toString() 
+                    label: response.createVote.vote.type.toString(),
                 }
             )
-        }
+        },
     })
 
     const onVote = (post: PostType, type: VoteTypeEnum) => {

@@ -4,7 +4,7 @@ export const postValidation = z.object({
     email: z
         .string()
         .max(100, 'Can\'t be longer than 100 characters')
-        .refine((email) => {
+        .refine((email) => { // eslint-disable-next-line sonarjs/prefer-single-boolean-return
             if (email.length > 0 && !email.includes('@')) {
                 return false
             }

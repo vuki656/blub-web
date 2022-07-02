@@ -22,11 +22,13 @@ import {
 } from '../components'
 import introspectionGeneratedTS from '../graphql/introspection.generated.json'
 import introspectionGeneratedJSON from '../graphql/types.generated'
-import { AppProps, GoogleAnalytics } from '../utils'
+import type { AppProps } from '../utils'
 import {
     COOKIE_COLORSCHEME_NAME,
 
     COOKIE_NAME,
+
+    GoogleAnalytics,
     link,
 } from '../utils'
 
