@@ -42,13 +42,19 @@ const App = (props: AppProps) => {
 
     const router = useRouter()
 
+    const userId = getCookie(COOKIE_NAME)
+
     useEffect(() => {
+        GoogleAnalytics.trackUser(userId?.toString())
+
         router.events.on('routeChangeComplete', GoogleAnalytics.trackPageView)
+        router.events.on('hashChangeComplete', GoogleAnalytics.trackPageView)
 
         return () => {
             router.events.off('routeChangeComplete', GoogleAnalytics.trackPageView)
+            router.events.off('hashChangeComplete', GoogleAnalytics.trackPageView)
         }
-    }, [])
+    }, [router.events])
 
     return (
         <>
@@ -71,14 +77,12 @@ const App = (props: AppProps) => {
 }
 
 App.getInitialProps = async (appProps: any) => {
-    let userId = getCookie(COOKIE_NAME, { req: appProps.ctx.req, res: appProps.ctx.res })
+    const userId = getCookie(COOKIE_NAME, { req: appProps.ctx.req, res: appProps.ctx.res })
 
     if (!userId) {
-        userId = UUID()
-
         setCookies(
             COOKIE_NAME,
-            userId,
+            UUID(),
             {
                 maxAge: 2_147_483_647,
                 req: appProps.ctx.req,
@@ -86,8 +90,6 @@ App.getInitialProps = async (appProps: any) => {
             }
         )
     }
-
-    GoogleAnalytics.trackUser(userId.toString())
 
     const initialProps = await NextApp.getInitialProps(appProps)
 

@@ -6,6 +6,7 @@ import Document, {
     Main,
     NextScript,
 } from 'next/document'
+import Script from 'next/script'
 
 const getInitialProps = createGetInitialProps()
 
@@ -18,17 +19,16 @@ export default class _Document extends Document {
         return (
             <Html>
                 <Head>
-                    <script
-                        async={true}
-                        crossOrigin="anonymous"
+                    <Script
                         src={`https://www.googletagmanager.com/gtag/js?id=${publicRuntimeConfig.GA_TRACKING_ID}`}
+                        strategy="afterInteractive"
                     />
-                    <script
+                    <Script
                         dangerouslySetInnerHTML={{
                             __html: `
                                 window.dataLayer = (window.dataLayer || []);
 
-                                function gtag(){
+                                function gtag() {
                                     dataLayer.push(arguments);
                                 }
 
@@ -39,6 +39,8 @@ export default class _Document extends Document {
                                 });
                             `,
                         }}
+                        id="gtag-init"
+                        strategy="afterInteractive"
                     />
                 </Head>
                 <body>
