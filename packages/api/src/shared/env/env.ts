@@ -18,13 +18,10 @@ export const env = cleanEnv(process.env, {
     APP_JWT_SECRET: str(),
     APP_LOG_LEVEL: str(),
     APP_PORT: num(),
-    DB_APP_HOST: str(),
-    DB_DOCKER_HOST: str(),
-    DB_NAME: str(),
     DB_PASSWORD: str(),
-    DB_PORT: num(),
-    DB_SCHEMA: str(),
     DB_USERNAME: str(),
+    DB_DOCKER_URL: str(),
+    DB_PRISMA_URL: str(),
 }, {
     reporter: ({ errors }) => {
         for (const [environmentVariable, error] of Object.entries(errors)) {
