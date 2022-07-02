@@ -24,6 +24,7 @@ import {
 import {
     COOKIE_POST_DATE,
     extractFormFieldErrors,
+    GoogleAnalytics,
     useBoolean,
 } from '../../../utils'
 
@@ -48,6 +49,8 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
                     .toISOString(),
                 { maxAge: 86_400 }
             )
+
+            GoogleAnalytics.trackEvent('create_post', { category: 'engagement' })
         },
         refetchQueries: [{
             query: GetPostsDocument,

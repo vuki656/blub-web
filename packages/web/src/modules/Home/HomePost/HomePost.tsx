@@ -18,7 +18,7 @@ import {
     useCreateVoteMutation,
     VoteTypeEnum,
 } from '../../../graphql/types.generated'
-import { COOKIE_NAME } from '../../../utils'
+import { COOKIE_NAME, GoogleAnalytics } from '../../../utils'
 
 import type { HomePostProps } from './HomePost.types'
 
@@ -29,7 +29,17 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
 
     const userId = getCookie(COOKIE_NAME)
 
-    const [createVoteMutation] = useCreateVoteMutation()
+    const [createVoteMutation] = useCreateVoteMutation({
+        onCompleted: (response) => {
+            GoogleAnalytics.trackEvent(
+                'vote',
+                {
+                    category: 'engagement',
+                    label: response.createVote.vote.type.toString() 
+                }
+            )
+        }
+    })
 
     const onVote = (post: PostType, type: VoteTypeEnum) => {
         if (!userId || Boolean(post.userVote)) {

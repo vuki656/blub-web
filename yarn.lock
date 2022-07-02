@@ -855,6 +855,7 @@ __metadata:
     "@mantine/next": ^4.2.11
     "@react-hookz/web": ^14.3.0
     "@tabler/icons": ^1.72.0
+    "@types/gtag.js": ^0.0.10
     "@types/react": 18.0.14
     "@types/react-dom": 18.0.5
     cookies-next: ^2.0.5
@@ -2819,6 +2820,13 @@ __metadata:
     "@types/minimatch": "*"
     "@types/node": "*"
   checksum: 6ae717fedfdfdad25f3d5a568323926c64f52ef35897bcac8aca8e19bc50c0bd84630bbd063e5d52078b2137d8e7d3c26eabebd1a2f03ff350fff8a91e79fc19
+  languageName: node
+  linkType: hard
+
+"@types/gtag.js@npm:^0.0.10":
+  version: 0.0.10
+  resolution: "@types/gtag.js@npm:0.0.10"
+  checksum: 5c18ffdc64418887763ec1a564e73c9fbf222ff3eece1fbc35a182fdd884e7884bb7708f67e6e4939f157bb9f2cb7a4aff42be7834527e35c5aac4f98783164c
   languageName: node
   linkType: hard
 

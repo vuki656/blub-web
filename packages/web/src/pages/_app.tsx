@@ -11,6 +11,8 @@ import {
 import withApollo from 'next-with-apollo'
 import NextApp from 'next/app'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { v4 as UUID } from 'uuid'
 
 import {
@@ -20,7 +22,7 @@ import {
 } from '../components'
 import introspectionGeneratedTS from '../graphql/introspection.generated.json'
 import introspectionGeneratedJSON from '../graphql/types.generated'
-import type { AppProps } from '../utils'
+import { AppProps, GoogleAnalytics } from '../utils'
 import {
     COOKIE_COLORSCHEME_NAME,
 
@@ -35,6 +37,16 @@ const App = (props: AppProps) => {
         colorScheme,
         pageProps,
     } = props
+
+    const router = useRouter()
+
+    useEffect(() => {
+        router.events.on('routeChangeComplete', GoogleAnalytics.trackPageView)
+
+        return () => {
+            router.events.off('routeChangeComplete', GoogleAnalytics.trackPageView)
+        }
+    }, [])
 
     return (
         <>
@@ -57,12 +69,14 @@ const App = (props: AppProps) => {
 }
 
 App.getInitialProps = async (appProps: any) => {
-    const userId = getCookie(COOKIE_NAME, { req: appProps.ctx.req, res: appProps.ctx.res })
+    let userId = getCookie(COOKIE_NAME, { req: appProps.ctx.req, res: appProps.ctx.res })
 
     if (!userId) {
+        userId = UUID()
+
         setCookies(
             COOKIE_NAME,
-            UUID(),
+            userId,
             {
                 maxAge: 2_147_483_647,
                 req: appProps.ctx.req,
@@ -70,6 +84,8 @@ App.getInitialProps = async (appProps: any) => {
             }
         )
     }
+
+    GoogleAnalytics.trackUser(userId.toString())
 
     const initialProps = await NextApp.getInitialProps(appProps)
 
