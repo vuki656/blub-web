@@ -1,7 +1,7 @@
 import {
     ActionIcon,
+    Box,
     Group,
-    Header as MantineHeader,
     Text,
     useMantineColorScheme,
     useMantineTheme,
@@ -20,49 +20,55 @@ export const Header: React.FunctionComponent = () => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme()
 
     return (
-        <MantineHeader height={60}>
-            <Group
-                position="apart"
-                px={20}
-                sx={{ height: '100%' }}
-            >
-                <Link href="/?skip=0">
-                    <Group
-                        spacing="sm"
-                        sx={{ cursor: 'pointer' }}
+        <Box
+            sx={{
+                borderBottom: `1px solid ${theme.colors.gray[3]}`,
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: `${theme.spacing.sm}px ${theme.spacing.md}px`,
+            }}
+        >
+            <Link href="/?skip=0">
+                <Group
+                    spacing="sm"
+                    sx={{ cursor: 'pointer' }}
+                >
+                    <IconMessageCircle2 color={theme.colors.blue[8]} />
+                    <Text
+                        size="lg"
+                        weight="bold"
                     >
-                        <IconMessageCircle2 color={theme.colors.blue[8]} />
-                        <Text
-                            size="lg"
-                            weight="bold"
-                        >
-                            Blub
-                        </Text>
-                        <Text
-                            color="dimmed"
-                            size="sm"
-                        >
-                            What's on your mind?
-                        </Text>
-                    </Group>
-                </Link>
-                <Group>
-                    <HeaderCreatePost />
-                    <ActionIcon
-                        onClick={() => {
-                            toggleColorScheme()
-                        }}
-                        size={30}
+                        Blub
+                    </Text>
+                    <Text
+                        color="dimmed"
+                        size="sm"
                         sx={{
-                            height: '36px',
-                            width: '36px',
+                            '@media (max-width: 600px)': {
+                                display: 'none',
+                            },
                         }}
-                        variant="default"
                     >
-                        {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
-                    </ActionIcon>
+                        What's on your mind?
+                    </Text>
                 </Group>
+            </Link>
+            <Group>
+                <HeaderCreatePost />
+                <ActionIcon
+                    onClick={() => {
+                        toggleColorScheme()
+                    }}
+                    size={30}
+                    sx={{
+                        height: '36px',
+                        width: '36px',
+                    }}
+                    variant="default"
+                >
+                    {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+                </ActionIcon>
             </Group>
-        </MantineHeader>
+        </Box>
     )
 }
