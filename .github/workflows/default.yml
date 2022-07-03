@@ -50,4 +50,4 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
-            - run: yarn workspace @blub/web codegen && yarn workspace @blub/api build
+            - run: yarn workspace @blub/web codegen && yarn workspace @blub/web build
