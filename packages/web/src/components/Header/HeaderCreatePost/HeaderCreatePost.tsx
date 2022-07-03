@@ -114,7 +114,7 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
                     {isBlocked ? (
                         <Notification
                             disallowClose={true}
-                            sx={{ 
+                            sx={{
                                 border: 'none',
                                 boxShadow: 'none',
                             }}
