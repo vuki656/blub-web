@@ -20,7 +20,7 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
-            - run: yarn lint
+            - run: yarn lint:ci
     build_api:
         name: Build API
         runs-on: ubuntu-latest
@@ -35,7 +35,7 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
-            - run: cd ./packages/api && yarn orm:generate && yarn build
+            - run: yarn workspace @blub/api orm:generate && yarn workspace @blub/api build
     build_web:
         name: Build Web
         runs-on: ubuntu-latest
@@ -50,4 +50,4 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
-            - run: cd ./packages/web && yarn codegen && yarn build
+            - run: yarn workspace @blub/web codegen && yarn workspace @blub/web build

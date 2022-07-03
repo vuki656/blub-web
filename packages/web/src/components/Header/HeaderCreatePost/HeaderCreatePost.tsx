@@ -114,6 +114,10 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
                     {isBlocked ? (
                         <Notification
                             disallowClose={true}
+                            sx={{
+                                border: 'none',
+                                boxShadow: 'none',
+                            }}
                             title="Hey, you already posted today."
                         >
                             Come back tomorrow to post again.
