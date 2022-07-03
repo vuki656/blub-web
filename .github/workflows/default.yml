@@ -20,7 +20,7 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
-            - run: yarn lint
+            - run: yarn lint:ci
     build_api:
         name: Build API
         runs-on: ubuntu-latest
