@@ -13,7 +13,7 @@ import {
 } from '@tabler/icons'
 import Link from 'next/link'
 
-import { HeaderCreatePost } from './HeaderCreatePost'
+import { CreatePost } from '../CreatePost'
 
 export const Header: React.FunctionComponent = () => {
     const theme = useMantineTheme()
@@ -54,7 +54,7 @@ export const Header: React.FunctionComponent = () => {
                 </Group>
             </Link>
             <Group>
-                <HeaderCreatePost />
+                <CreatePost />
                 <ActionIcon
                     onClick={() => {
                         toggleColorScheme()
