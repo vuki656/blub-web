@@ -6,7 +6,7 @@ import {
 import { getDataFromTree } from '@apollo/client/react/ssr'
 import {
     getCookie,
-    setCookies,
+    setCookie,
 } from 'cookies-next'
 import withApollo from 'next-with-apollo'
 import NextApp from 'next/app'
@@ -80,7 +80,7 @@ App.getInitialProps = async (appProps: any) => {
     const userId = getCookie(COOKIE_NAME, { req: appProps.ctx.req, res: appProps.ctx.res })
 
     if (!userId) {
-        setCookies(
+        setCookie(
             COOKIE_NAME,
             UUID(),
             {

@@ -1,18 +1,25 @@
 import {
     Button,
     LoadingOverlay,
+    Notification,
+    Paper,
     SimpleGrid,
     Stack,
+    Text,
 } from '@mantine/core'
+import getConfig from 'next/config'
 import { useRouter } from 'next/router'
 import {
     useEffect,
     useRef,
 } from 'react'
 
+import { CreatePost } from '../../components'
 import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
+
+const { publicRuntimeConfig } = getConfig()
 
 export const Home: React.FunctionComponent = () => {
     const router = useRouter()
@@ -46,6 +53,8 @@ export const Home: React.FunctionComponent = () => {
         rootRef.current?.scrollTo(0, 0)
     }
 
+    const noMorePosts = Number(data?.posts.total) <= (Number(router.query.skip) + 50)
+
     return (
         <Stack
             ref={rootRef}
@@ -70,6 +79,16 @@ export const Home: React.FunctionComponent = () => {
             })}
         >
             <LoadingOverlay visible={loading} />
+            <Notification
+                disallowClose={true}
+                sx={{
+                    border: 'none',
+                    boxShadow: 'none',
+                }}
+                title="Topic Of The Week"
+            >
+                {publicRuntimeConfig.QUESTION}
+            </Notification>
             {data?.posts.list.map((post) => {
                 return (
                     <HomePost
@@ -78,6 +97,31 @@ export const Home: React.FunctionComponent = () => {
                     />
                 )
             })}
+            {noMorePosts ? (
+                <Paper
+                    sx={(theme) => ({
+                        alignItems: 'center',
+                        boxShadow: theme.shadows.xs,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: theme.spacing.md,
+                        rowGap: theme.spacing.md,
+                    })}
+                >
+                    <Text align="center">
+                        {publicRuntimeConfig.QUESTION}
+                        {' '}
+                        Make an
+                        {' '}
+                        <strong>
+                            anonymous
+                        </strong>
+                        {' '}
+                        post.
+                    </Text>
+                    <CreatePost />
+                </Paper>
+            ) : null}
             <SimpleGrid cols={2}>
                 <Button
                     disabled={Number(router.query.skip) - 50 < 0}
@@ -87,7 +131,7 @@ export const Home: React.FunctionComponent = () => {
                     Previous
                 </Button>
                 <Button
-                    disabled={Number(data?.posts.total) <= (Number(router.query.skip) + 50)}
+                    disabled={noMorePosts}
                     onClick={onNextPage}
                     variant="default"
                 >

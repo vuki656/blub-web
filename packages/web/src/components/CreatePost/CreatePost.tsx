@@ -6,12 +6,11 @@ import {
     SimpleGrid,
     Stack,
     Textarea,
-    TextInput,
 } from '@mantine/core'
 import { IconPencil } from '@tabler/icons'
 import {
     getCookie,
-    setCookies,
+    setCookie,
 } from 'cookies-next'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
@@ -20,18 +19,18 @@ import { useForm } from 'react-hook-form'
 import {
     GetPostsDocument,
     useCreatePostMutation,
-} from '../../../graphql/types.generated'
+} from '../../graphql/types.generated'
 import {
     COOKIE_POST_DATE,
     extractFormFieldErrors,
     GoogleAnalytics,
     useBoolean,
-} from '../../../utils'
+} from '../../utils'
 
-import type { PostFormType } from './HeaderCreatePost.types'
-import { postValidation } from './HeaderCreatePost.validation'
+import type { PostFormType } from './CreatePost.types'
+import { postValidation } from './CreatePost.validation'
 
-export const HeaderCreatePost: React.FunctionComponent = () => {
+export const CreatePost: React.FunctionComponent = () => {
     const router = useRouter()
 
     const [isOpen, openActions] = useBoolean()
@@ -43,7 +42,7 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
         onCompleted: () => {
             openActions.setFalse()
 
-            setCookies(
+            setCookie(
                 COOKIE_POST_DATE,
                 dayjs().endOf('day')
                     .toISOString(),
@@ -69,7 +68,6 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
         reset,
     } = useForm<PostFormType>({
         defaultValues: {
-            email: '',
             text: '',
         },
         resolver: zodResolver(postValidation),
@@ -79,7 +77,6 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
         await createPostMutation({
             variables: {
                 input: {
-                    email: formValue.email,
                     text: formValue.text,
                 },
             },
@@ -131,13 +128,6 @@ export const HeaderCreatePost: React.FunctionComponent = () => {
                         minRows={10}
                         placeholder="What's on your mind"
                         required={true}
-                    />
-                    <TextInput
-                        {...register('email')}
-                        {...extractFormFieldErrors(formState.errors.email)}
-                        description="Used to contact you regarding the giveaway. Not required."
-                        label="Email"
-                        placeholder="Your email address"
                     />
                     <SimpleGrid cols={2}>
                         <Button
