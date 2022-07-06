@@ -3,7 +3,7 @@ import {
     ColorSchemeProvider,
     MantineProvider,
 } from '@mantine/core'
-import { setCookies } from 'cookies-next'
+import { setCookie } from 'cookies-next'
 import { useState } from 'react'
 
 import { COOKIE_COLORSCHEME_NAME } from '../../utils'
@@ -27,7 +27,7 @@ export const ThemeRoot: React.FunctionComponent<ThemeRootProps> = (props) => {
 
         setCurrentColorScheme(nextColorScheme)
 
-        setCookies(COOKIE_COLORSCHEME_NAME, nextColorScheme, { maxAge: 60 * 60 * 24 * 30 })
+        setCookie(COOKIE_COLORSCHEME_NAME, nextColorScheme, { maxAge: 60 * 60 * 24 * 30 })
     }
 
     return (

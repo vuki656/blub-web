@@ -10,7 +10,7 @@ import {
 import { IconPencil } from '@tabler/icons'
 import {
     getCookie,
-    setCookies,
+    setCookie,
 } from 'cookies-next'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
@@ -42,7 +42,7 @@ export const CreatePost: React.FunctionComponent = () => {
         onCompleted: () => {
             openActions.setFalse()
 
-            setCookies(
+            setCookie(
                 COOKIE_POST_DATE,
                 dayjs().endOf('day')
                     .toISOString(),
