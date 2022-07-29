@@ -1,13 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+    Alert,
     Button,
     Modal,
     Notification,
     SimpleGrid,
     Stack,
     Textarea,
+    TextInput,
 } from '@mantine/core'
-import { IconPencil } from '@tabler/icons'
+import {
+    IconInfoCircle,
+    IconPencil,
+} from '@tabler/icons'
 import {
     getCookie,
     setCookie,
@@ -68,6 +73,7 @@ export const CreatePost: React.FunctionComponent = () => {
         reset,
     } = useForm<PostFormType>({
         defaultValues: {
+            email: '',
             text: '',
         },
         resolver: zodResolver(postValidation),
@@ -129,6 +135,23 @@ export const CreatePost: React.FunctionComponent = () => {
                         placeholder="What's on your mind"
                         required={true}
                     />
+                    <TextInput
+                        {...register('email')}
+                        {...extractFormFieldErrors(formState.errors.email)}
+                        description="Not required. Used to contact you regarding the giveaway."
+                        label="Email"
+                        placeholder="Your email address"
+                    />
+                    <Alert
+                        color="yellow"
+                        icon={<IconInfoCircle size={16} />}
+                        title="Giveaway Details"
+                    >
+                        Every two weeks we reward the post with the most reactions with 100$.
+                        The winner is contacted by email if they leave it.
+                        If that person didn't leave an email,
+                        the next post with an email will be picked.
+                    </Alert>
                     <SimpleGrid cols={2}>
                         <Button
                             onClick={onCancel}

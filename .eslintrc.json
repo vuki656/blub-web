@@ -21,6 +21,7 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "max-len": "off"
+        "max-len": "off",
+        "sonarjs/prefer-single-boolean-return": "off"
     }
 }
