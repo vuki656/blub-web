@@ -1,13 +1,11 @@
 import {
     Button,
     LoadingOverlay,
-    Notification,
     Paper,
     SimpleGrid,
     Stack,
     Text,
 } from '@mantine/core'
-import getConfig from 'next/config'
 import { useRouter } from 'next/router'
 import {
     useEffect,
@@ -18,8 +16,6 @@ import { CreatePost } from '../../components'
 import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
-
-const { publicRuntimeConfig } = getConfig()
 
 export const Home: React.FunctionComponent = () => {
     const router = useRouter()
@@ -79,16 +75,6 @@ export const Home: React.FunctionComponent = () => {
             })}
         >
             <LoadingOverlay visible={loading} />
-            <Notification
-                disallowClose={true}
-                sx={{
-                    border: 'none',
-                    boxShadow: 'none',
-                }}
-                title="Topic Of The Week"
-            >
-                {publicRuntimeConfig.QUESTION}
-            </Notification>
             {data?.posts.list.map((post) => {
                 return (
                     <HomePost
@@ -109,7 +95,7 @@ export const Home: React.FunctionComponent = () => {
                     })}
                 >
                     <Text align="center">
-                        {publicRuntimeConfig.QUESTION}
+                        Whats on your mind?
                         {' '}
                         Make an
                         {' '}

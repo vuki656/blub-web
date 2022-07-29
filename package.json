@@ -5,7 +5,7 @@
     "scripts": {
         "lint": "yarn lint:config && yarn lint:spell && yarn lint:source && yarn lint:graphql",
         "lint:ci": "yarn workspace @blub/api orm:generate && yarn workspace @blub/web codegen && yarn lint",
-        "lint:fix": "eslint './packages/**/*' --fix --quiet",
+        "lint:fix": "eslint './packages/**/*' --fix --quiet --cache --cache-strategy='content' --cache-location='.eslintcache/'",
         "lint:source": "eslint './packages/**/*' --quiet --cache --cache-strategy='content' --cache-location='.eslintcache/'",
         "lint:config": "prettier --loglevel warn --check {*,**/*}.{json,yml,yaml}",
         "lint:spell": "cspell lint '**' --no-summary --no-progress",

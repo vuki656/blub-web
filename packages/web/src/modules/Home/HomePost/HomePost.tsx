@@ -60,7 +60,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
         })
 
         setCurrentPost((previousState) => {
-            const vote = {
+            const vote: VoteType = {
                 id: UUID(),
                 type,
                 userId: userId.toString(),
@@ -95,7 +95,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                     color="dimmed"
                     size="sm"
                 >
-                    {dayjs(currentPost.createdAt).format('HH:MM DD.MM.YYYY')}
+                    {dayjs(currentPost.createdAt).format('HH:MM MM.DD.YYYY')}
                 </Text>
                 <Text>
                     {currentPost.text}
