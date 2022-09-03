@@ -8,7 +8,20 @@ import { VOTE_DEFAULT_SELECT } from './Vote.select'
 
 @singleton()
 export class VoteService {
-    public async create(input: CreateVoteInput): Promise<CreateVotePayload> {
+    public async create(input: CreateVoteInput): Promise<CreateVotePayload | null> {
+        const existingVote = await orm.vote.findFirst({
+            where: {
+                userId: input.userId,
+                post: {
+                    id: input.postId,
+                }
+            }
+        })
+
+        if (existingVote) {
+            return null
+        }
+
         const createdVote = await orm.vote.create({
             data: {
                 post: {

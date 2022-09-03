@@ -14,10 +14,10 @@ import { VoteService } from './Vote.service'
 export class VoteResolver {
     private service = container.resolve(VoteService)
 
-    @Mutation(() => CreateVotePayload)
+    @Mutation(() => CreateVotePayload, { nullable: true })
     public async createVote(
         @Arg('input', () => CreateVoteInput) input: CreateVoteInput,
-    ): Promise<CreateVotePayload> {
+    ): Promise<CreateVotePayload | null> {
         return this.service.create(input)
     }
 }

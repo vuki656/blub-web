@@ -30,6 +30,7 @@ packages/api/schema.graphql
 **/*/graphql/introspection.json
 **/*.generated.ts
 **/*.generated.json
+**/generated.ts
 
 # API Build
 dist

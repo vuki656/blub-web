@@ -51,7 +51,7 @@ input PostsArgs {
 }
 
 type Mutation {
-    createVote(input: CreateVoteInput!): CreateVotePayload!
+    createVote(input: CreateVoteInput!): CreateVotePayload
     createPost(input: CreatePostInput!): CreatePostPayload!
 }
 
