@@ -53,6 +53,7 @@ export const Home: React.FunctionComponent = () => {
 
     return (
         <Stack
+            data-cy="post-list"
             ref={rootRef}
             sx={(theme) => ({
                 '@media (max-width: 600px)': {
@@ -75,9 +76,10 @@ export const Home: React.FunctionComponent = () => {
             })}
         >
             <LoadingOverlay visible={loading} />
-            {data?.posts.list.map((post) => {
+            {data?.posts.list.map((post, index) => {
                 return (
                     <HomePost
+                        index={index}
                         key={post.id}
                         value={post}
                     />
@@ -85,6 +87,7 @@ export const Home: React.FunctionComponent = () => {
             })}
             {noMorePosts ? (
                 <Paper
+                    data-cy="post-hint"
                     sx={(theme) => ({
                         alignItems: 'center',
                         boxShadow: theme.shadows.xs,
@@ -110,6 +113,7 @@ export const Home: React.FunctionComponent = () => {
             ) : null}
             <SimpleGrid cols={2}>
                 <Button
+                    data-cy="previous-button"
                     disabled={Number(router.query.skip) - 50 < 0}
                     onClick={onPreviousPage}
                     variant="default"
@@ -117,6 +121,7 @@ export const Home: React.FunctionComponent = () => {
                     Previous
                 </Button>
                 <Button
+                    data-cy="next-button"
                     disabled={noMorePosts}
                     onClick={onNextPage}
                     variant="default"

@@ -21,6 +21,15 @@
     "parserOptions": {
         "project": "./tsconfig.json"
     },
+    "overrides": [
+        {
+            "files": ["**/*.{cy,cy.helper,cy.actions}.ts"],
+            "rules": {
+                "promise/catch-or-return": "off",
+                "promise/no-nesting": "off"
+            }
+        }
+    ],
     "rules": {
         "max-len": "off",
         "sonarjs/prefer-single-boolean-return": "off",
