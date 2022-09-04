@@ -75,17 +75,20 @@ export const Home: React.FunctionComponent = () => {
                 overflow: 'auto',
             })}
         >
-            <LoadingOverlay visible={loading} />
-            {data?.posts.list.map((post) => {
+            {/* // TODO: fix */}
+            {/* <LoadingOverlay visible={loading} /> */}
+            {data?.posts.list.map((post, index) => {
                 return (
                     <HomePost
                         key={post.id}
                         value={post}
+                        index={index}
                     />
                 )
             })}
             {noMorePosts ? (
                 <Paper
+                    data-cy="post-hint"
                     sx={(theme) => ({
                         alignItems: 'center',
                         boxShadow: theme.shadows.xs,
@@ -114,11 +117,13 @@ export const Home: React.FunctionComponent = () => {
                     disabled={Number(router.query.skip) - 50 < 0}
                     onClick={onPreviousPage}
                     variant="default"
+                    data-cy="previous-button"
                 >
                     Previous
                 </Button>
                 <Button
                     disabled={noMorePosts}
+                    data-cy="next-button"
                     onClick={onNextPage}
                     variant="default"
                 >

@@ -9,6 +9,8 @@ declare global {
     namespace Cypress {
         interface Chainable {
             getBySelector(selector: string): Chainable<JQuery>
+            awaitQuery(graphqlOperation: string): Chainable<JQuery>
+            interceptGraphQLRequest(operationName: string): Chainable<Element>
         }
     }
 }

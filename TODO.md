@@ -1,0 +1,1 @@
+- [ ] Setup everything with docker compose

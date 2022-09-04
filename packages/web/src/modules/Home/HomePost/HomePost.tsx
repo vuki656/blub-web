@@ -26,7 +26,10 @@ import {
 import type { HomePostProps } from './HomePost.types'
 
 export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
-    const { value } = props
+    const { 
+        value,
+        index,
+    } = props
 
     const [currentPost, setCurrentPost] = useState(value)
 
@@ -102,6 +105,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                 </Text>
                 <SimpleGrid cols={2}>
                     <Button
+                        data-cy={`agree-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Positive)
@@ -114,6 +118,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         {`${currentPost.votes.positive.length === 0 ? '' : currentPost.votes.positive.length} Agree`}
                     </Button>
                     <Button
+                        data-cy={`disagree-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Negative)
