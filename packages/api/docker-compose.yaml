@@ -4,6 +4,8 @@ services:
     database:
         container_name: blub-postgres
         image: postgres:14.2
+        env_file:
+            - '.env.example'
         ports:
             - '${DB_PORT}:${DB_PORT}'
         environment:
@@ -29,5 +31,4 @@ services:
             migration:
                 condition: service_completed_successfully
         build:
-            dockerfile: Dockerfile.tests
             context: '.'

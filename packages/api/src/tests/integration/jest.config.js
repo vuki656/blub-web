@@ -2,10 +2,10 @@
 module.exports = {
     globalSetup: './setup.ts',
     globalTeardown: './teardown.ts',
+    preset: 'ts-jest',
     setupFilesAfterEnv: ['./fileSetup.ts'],
     slowTestThreshold: 15,
     testEnvironment: 'node',
-    preset: 'ts-jest',
     testMatch: ['**/?*.test.ts'],
     verbose: false,
 }

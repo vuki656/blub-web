@@ -1,4 +1,5 @@
 import { gql } from 'apollo-server'
+
 import { VOTE_PAYLOAD } from '../fragments'
 
 export const CREATE_VOTE = gql`

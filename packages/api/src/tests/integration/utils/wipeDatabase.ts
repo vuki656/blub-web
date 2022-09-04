@@ -1,4 +1,4 @@
-import { orm } from "../../../shared/orm"
+import { orm } from '../../../shared/orm'
 
 export const wipeDatabase = async () => {
     // @ts-expect-error -- Extract all model names from prisma internal state

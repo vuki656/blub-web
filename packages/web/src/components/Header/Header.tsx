@@ -22,7 +22,7 @@ export const Header: React.FunctionComponent = () => {
     return (
         <Box
             sx={{
-                borderBottom: `1px solid ${colorScheme === 'light' ? theme.colors.gray[3] : theme.colors.gray[8]}`,
+                borderBottom: `1px solid ${colorScheme === 'light' ? theme.colors.gray?.[3] : theme.colors.gray?.[8]}`,
                 display: 'flex',
                 justifyContent: 'space-between',
                 padding: `${theme.spacing.sm}px ${theme.spacing.md}px`,
@@ -33,7 +33,7 @@ export const Header: React.FunctionComponent = () => {
                     spacing="sm"
                     sx={{ cursor: 'pointer' }}
                 >
-                    <IconMessageCircle2 color={theme.colors.blue[8]} />
+                    <IconMessageCircle2 color={theme.colors.blue?.[8]} />
                     <Text
                         size="lg"
                         weight="bold"

@@ -11,11 +11,11 @@ export class VoteService {
     public async create(input: CreateVoteInput): Promise<CreateVotePayload | null> {
         const existingVote = await orm.vote.findFirst({
             where: {
-                userId: input.userId,
                 post: {
                     id: input.postId,
-                }
-            }
+                },
+                userId: input.userId,
+            },
         })
 
         if (existingVote) {

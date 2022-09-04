@@ -25,8 +25,8 @@ export const Root: React.FunctionComponent<RootProps> = (props) => {
             <Box
                 sx={{
                     backgroundColor: theme.colorScheme === 'dark'
-                        ? theme.colors.dark[8]
-                        : theme.colors.gray[0],
+                        ? theme.colors.dark?.[8]
+                        : theme.colors.gray?.[0],
                     display: 'flex',
                     flex: 1,
                     height: '100%',

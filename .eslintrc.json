@@ -13,6 +13,7 @@
         "**/*.graphql",
         "**/*.gql",
         "**/*.generated.ts",
+        "**/generated.ts",
         "**/dist/**/*",
         "**/public/**/*",
         ".next"
@@ -22,6 +23,7 @@
     },
     "rules": {
         "max-len": "off",
-        "sonarjs/prefer-single-boolean-return": "off"
+        "sonarjs/prefer-single-boolean-return": "off",
+        "@rimac-technology/document-todos": "off"
     }
 }

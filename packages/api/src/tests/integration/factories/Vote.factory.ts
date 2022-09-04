@@ -1,21 +1,25 @@
 import { faker } from '@faker-js/faker'
 import type { Prisma } from '@prisma/client'
-import { container, injectable } from 'tsyringe'
+import {
+    container,
+    injectable,
+} from 'tsyringe'
+
 import { VOTE_DEFAULT_SELECT } from '../../../resolvers'
 import { orm } from '../../../shared/orm'
-import { Factory } from '../types'
+import type { Factory } from '../types'
 import { VoteTypeEnum } from '../types/generated'
-import { PostFactory } from './Post.factory'
 
+import { PostFactory } from './Post.factory'
 
 type ParamsType = {
     existing?: {
         postId: string
-    },
+    }
     value?: {
         text?: string
-        userId?: string
         type?: VoteTypeEnum
+        userId?: string
     }
 }
 
@@ -24,7 +28,7 @@ export class VoteFactory implements Factory {
     private postFactory = container.resolve(PostFactory)
 
     public generateData(params?: ParamsType): Prisma.VoteCreateInput {
-        const { value, existing } = params ?? {}
+        const { existing, value } = params ?? {}
 
         const post: Prisma.PostCreateOrConnectWithoutVotesInput = {
             create: this.postFactory.generateData(),
@@ -34,11 +38,11 @@ export class VoteFactory implements Factory {
         }
 
         return {
+            post: {
+                connectOrCreate: post,
+            },
             type: value?.type ?? VoteTypeEnum.Positive,
             userId: value?.userId ?? faker.datatype.uuid(),
-            post: {
-                connectOrCreate: post
-            }
         }
     }
 

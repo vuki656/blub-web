@@ -1,4 +1,5 @@
 import { gql } from 'apollo-server'
+
 import { VOTE_PAYLOAD } from './Vote.gql'
 
 export const VOTES_PAYLOAD = gql`

@@ -1,11 +1,29 @@
 import { faker } from '@faker-js/faker'
 import { container } from 'tsyringe'
+
 import { orm } from '../../../../shared/orm'
-import { PostFactory, VoteFactory } from '../../factories'
-import { CREATE_POST, CREATE_VOTE } from '../../graphql/mutations'
+import {
+    PostFactory,
+    VoteFactory,
+} from '../../factories'
+import {
+    CREATE_POST,
+    CREATE_VOTE,
+} from '../../graphql/mutations'
 import { POSTS } from '../../graphql/queries/Post.gql'
-import { CreatePostMutation, CreatePostMutationVariables, CreateVoteMutation, CreateVoteMutationVariables, PostsQuery, PostsQueryVariables, VoteTypeEnum } from '../../types/generated'
-import { executeOperation, wipeDatabase } from '../../utils'
+import type {
+    CreatePostMutation,
+    CreatePostMutationVariables,
+    CreateVoteMutation,
+    CreateVoteMutationVariables,
+    PostsQuery,
+    PostsQueryVariables,
+} from '../../types/generated'
+import { VoteTypeEnum } from '../../types/generated'
+import {
+    executeOperation,
+    wipeDatabase,
+} from '../../utils'
 
 describe('Post resolver', () => {
     let postFactory: PostFactory
@@ -35,9 +53,9 @@ describe('Post resolver', () => {
                 query: POSTS,
                 variables: {
                     args: {
-                        skip: 0
-                    }
-                }
+                        skip: 0,
+                    },
+                },
             })
 
             expect(findResponse.errors).toBeUndefined()
@@ -55,9 +73,9 @@ describe('Post resolver', () => {
                 query: POSTS,
                 variables: {
                     args: {
-                        skip: 50
-                    }
-                }
+                        skip: 50,
+                    },
+                },
             })
 
             expect(findResponse.errors).toBeUndefined()
@@ -77,10 +95,10 @@ describe('Post resolver', () => {
                 query: CREATE_POST,
                 variables: {
                     input: {
-                        text: TEXT,
                         email: faker.internet.email(),
-                    }
-                }
+                        text: TEXT,
+                    },
+                },
             })
 
             expect(findResponse.errors).toBeUndefined()
@@ -106,22 +124,22 @@ describe('Post resolver', () => {
                         postId: existingPost.id,
                         type: VoteTypeEnum.Positive,
                         userId: USER_ID,
-                    }
-                }
+                    },
+                },
             })
 
             const post = await orm.post.findFirst({
-                where: {
-                    id: existingPost.id,
-                },
                 select: {
                     votes: {
                         select: {
+                            type: true,
                             userId: true,
-                            type: true
-                        }
-                    }
-                }
+                        },
+                    },
+                },
+                where: {
+                    id: existingPost.id,
+                },
             })
 
             expect(findResponse.errors).toBeUndefined()
@@ -143,7 +161,7 @@ describe('Post resolver', () => {
             const existingVote = await voteFactory.createOne({
                 value: {
                     userId: USER_ID,
-                }
+                },
             })
 
             const post = await orm.post.findFirstOrThrow({
@@ -151,9 +169,9 @@ describe('Post resolver', () => {
                     votes: {
                         some: {
                             id: existingVote.id,
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             })
 
             const [findResponse] = await executeOperation<
@@ -166,8 +184,8 @@ describe('Post resolver', () => {
                         postId: post.id,
                         type: VoteTypeEnum.Positive,
                         userId: USER_ID,
-                    }
-                }
+                    },
+                },
             })
 
             expect(findResponse.errors).toBeUndefined()

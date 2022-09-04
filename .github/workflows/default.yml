@@ -65,5 +65,6 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
+            - run: cp ./packages/api/.env.example  ./packages/api/.env 
             - run: yarn workspace @blub/api database:setup
             - run: yarn workspace @blub/api test
