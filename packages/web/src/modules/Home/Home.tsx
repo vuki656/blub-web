@@ -54,6 +54,7 @@ export const Home: React.FunctionComponent = () => {
     return (
         <Stack
             ref={rootRef}
+            data-cy="post-list"
             sx={(theme) => ({
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
