@@ -65,6 +65,27 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
-            - run: cp ./packages/api/.env.example  ./packages/api/.env 
+            - run: cp ./packages/api/.env.example  ./packages/api/.env
             - run: yarn workspace @blub/api database:setup
             - run: yarn workspace @blub/api test
+    test_web:
+        name: Test Web
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - uses: actions/cache@v3
+              with:
+                  path: |
+                      node_modules
+                      .yarn/cache
+                  key: node_modules-${{ hashFiles('**/yarn.lock') }}
+            - run: yarn install
+            - run: cp ./packages/api/.env.example  ./packages/api/.env
+            - run: cp ./packages/web/.env.example  ./packages/web/.env
+            - run: yarn workspace @blub/api database:setup
+            - run: yarn workspace @blub/api dev
+            - run: yarn workspace @blub/web build
+            - run: yarn workspace @blub/web start
+            - run: yarn workspace @blub/web test:headless 
