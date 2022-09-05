@@ -26,9 +26,9 @@ import {
 import type { HomePostProps } from './HomePost.types'
 
 export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
-    const { 
-        value,
+    const {
         index,
+        value,
     } = props
 
     const [currentPost, setCurrentPost] = useState(value)
@@ -88,6 +88,8 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
         })
     }
 
+    const votes = currentPost.votes
+
     return (
         <Paper
             p="md"
@@ -115,7 +117,12 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         })}
                         variant="default"
                     >
-                        {`${currentPost.votes.positive.length === 0 ? '' : currentPost.votes.positive.length} Agree`}
+                        <Text data-cy={`positive-vote-count-${index}`}>
+                            {votes.positive.length ?? ''}
+                        </Text>
+                        <Text sx={{ paddingLeft: '5px' }}>
+                            Agree
+                        </Text>
                     </Button>
                     <Button
                         data-cy={`disagree-button-${index}`}
@@ -128,7 +135,12 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         })}
                         variant="default"
                     >
-                        {`${currentPost.votes.negative.length === 0 ? '' : currentPost.votes.negative.length} Disagree`}
+                        <Text data-cy={`negative-vote-count-${index}`}>
+                            {votes.negative.length ?? ''}
+                        </Text>
+                        <Text sx={{ paddingLeft: '5px' }}>
+                            Disagree
+                        </Text>
                     </Button>
                 </SimpleGrid>
             </Stack>

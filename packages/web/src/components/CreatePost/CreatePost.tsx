@@ -100,6 +100,7 @@ export const CreatePost: React.FunctionComponent = () => {
     return (
         <>
             <Button
+                data-cy="post-button"
                 leftIcon={<IconPencil />}
                 onClick={openActions.setTrue}
                 variant="light"
@@ -116,6 +117,7 @@ export const CreatePost: React.FunctionComponent = () => {
                 <Stack>
                     {isBlocked ? (
                         <Notification
+                            data-cy="already-posted-notification"
                             disallowClose={true}
                             sx={{
                                 border: 'none',
@@ -129,6 +131,7 @@ export const CreatePost: React.FunctionComponent = () => {
                     <Textarea
                         {...register('text')}
                         {...extractFormFieldErrors(formState.errors.text)}
+                        data-cy="text-input-field"
                         autosize={true}
                         label="Text"
                         minRows={10}
@@ -138,6 +141,7 @@ export const CreatePost: React.FunctionComponent = () => {
                     <TextInput
                         {...register('email')}
                         {...extractFormFieldErrors(formState.errors.email)}
+                        data-cy="email-input-field"
                         description="Not required. Used to contact you regarding the giveaway."
                         label="Email"
                         placeholder="Your email address"
@@ -156,10 +160,12 @@ export const CreatePost: React.FunctionComponent = () => {
                         <Button
                             onClick={onCancel}
                             variant="default"
+                            data-cy="cancel-submit-post-button"
                         >
                             Cancel
                         </Button>
                         <Button
+                            data-cy="submit-post-button"
                             disabled={isBlocked}
                             loading={loading}
                             onClick={handleSubmit(onSubmit)}

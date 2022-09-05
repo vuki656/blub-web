@@ -6,7 +6,8 @@
         "dev": "next dev",
         "start": "next start",
         "build": "next build",
-        "codegen": "graphql-codegen --config ./.codegen.yaml"
+        "codegen": "graphql-codegen --config ./.codegen.yaml",
+        "test": "yarn cypress open"
     },
     "dependencies": {
         "@apollo/client": "3.6.9",
