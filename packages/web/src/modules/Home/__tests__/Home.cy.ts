@@ -1,9 +1,9 @@
 import { HomeActions } from './Home.cy.actions'
 
 enum REQUESTS {
+    CreatePost = 'CreatePost',
     CreateVote = 'CreateVote',
-    GetPosts = 'GetPosts',
-    CreatePost = "CreatePost"
+    GetPosts = 'GetPosts'
 }
 
 describe('Home module', () => {
@@ -65,8 +65,8 @@ describe('Home module', () => {
         cy.interceptGraphQLRequest(REQUESTS.CreatePost)
 
         actions.clickPostButton()
-        actions.typeText("This is a post")
-        actions.typeEmail("john@gmail.com")
+        actions.typeText('This is a post')
+        actions.typeEmail('john@gmail.com')
         actions.clickCancelSubmitButton()
         actions.clickPostButton()
         actions.checkTextInputFieldIsEmpty()

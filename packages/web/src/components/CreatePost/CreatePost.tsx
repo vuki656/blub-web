@@ -131,8 +131,8 @@ export const CreatePost: React.FunctionComponent = () => {
                     <Textarea
                         {...register('text')}
                         {...extractFormFieldErrors(formState.errors.text)}
-                        data-cy="text-input-field"
                         autosize={true}
+                        data-cy="text-input-field"
                         label="Text"
                         minRows={10}
                         placeholder="What's on your mind"
@@ -158,9 +158,9 @@ export const CreatePost: React.FunctionComponent = () => {
                     </Alert>
                     <SimpleGrid cols={2}>
                         <Button
+                            data-cy="cancel-submit-post-button"
                             onClick={onCancel}
                             variant="default"
-                            data-cy="cancel-submit-post-button"
                         >
                             Cancel
                         </Button>

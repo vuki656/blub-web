@@ -6,19 +6,19 @@ export class HomeActions {
     constructor() {
         this.elements = {
             agreeButton: () => cy.getBySelector('agree-button-1'),
+            alreadyPostedNotification: () => cy.getBySelector('already-posted-notification'),
             cancelSubmitPostButton: () => cy.getBySelector('cancel-submit-post-button'),
             disagreeButton: () => cy.getBySelector('disagree-button-1'),
             emailInputField: () => cy.getBySelector('email-input-field'),
             negativeVoteCount: () => cy.getBySelector('negative-vote-count-1'),
-            alreadyPostedNotification: () => cy.getBySelector('already-posted-notification'),
             nextButton: () => cy.getBySelector('next-button'),
             positiveVoteCount: () => cy.getBySelector('positive-vote-count-1'),
             postButton: () => cy.getBySelector('post-button'),
             postHint: () => cy.getBySelector('post-hint'),
-            textInputField: () => cy.getBySelector('text-input-field'),
             postList: () => cy.getBySelector('post-list'),
-            submitPostButton: () => cy.getBySelector('submit-post-button'),
             previousButton: () => cy.getBySelector('previous-button'),
+            submitPostButton: () => cy.getBySelector('submit-post-button'),
+            textInputField: () => cy.getBySelector('text-input-field'),
         }
     }
 
@@ -155,11 +155,11 @@ export class HomeActions {
     public checkMinCharactersTextInputFieldErrorExists() {
         return this
             .textInputFieldErrorText()
-            .should("contain.text", "Has to be more than 4 characters")
+            .should('contain.text', 'Has to be more than 4 characters')
     }
 
     public typeTextUnderMinLimit() {
-        return this.typeText("Hi")
+        return this.typeText('Hi')
     }
 
     public typeTextOverMaxLimit() {
@@ -172,11 +172,11 @@ export class HomeActions {
     public checkMaxCharactersTextInputFieldErrorExists() {
         return this
             .textInputFieldErrorText()
-            .should("contain.text", "Can\'t be longer than 15000 characters")
+            .should('contain.text', 'Can\'t be longer than 15000 characters')
     }
 
     public typeCorrectText() {
-        return this.typeText("Hello this is a post.")
+        return this.typeText('Hello this is a post.')
     }
 
     public checkTextInputFieldErrorDoesNotExist() {
@@ -186,27 +186,27 @@ export class HomeActions {
     }
 
     public typeWrongEmailFormat() {
-        return this.typeEmail("hi")
+        return this.typeEmail('hi')
     }
 
     public checkMaxCharactersEmailInputFieldErrorExists() {
         return this
             .emailInputFieldErrorText()
-            .should("contain.text", "Can\'t be longer than 100 characters")
+            .should('contain.text', 'Can\'t be longer than 100 characters')
     }
 
     public typeEmailOverMaxLimit() { // cspell:disable-next-line
-        return this.typeEmail("something@emaillllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll.com")
+        return this.typeEmail('something@emaillllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll.com')
     }
 
     public typeCorrectEmail() {
-        return this.typeEmail("john@gmail.com")
+        return this.typeEmail('john@gmail.com')
     }
 
     public checkEmailInputFieldErrorDoesNotExist() {
         return this
             .emailInputFieldErrorText()
-            .should("not.exist")
+            .should('not.exist')
     }
 
     public checkPostWasCreatedWithPostText(text: string) {
@@ -214,21 +214,21 @@ export class HomeActions {
             .elements
             .postList()
             .first()
-            .should("contain.text", text)
+            .should('contain.text', text)
     }
 
     public checkSubmitPostButtonIsDisabled() {
         return this
             .elements
             .submitPostButton()
-            .should("be.disabled")
+            .should('be.disabled')
     }
 
     public checkAlreadyPostedNotificationExists() {
         return this
             .elements
             .alreadyPostedNotification()
-            .should("exist")
+            .should('exist')
     }
 
     private textInputFieldErrorText() {
@@ -244,7 +244,7 @@ export class HomeActions {
     public checkWrongEmailInputFieldErrorExists() {
         return this
             .emailInputFieldErrorText()
-            .should("contain.text", "Must be a valid email.")
+            .should('contain.text', 'Must be a valid email.')
     }
 
     public typeEmail(text: string) {
@@ -253,7 +253,7 @@ export class HomeActions {
             .emailInputField()
             .clear({ force: true })
             .type(text)
-    } 
+    }
 
     public typeText(text: string) {
         return this
@@ -274,14 +274,14 @@ export class HomeActions {
         return this
             .elements
             .textInputField()
-            .should("not.contain.value")
+            .should('not.contain.value')
     }
 
     public checkEmailInputFieldIsEmpty() {
         return this
             .elements
             .emailInputField()
-            .should("not.contain.value")
+            .should('not.contain.value')
     }
 
     private emailInputFieldErrorText() {

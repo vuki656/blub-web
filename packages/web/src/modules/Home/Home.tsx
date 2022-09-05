@@ -1,6 +1,5 @@
 import {
     Button,
-    LoadingOverlay,
     Paper,
     SimpleGrid,
     Stack,
@@ -53,8 +52,8 @@ export const Home: React.FunctionComponent = () => {
 
     return (
         <Stack
-            ref={rootRef}
             data-cy="post-list"
+            ref={rootRef}
             sx={(theme) => ({
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
@@ -80,9 +79,9 @@ export const Home: React.FunctionComponent = () => {
             {data?.posts.list.map((post, index) => {
                 return (
                     <HomePost
+                        index={index}
                         key={post.id}
                         value={post}
-                        index={index}
                     />
                 )
             })}
@@ -114,16 +113,16 @@ export const Home: React.FunctionComponent = () => {
             ) : null}
             <SimpleGrid cols={2}>
                 <Button
+                    data-cy="previous-button"
                     disabled={Number(router.query.skip) - 50 < 0}
                     onClick={onPreviousPage}
                     variant="default"
-                    data-cy="previous-button"
                 >
                     Previous
                 </Button>
                 <Button
-                    disabled={noMorePosts}
                     data-cy="next-button"
+                    disabled={noMorePosts}
                     onClick={onNextPage}
                     variant="default"
                 >

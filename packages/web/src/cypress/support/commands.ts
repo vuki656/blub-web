@@ -8,7 +8,7 @@ function awaitQuery(graphqlOperation: string): Cypress.Chainable {
 
 function interceptGraphQLRequest(operationName: string): void {
     cy.intercept(Cypress.env('API_URL'), (request) => {
-        const hasOperationName = Object.prototype.hasOwnProperty.call(request.body, 'operationName') 
+        const hasOperationName = Object.prototype.hasOwnProperty.call(request.body, 'operationName')
         const operationNameMatches = request.body.operationName === operationName
 
         if (hasOperationName && operationNameMatches) {
