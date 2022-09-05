@@ -8,25 +8,26 @@
         "build": "next build",
         "codegen": "graphql-codegen --config ./.codegen.yaml",
         "test": "yarn cypress open",
-        "test:headless": "yarn cypress run --headless"
+        "test:headless": "yarn cypress run --headless",
+        "test:e2e:setup": "cp ./.env.example  ./.env && yarn workspace @blub/web codegen && yarn workspace @blub/web build && yarn workspace @blub/web start"
     },
     "dependencies": {
         "@apollo/client": "3.6.9",
         "@emotion/react": "^11.10.4",
         "@emotion/server": "^11.10.0",
         "@hookform/resolvers": "^2.9.7",
-        "@mantine/core": "^5.2.5",
-        "@mantine/hooks": "^5.2.5",
-        "@mantine/next": "^5.2.5",
+        "@mantine/core": "^5.3.0",
+        "@mantine/hooks": "^5.3.0",
+        "@mantine/next": "^5.3.0",
         "@react-hookz/web": "^15.1.0",
-        "@tabler/icons": "^1.92.0",
+        "@tabler/icons": "^1.95.0",
         "cookies-next": "^2.1.1",
-        "next": "12.2.5",
+        "next": "12.3.0",
         "next-with-apollo": "^5.3.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-hook-form": "^7.34.2",
-        "zod": "^3.18.0"
+        "react-hook-form": "^7.35.0",
+        "zod": "^3.19.0"
     },
     "devDependencies": {
         "@graphql-codegen/cli": "^2.12.0",
@@ -37,7 +38,7 @@
         "@graphql-codegen/typescript-operations": "2.5.3",
         "@graphql-codegen/typescript-react-apollo": "^3.3.3",
         "@types/gtag.js": "^0.0.11",
-        "@types/react": "18.0.18",
+        "@types/react": "18.0.19",
         "@types/react-dom": "18.0.6",
         "cypress": "^10.7.0"
     }
