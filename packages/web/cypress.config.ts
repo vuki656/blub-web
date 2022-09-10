@@ -9,6 +9,7 @@ export default defineConfig({
         port: 8089,
         specPattern: '**/*.cy.ts',
         supportFile: './src/cypress/support/e2e.ts',
-        video: true,
+        video: false,
+        screenshotOnRunFailure: false,
     },
 })

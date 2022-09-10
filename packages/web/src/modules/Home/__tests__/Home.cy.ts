@@ -60,9 +60,9 @@ describe('Home module', () => {
     })
 
     it('should create post', () => {
-        cy.clearCookies()
         cy.interceptGraphQLRequest(REQUESTS.CreatePost)
         cy.visit('/?skip=0')
+        cy.clearCookies()
 
         actions.clickPostButton()
         actions.typeText('This is a post')
