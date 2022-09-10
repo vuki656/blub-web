@@ -9,12 +9,9 @@ enum REQUESTS {
 describe('Home module', () => {
     const actions = new HomeActions()
 
-    beforeEach(() => {
-        cy.visit('/?skip=0')
-    })
-
     it('should display posts', () => {
         cy.interceptGraphQLRequest(REQUESTS.GetPosts)
+        cy.visit('/?skip=0')
 
         cy
             .awaitQuery(REQUESTS.GetPosts)
@@ -36,6 +33,7 @@ describe('Home module', () => {
 
     it('should create a positive vote on a post', () => {
         cy.interceptGraphQLRequest(REQUESTS.CreateVote)
+        cy.visit('/?skip=0')
 
         actions.clickAgreeButtonAndCheckCount()
 
@@ -48,6 +46,7 @@ describe('Home module', () => {
 
     it('should create a negative vote on a post', () => {
         cy.interceptGraphQLRequest(REQUESTS.CreateVote)
+        cy.visit('/?skip=0')
 
         actions.clickDisagreeButtonAndCheckCount()
 
@@ -63,6 +62,7 @@ describe('Home module', () => {
     it('should create post', () => {
         cy.clearCookies()
         cy.interceptGraphQLRequest(REQUESTS.CreatePost)
+        cy.visit('/?skip=0')
 
         actions.clickPostButton()
         actions.typeText('This is a post')

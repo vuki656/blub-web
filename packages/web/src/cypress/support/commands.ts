@@ -3,7 +3,7 @@ function getBySelector(selector: string): Cypress.Chainable {
 }
 
 function awaitQuery(graphqlOperation: string): Cypress.Chainable {
-    return cy.wait(`@${graphqlOperation}`)
+    return cy.wait(`@${graphqlOperation}`, { timeout: 10000 })
 }
 
 function interceptGraphQLRequest(operationName: string): void {
