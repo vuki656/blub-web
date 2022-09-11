@@ -25,10 +25,3 @@ services:
         command:
             'update --username=${DB_USERNAME} --password=${DB_PASSWORD} --url=${DB_DOCKER_URL}
             --liquibase-schema-name=public --changelogFile="./master.json"'
-    test:
-        container_name: blub-test
-        depends_on:
-            migration:
-                condition: service_completed_successfully
-        build:
-            context: '.'

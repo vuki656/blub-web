@@ -100,6 +100,7 @@ export const CreatePost: React.FunctionComponent = () => {
     return (
         <>
             <Button
+                data-cy="post-button"
                 leftIcon={<IconPencil />}
                 onClick={openActions.setTrue}
                 variant="light"
@@ -116,6 +117,7 @@ export const CreatePost: React.FunctionComponent = () => {
                 <Stack>
                     {isBlocked ? (
                         <Notification
+                            data-cy="already-posted-notification"
                             disallowClose={true}
                             sx={{
                                 border: 'none',
@@ -130,6 +132,7 @@ export const CreatePost: React.FunctionComponent = () => {
                         {...register('text')}
                         {...extractFormFieldErrors(formState.errors.text)}
                         autosize={true}
+                        data-cy="text-input-field"
                         label="Text"
                         minRows={10}
                         placeholder="What's on your mind"
@@ -138,6 +141,7 @@ export const CreatePost: React.FunctionComponent = () => {
                     <TextInput
                         {...register('email')}
                         {...extractFormFieldErrors(formState.errors.email)}
+                        data-cy="email-input-field"
                         description="Not required. Used to contact you regarding the giveaway."
                         label="Email"
                         placeholder="Your email address"
@@ -154,12 +158,14 @@ export const CreatePost: React.FunctionComponent = () => {
                     </Alert>
                     <SimpleGrid cols={2}>
                         <Button
+                            data-cy="cancel-submit-post-button"
                             onClick={onCancel}
                             variant="default"
                         >
                             Cancel
                         </Button>
                         <Button
+                            data-cy="submit-post-button"
                             disabled={isBlocked}
                             loading={loading}
                             onClick={handleSubmit(onSubmit)}
