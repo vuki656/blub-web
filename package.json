@@ -11,18 +11,18 @@
         "lint:graphql": "prettier --loglevel warn --check '**/*.gql'"
     },
     "dependencies": {
-        "dayjs": "^1.11.5",
+        "dayjs": "^1.11.6",
         "graphql": "15.3.0",
         "uuid": "^9.0.0"
     },
     "devDependencies": {
-        "@rimac-technology/eslint-config": "^27.0.0",
-        "@types/node": "18.7.21",
+        "@rimac-technology/eslint-config": "^30.0.0",
+        "@types/node": "18.11.3",
         "@types/uuid": "^8.3.4",
-        "cspell": "^6.10.1",
-        "eslint": "8.24.0",
+        "cspell": "^6.12.0",
+        "eslint": "8.26.0",
         "prettier": "^2.7.1",
-        "typescript": "4.8.3"
+        "typescript": "4.8.4"
     },
     "packageManager": "yarn@3.2.1",
     "workspaces": [
