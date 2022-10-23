@@ -100,7 +100,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                     color="dimmed"
                     size="sm"
                 >
-                    {dayjs(currentPost.createdAt).format('HH:MM MM.DD.YYYY')}
+                    {dayjs(currentPost.createdAt).format('MM.DD.YYYY')}
                 </Text>
                 <Text>
                     {currentPost.text}
@@ -121,7 +121,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                             {votes.positive.length === 0 ? '' : votes.positive.length}
                         </Text>
                         <Text sx={{ paddingLeft: '5px' }}>
-                            Agree
+                            Like
                         </Text>
                     </Button>
                     <Button
@@ -139,7 +139,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                             {votes.negative.length === 0 ? '' : votes.negative.length}
                         </Text>
                         <Text sx={{ paddingLeft: '5px' }}>
-                            Disagree
+                            Dislike
                         </Text>
                     </Button>
                 </SimpleGrid>
