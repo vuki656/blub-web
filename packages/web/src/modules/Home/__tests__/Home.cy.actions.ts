@@ -22,11 +22,71 @@ export class HomeActions {
         }
     }
 
-    public clickPostButton() {
+    public checkAlreadyPostedNotificationExists() {
         return this
             .elements
-            .postButton()
-            .click()
+            .alreadyPostedNotification()
+            .should('exist')
+    }
+
+    public checkEmailInputFieldErrorDoesNotExist() {
+        return this
+            .emailInputFieldErrorText()
+            .should('not.exist')
+    }
+
+    public checkEmailInputFieldIsEmpty() {
+        return this
+            .elements
+            .emailInputField()
+            .should('not.contain.value')
+    }
+
+    public checkMaxCharactersEmailInputFieldErrorExists() {
+        return this
+            .emailInputFieldErrorText()
+            .should('contain.text', 'Can\'t be longer than 100 characters')
+    }
+
+    public checkMaxCharactersTextInputFieldErrorExists() {
+        return this
+            .textInputFieldErrorText()
+            .should('contain.text', 'Can\'t be longer than 15000 characters')
+    }
+
+    public checkMinCharactersTextInputFieldErrorExists() {
+        return this
+            .textInputFieldErrorText()
+            .should('contain.text', 'Has to be more than 4 characters')
+    }
+
+    public checkNegativeVoteMutationHasBeenCalled(type: string) {
+        expect(type).to.equal(VoteTypeEnum.Negative)
+    }
+
+    public checkNextButtonIsDisabled() {
+        return this
+            .elements
+            .nextButton()
+            .should('be.disabled')
+    }
+
+    public checkPositiveVoteMutationHasBeenCalled(type: string) {
+        expect(type).to.equal(VoteTypeEnum.Positive)
+    }
+
+    public checkPostHintDoesNotExist() {
+        return this
+            .elements
+            .postHint()
+            .should('not.exist')
+    }
+
+    public checkPostHintExists() {
+        return this
+            .elements
+            .postHint()
+            .should('exist')
     }
 
     public checkPostListHasCorrectLength() {
@@ -37,6 +97,14 @@ export class HomeActions {
             .should('have.length', 51)
     }
 
+    public checkPostWasCreatedWithPostText(text: string) {
+        return this
+            .elements
+            .postList()
+            .first()
+            .should('contain.text', text)
+    }
+
     public checkPreviousButtonIsDisabled() {
         return this
             .elements
@@ -44,31 +112,43 @@ export class HomeActions {
             .should('be.disabled')
     }
 
-    public clickNextButton() {
-        return this
-            .elements
-            .nextButton()
-            .click()
-    }
-
-    public clickPreviousButton() {
+    public checkPreviousButtonIsNotDisabled() {
         return this
             .elements
             .previousButton()
-            .click()
-    }
-
-    public checkNextButtonIsDisabled() {
-        return this
-            .elements
-            .nextButton()
-            .should('be.disabled')
+            .should('not.be.disabled')
     }
 
     public checkSkipURLParamIsSetCorrectly(amount: number) {
         return cy
             .url()
             .should('include', `skip=${amount}`)
+    }
+
+    public checkSubmitPostButtonIsDisabled() {
+        return this
+            .elements
+            .submitPostButton()
+            .should('be.disabled')
+    }
+
+    public checkTextInputFieldErrorDoesNotExist() {
+        return this
+            .textInputFieldErrorText()
+            .should('not.exist')
+    }
+
+    public checkTextInputFieldIsEmpty() {
+        return this
+            .elements
+            .textInputField()
+            .should('not.contain.value')
+    }
+
+    public checkWrongEmailInputFieldErrorExists() {
+        return this
+            .emailInputFieldErrorText()
+            .should('contain.text', 'Must be a valid email.')
     }
 
     public clickAgreeButton() {
@@ -78,18 +158,33 @@ export class HomeActions {
             .click()
     }
 
-    public checkPositiveVoteMutationHasBeenCalled(type: string) {
-        expect(type).to.equal(VoteTypeEnum.Positive)
-    }
-
-    public checkNegativeVoteMutationHasBeenCalled(type: string) {
-        expect(type).to.equal(VoteTypeEnum.Negative)
-    }
-
-    public clickSubmitPostButton() {
+    public clickAgreeButtonAndCheckCount() {
         return this
             .elements
-            .submitPostButton()
+            .positiveVoteCount()
+            .then(($currentCount) => {
+                let currentCount = Number.parseFloat($currentCount.text())
+
+                if (Number.isNaN(currentCount)) {
+                    currentCount = 0
+                }
+
+                this
+                    .elements
+                    .agreeButton()
+                    .click()
+                    .then(($newCount) => {
+                        const newCount = Number.parseFloat($newCount.text())
+
+                        expect(newCount).to.eq(currentCount + 1)
+                    })
+            })
+    }
+
+    public clickCancelSubmitButton() {
+        return this
+            .elements
+            .cancelSubmitPostButton()
             .click()
     }
 
@@ -116,143 +211,40 @@ export class HomeActions {
             })
     }
 
-    public clickAgreeButtonAndCheckCount() {
+    public clickNextButton() {
         return this
             .elements
-            .positiveVoteCount()
-            .then(($currentCount) => {
-                let currentCount = Number.parseFloat($currentCount.text())
-
-                if (Number.isNaN(currentCount)) {
-                    currentCount = 0
-                }
-
-                this
-                    .elements
-                    .agreeButton()
-                    .click()
-                    .then(($newCount) => {
-                        const newCount = Number.parseFloat($newCount.text())
-
-                        expect(newCount).to.eq(currentCount + 1)
-                    })
-            })
+            .nextButton()
+            .click()
     }
 
-    public checkPreviousButtonIsNotDisabled() {
+    public clickPostButton() {
+        return this
+            .elements
+            .postButton()
+            .click()
+    }
+
+    public clickPreviousButton() {
         return this
             .elements
             .previousButton()
-            .should('not.be.disabled')
+            .click()
     }
 
-    public checkPostHintDoesNotExist() {
+    public clickSubmitPostButton() {
         return this
             .elements
-            .postHint()
-            .should('not.exist')
-    }
-
-    public checkPostHintExists() {
-        return this
-            .elements
-            .postHint()
-            .should('exist')
-    }
-
-    public checkMinCharactersTextInputFieldErrorExists() {
-        return this
-            .textInputFieldErrorText()
-            .should('contain.text', 'Has to be more than 4 characters')
-    }
-
-    public typeTextUnderMinLimit() {
-        return this.typeText('Hi')
-    }
-
-    public typeTextOverMaxLimit() {
-        return this
-            .elements
-            .textInputField()
-            .invoke('val', 'sd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfois')
-    }
-
-    public checkMaxCharactersTextInputFieldErrorExists() {
-        return this
-            .textInputFieldErrorText()
-            .should('contain.text', 'Can\'t be longer than 15000 characters')
-    }
-
-    public typeCorrectText() {
-        return this.typeText('Hello this is a post.')
-    }
-
-    public checkTextInputFieldErrorDoesNotExist() {
-        return this
-            .textInputFieldErrorText()
-            .should('not.exist')
-    }
-
-    public typeWrongEmailFormat() {
-        return this.typeEmail('hi')
-    }
-
-    public checkMaxCharactersEmailInputFieldErrorExists() {
-        return this
-            .emailInputFieldErrorText()
-            .should('contain.text', 'Can\'t be longer than 100 characters')
-    }
-
-    public typeEmailOverMaxLimit() { // cspell:disable-next-line
-        return this.typeEmail('something@emaillllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll.com')
+            .submitPostButton()
+            .click()
     }
 
     public typeCorrectEmail() {
         return this.typeEmail('john@gmail.com')
     }
 
-    public checkEmailInputFieldErrorDoesNotExist() {
-        return this
-            .emailInputFieldErrorText()
-            .should('not.exist')
-    }
-
-    public checkPostWasCreatedWithPostText(text: string) {
-        return this
-            .elements
-            .postList()
-            .first()
-            .should('contain.text', text)
-    }
-
-    public checkSubmitPostButtonIsDisabled() {
-        return this
-            .elements
-            .submitPostButton()
-            .should('be.disabled')
-    }
-
-    public checkAlreadyPostedNotificationExists() {
-        return this
-            .elements
-            .alreadyPostedNotification()
-            .should('exist')
-    }
-
-    private textInputFieldErrorText() {
-        return this
-            .elements
-            .textInputField()
-            .parent()
-            .parent()
-            .children()
-            .eq(2)
-    }
-
-    public checkWrongEmailInputFieldErrorExists() {
-        return this
-            .emailInputFieldErrorText()
-            .should('contain.text', 'Must be a valid email.')
+    public typeCorrectText() {
+        return this.typeText('Hello this is a post.')
     }
 
     public typeEmail(text: string) {
@@ -263,6 +255,10 @@ export class HomeActions {
             .type(text)
     }
 
+    public typeEmailOverMaxLimit() { // cspell:disable-next-line
+        return this.typeEmail('something@emaillllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll.com')
+    }
+
     public typeText(text: string) {
         return this
             .elements
@@ -271,25 +267,19 @@ export class HomeActions {
             .type(text)
     }
 
-    public clickCancelSubmitButton() {
-        return this
-            .elements
-            .cancelSubmitPostButton()
-            .click()
-    }
-
-    public checkTextInputFieldIsEmpty() {
+    public typeTextOverMaxLimit() {
         return this
             .elements
             .textInputField()
-            .should('not.contain.value')
+            .invoke('val', 'sd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfoisdjfsd9ofjsdjfois')
     }
 
-    public checkEmailInputFieldIsEmpty() {
-        return this
-            .elements
-            .emailInputField()
-            .should('not.contain.value')
+    public typeTextUnderMinLimit() {
+        return this.typeText('Hi')
+    }
+
+    public typeWrongEmailFormat() {
+        return this.typeEmail('hi')
     }
 
     private emailInputFieldErrorText() {
@@ -300,5 +290,15 @@ export class HomeActions {
             .parent()
             .children()
             .eq(3)
+    }
+
+    private textInputFieldErrorText() {
+        return this
+            .elements
+            .textInputField()
+            .parent()
+            .parent()
+            .children()
+            .eq(2)
     }
 }

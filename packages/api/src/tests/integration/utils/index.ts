@@ -1,2 +1,2 @@
-export * from './wipeDatabase'
 export * from './executeOperation'
+export * from './wipeDatabase'

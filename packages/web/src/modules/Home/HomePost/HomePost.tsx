@@ -113,7 +113,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                             onVote(currentPost, VoteTypeEnum.Positive)
                         }}
                         sx={(theme) => ({
-                            borderColor: currentPost.userVote === VoteTypeEnum.Positive ? theme.colors.blue?.[4] : '',
+                            borderColor: currentPost.userVote === VoteTypeEnum.Positive ? theme.colors.blue[4] : '',
                         })}
                         variant="default"
                     >
@@ -131,7 +131,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                             onVote(currentPost, VoteTypeEnum.Negative)
                         }}
                         sx={(theme) => ({
-                            borderColor: currentPost.userVote === VoteTypeEnum.Negative ? theme.colors.blue?.[4] : '',
+                            borderColor: currentPost.userVote === VoteTypeEnum.Negative ? theme.colors.blue[4] : '',
                         })}
                         variant="default"
                     >

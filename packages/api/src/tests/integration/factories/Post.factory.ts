@@ -14,21 +14,6 @@ type ParamsType = {
 
 @injectable()
 export class PostFactory implements Factory {
-    public generateData(params?: ParamsType): Prisma.PostCreateInput {
-        const { value } = params ?? {}
-
-        return {
-            text: value?.text ?? faker.lorem.paragraphs(),
-        }
-    }
-
-    public async createOne(params?: ParamsType) {
-        return orm.post.create({
-            data: this.generateData(params),
-            select: POST_DEFAULT_SELECT(),
-        })
-    }
-
     public async createAmount(amount: number, params?: ParamsType) {
         const data: Prisma.PostCreateInput[] = [...new Array(amount)].map(() => {
             return this.generateData(params)
@@ -42,5 +27,20 @@ export class PostFactory implements Factory {
                 })
             })
         )
+    }
+
+    public async createOne(params?: ParamsType) {
+        return orm.post.create({
+            data: this.generateData(params),
+            select: POST_DEFAULT_SELECT(),
+        })
+    }
+
+    public generateData(params?: ParamsType): Prisma.PostCreateInput {
+        const { value } = params ?? {}
+
+        return {
+            text: value?.text ?? faker.lorem.paragraphs(),
+        }
     }
 }

@@ -11,6 +11,37 @@ import type { PostsType } from './types'
 
 @singleton()
 export class PostService {
+    public async createOne(input: CreatePostInput, userId: string): Promise<CreatePostPayload> {
+        const createdPost = await orm.post.create({
+            data: {
+                email: input.email,
+                text: input.text,
+            },
+            select: POST_DEFAULT_SELECT(),
+        })
+
+        const userVote = createdPost.votes.find((vote) => {
+            return vote.userId === userId
+        })?.type ?? null
+
+        const votes = {
+            negative: createdPost.votes.filter((vote) => {
+                return vote.type === VoteTypeEnum.NEGATIVE
+            }),
+            positive: createdPost.votes.filter((vote) => {
+                return vote.type === VoteTypeEnum.POSITIVE
+            }),
+        }
+
+        return {
+            post: {
+                ...createdPost,
+                userVote,
+                votes,
+            },
+        }
+    }
+
     public async findAll(args: PostsArgs, userId: string): Promise<PostsType> {
         const posts = await orm.post.findMany({
             orderBy: {
@@ -54,37 +85,6 @@ export class PostService {
         return {
             list,
             total,
-        }
-    }
-
-    public async createOne(input: CreatePostInput, userId: string): Promise<CreatePostPayload> {
-        const createdPost = await orm.post.create({
-            data: {
-                email: input.email,
-                text: input.text,
-            },
-            select: POST_DEFAULT_SELECT(),
-        })
-
-        const userVote = createdPost.votes.find((vote) => {
-            return vote.userId === userId
-        })?.type ?? null
-
-        const votes = {
-            negative: createdPost.votes.filter((vote) => {
-                return vote.type === VoteTypeEnum.NEGATIVE
-            }),
-            positive: createdPost.votes.filter((vote) => {
-                return vote.type === VoteTypeEnum.POSITIVE
-            }),
-        }
-
-        return {
-            post: {
-                ...createdPost,
-                userVote,
-                votes,
-            },
         }
     }
 }
