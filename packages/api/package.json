@@ -14,7 +14,7 @@
         "database:seed": "prisma db seed",
         "database:migrate": "docker-compose run --no-deps --rm migration",
         "test": "yarn orm:generate && yarn test:setup && yarn test:run",
-        "test:e2e:setup": "cp ./.env.example  ./.env && yarn workspace @blub/api database:setup && yarn workspace @blub/api database:seed && yarn workspace @blub/api orm:generate && yarn workspace @blub/api build && yarn workspace @blub/api start",
+        "test:e2e:setup": "cp ./.env.example  ./.env && yarn workspace @blub/api database:setup && yarn workspace @blub/api orm:generate && yarn workspace @blub/api database:seed && yarn workspace @blub/api build && yarn workspace @blub/api start",
         "test:codegen": "yarn graphql-codegen --config='./src/tests/integration/codegen.yml'",
         "test:setup": "yarn build:schema && yarn test:codegen",
         "test:run": "yarn test:integration",
