@@ -16,11 +16,11 @@
         "uuid": "^9.0.0"
     },
     "devDependencies": {
-        "@rimac-technology/eslint-config": "^26.0.1",
-        "@types/node": "18.7.16",
+        "@rimac-technology/eslint-config": "^27.0.0",
+        "@types/node": "18.7.21",
         "@types/uuid": "^8.3.4",
-        "cspell": "^6.8.1",
-        "eslint": "8.23.0",
+        "cspell": "^6.10.1",
+        "eslint": "8.24.0",
         "prettier": "^2.7.1",
         "typescript": "4.8.3"
     },
