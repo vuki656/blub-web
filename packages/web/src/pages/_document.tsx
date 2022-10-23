@@ -20,6 +20,16 @@ export default class _Document extends Document {
             <Html>
                 <Head>
                     <link
+                        crossOrigin="anonymous"
+                        href="https://fonts.gstatic.com"
+                        rel="preconnect"
+                    />
+                    <link
+                        crossOrigin="anonymous"
+                        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+                        rel="stylesheet"
+                    />
+                    <link
                         href="/apple-touch-icon.png"
                         rel="apple-touch-icon"
                         sizes="180x180"
