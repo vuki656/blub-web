@@ -35,6 +35,8 @@
         "rimac",
         "eslintcache",
         "autosize",
-        "smartlook"
+        "smartlook",
+        "dmmf",
+        "todos"
     ]
 }

@@ -20,6 +20,16 @@ export default class _Document extends Document {
             <Html>
                 <Head>
                     <link
+                        crossOrigin="anonymous"
+                        href="https://fonts.gstatic.com"
+                        rel="preconnect"
+                    />
+                    <link
+                        crossOrigin="anonymous"
+                        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+                        rel="stylesheet"
+                    />
+                    <link
                         href="/apple-touch-icon.png"
                         rel="apple-touch-icon"
                         sizes="180x180"
@@ -70,20 +80,6 @@ export default class _Document extends Document {
                             `,
                         }}
                         id="gtag-init"
-                        strategy="afterInteractive"
-                    />
-                    <Script
-                        dangerouslySetInnerHTML={{
-                            __html: `
-                                window.smartlook||(function(d) {
-                                var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
-                                var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
-                                c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);
-                                })(document);
-                                smartlook('init', '2d082e293d45cfb54a5bce4c8f0680af60c56404', { region: 'eu' });
-                            `,
-                        }}
-                        id="smartlook-init"
                         strategy="afterInteractive"
                     />
                 </Head>

@@ -4,6 +4,8 @@ services:
     database:
         container_name: blub-postgres
         image: postgres:14.2
+        env_file:
+            - '.env.example'
         ports:
             - '${DB_PORT}:${DB_PORT}'
         environment:
@@ -12,7 +14,7 @@ services:
             - POSTGRES_DB=${DB_NAME}
         healthcheck:
             test: 'exit 0'
-    migrations:
+    migration:
         container_name: blub-migrations
         depends_on:
             database:

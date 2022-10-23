@@ -9,9 +9,9 @@ import { VoteTypeEnum } from '../enums'
 
 @ObjectType({ implements: BaseType })
 export class VoteType extends BaseType {
-    @Field(() => String)
-    public userId: string
-
     @Field(() => VoteTypeEnum) // eslint-disable-next-line type-graphql/invalid-decorated-type
     public type: PrismaVoteType
+
+    @Field(() => String)
+    public userId: string
 }

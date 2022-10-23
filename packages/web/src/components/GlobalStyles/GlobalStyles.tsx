@@ -8,6 +8,12 @@ export const GlobalStyles: React.FunctionComponent = () => {
                     height: '100%',
                     width: '100%',
                 },
+                '@font-face': {
+                    fontDisplay: 'fallback',
+                    fontFamily: 'Montserrat',
+                    fontStyle: 'normal',
+                    fontWeight: 400,
+                },
                 a: {
                     textDecoration: 'none',
                 },
@@ -19,6 +25,7 @@ export const GlobalStyles: React.FunctionComponent = () => {
                     fontSize: '16px',
                 },
                 'html, body': {
+                    fontFamily: 'Montserrat',
                     height: '100%',
                 },
             }}

@@ -26,7 +26,10 @@ import {
 import type { HomePostProps } from './HomePost.types'
 
 export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
-    const { value } = props
+    const {
+        index,
+        value,
+    } = props
 
     const [currentPost, setCurrentPost] = useState(value)
 
@@ -38,7 +41,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                 'vote',
                 {
                     category: 'engagement',
-                    label: response.createVote.vote.type.toString(),
+                    label: response.createVote?.vote.type.toString(),
                 }
             )
         },
@@ -85,6 +88,8 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
         })
     }
 
+    const votes = currentPost.votes
+
     return (
         <Paper
             p="md"
@@ -95,13 +100,14 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                     color="dimmed"
                     size="sm"
                 >
-                    {dayjs(currentPost.createdAt).format('HH:MM MM.DD.YYYY')}
+                    {dayjs(currentPost.createdAt).format('MM.DD.YYYY')}
                 </Text>
                 <Text>
                     {currentPost.text}
                 </Text>
                 <SimpleGrid cols={2}>
                     <Button
+                        data-cy={`agree-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Positive)
@@ -111,9 +117,15 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         })}
                         variant="default"
                     >
-                        {`${currentPost.votes.positive.length === 0 ? '' : currentPost.votes.positive.length} Agree`}
+                        <Text data-cy={`positive-vote-count-${index}`}>
+                            {votes.positive.length === 0 ? '' : votes.positive.length}
+                        </Text>
+                        <Text sx={{ paddingLeft: '5px' }}>
+                            Like
+                        </Text>
                     </Button>
                     <Button
+                        data-cy={`disagree-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Negative)
@@ -123,7 +135,12 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         })}
                         variant="default"
                     >
-                        {`${currentPost.votes.negative.length === 0 ? '' : currentPost.votes.negative.length} Disagree`}
+                        <Text data-cy={`negative-vote-count-${index}`}>
+                            {votes.negative.length === 0 ? '' : votes.negative.length}
+                        </Text>
+                        <Text sx={{ paddingLeft: '5px' }}>
+                            Dislike
+                        </Text>
                     </Button>
                 </SimpleGrid>
             </Stack>

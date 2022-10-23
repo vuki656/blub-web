@@ -11,23 +11,23 @@ import { VoteTypeEnum } from '../../Vote/enums'
 @ObjectType()
 export class VotesType {
     @Field(() => [VoteType])
-    public positive: VoteType[]
+    public negative: VoteType[]
 
     @Field(() => [VoteType])
-    public negative: VoteType[]
+    public positive: VoteType[]
 }
 
 @ObjectType({ implements: BaseType })
 export class PostType extends BaseType {
-    @Field(() => String)
-    public text: string
-
     @Field(() => Date)
     public createdAt: Date
 
-    @Field(() => VotesType)
-    public votes: VotesType
+    @Field(() => String)
+    public text: string
 
     @Field(() => VoteTypeEnum, { nullable: true }) // eslint-disable-next-line type-graphql/invalid-decorated-type
     public userVote: PrismaVoteType | null
+
+    @Field(() => VotesType)
+    public votes: VotesType
 }

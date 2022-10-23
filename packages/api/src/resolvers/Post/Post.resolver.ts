@@ -22,19 +22,19 @@ import {
 export class PostResolver {
     private service = container.resolve(PostService)
 
-    @Query(() => PostsType)
-    public async posts(
-        @Ctx() context: ContextType,
-        @Arg('args', () => PostsArgs) args: PostsArgs,
-    ): Promise<PostsType> {
-        return this.service.findAll(args, context.userId)
-    }
-
     @Mutation(() => CreatePostPayload)
     public async createPost(
         @Arg('input', () => CreatePostInput) input: CreatePostInput,
         @Ctx() context: ContextType,
     ): Promise<CreatePostPayload> {
         return this.service.createOne(input, context.userId)
+    }
+
+    @Query(() => PostsType)
+    public async posts(
+        @Ctx() context: ContextType,
+        @Arg('args', () => PostsArgs) args: PostsArgs,
+    ): Promise<PostsType> {
+        return this.service.findAll(args, context.userId)
     }
 }
