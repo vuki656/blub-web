@@ -7,6 +7,7 @@ import {
 } from '@mantine/core'
 import { getCookie } from 'cookies-next'
 import dayjs from 'dayjs'
+import Link from 'next/link'
 import { useState } from 'react'
 import { v4 as UUID } from 'uuid'
 
@@ -25,6 +26,7 @@ import {
 
 import type { HomePostProps } from './HomePost.types'
 
+// TODO: comment count in button
 export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
     const {
         index,
@@ -105,7 +107,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                 <Text>
                     {currentPost.text}
                 </Text>
-                <SimpleGrid cols={2}>
+                <SimpleGrid cols={3}>
                     <Button
                         data-cy={`agree-button-${index}`}
                         fullWidth={true}
@@ -142,6 +144,17 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                             Dislike
                         </Text>
                     </Button>
+                    <Link href={`/posts/${value.id}`}>
+                        <a>
+                            <Button
+                                data-cy="next-button"
+                                variant="default"
+                                sx={{ width: '100%' }}
+                            >
+                                Comment
+                            </Button>
+                        </a>
+                    </Link>
                 </SimpleGrid>
             </Stack>
         </Paper>
