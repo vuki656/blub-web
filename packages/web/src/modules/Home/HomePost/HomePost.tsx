@@ -21,6 +21,7 @@ import {
 } from '../../../graphql/types.generated'
 import {
     COOKIE_NAME,
+    formatDate,
     GoogleAnalytics,
 } from '../../../utils'
 
@@ -101,7 +102,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                     color="dimmed"
                     size="sm"
                 >
-                    {dayjs(currentPost.createdAt).format('MM.DD.YYYY')}
+                    {formatDate(currentPost.createdAt)}
                 </Text>
                 <Text>
                     {currentPost.text}
