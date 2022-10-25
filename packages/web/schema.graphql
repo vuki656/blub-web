@@ -15,10 +15,10 @@ type PostsType {
 
 type PostType implements BaseType {
     id: ID!
-    text: String!
     createdAt: DateTime!
-    votes: VotesType!
+    text: String!
     userVote: VoteTypeEnum
+    votes: VotesType!
 }
 
 interface BaseType {
@@ -30,20 +30,20 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+enum VoteTypeEnum {
+    NEGATIVE
+    POSITIVE
+}
+
 type VotesType {
-    positive: [VoteType!]!
     negative: [VoteType!]!
+    positive: [VoteType!]!
 }
 
 type VoteType implements BaseType {
     id: ID!
-    userId: String!
     type: VoteTypeEnum!
-}
-
-enum VoteTypeEnum {
-    NEGATIVE
-    POSITIVE
+    userId: String!
 }
 
 input PostsArgs {
@@ -51,8 +51,24 @@ input PostsArgs {
 }
 
 type Mutation {
+    createComment(input: CreateCommentInput!): CreateCommentPayload!
     createVote(input: CreateVoteInput!): CreateVotePayload
     createPost(input: CreatePostInput!): CreatePostPayload!
+}
+
+type CreateCommentPayload {
+    comment: CommentType!
+}
+
+type CommentType implements BaseType {
+    id: ID!
+    content: String!
+    createdAt: DateTime!
+}
+
+input CreateCommentInput {
+    postId: ID!
+    content: String!
 }
 
 type CreateVotePayload {
@@ -60,9 +76,9 @@ type CreateVotePayload {
 }
 
 input CreateVoteInput {
-    userId: String!
     postId: ID!
     type: VoteTypeEnum!
+    userId: String!
 }
 
 type CreatePostPayload {
@@ -70,6 +86,6 @@ type CreatePostPayload {
 }
 
 input CreatePostInput {
-    text: String!
     email: String
+    text: String!
 }

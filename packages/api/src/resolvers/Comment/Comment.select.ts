@@ -6,10 +6,10 @@ const makeCommentSelect = <TSelect extends Prisma.CommentSelect>(
     return select
 }
 
-export const POST_DEFAULT_SELECT = () => {
+export const COMMENT_DEFAULT_SELECT = () => {
     return makeCommentSelect({
+        content: true,
         createdAt: true,
         id: true,
-        content: true,
     })
 }

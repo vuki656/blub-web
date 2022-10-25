@@ -6,9 +6,9 @@ import {
 
 @InputType()
 export class CreateCommentInput {
-    @Field(() => ID)
-    public postId: string
-
-    @Field(() => String)
+@Field(() => String)
     public content: string
+
+@Field(() => ID)
+public postId: string
 }

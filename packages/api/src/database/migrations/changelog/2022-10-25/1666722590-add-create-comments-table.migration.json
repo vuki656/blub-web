@@ -49,14 +49,24 @@
                                         "name": "post_fk",
                                         "type": "uuid",
                                         "constraints": {
-                                            "foreignKeyName": "FK_posts__comments",
-                                            "nullable": false,
-                                            "referencedTableName": "posts",
-                                            "referencedColumnNames": "id"
+                                            "nullable": false
                                         }
                                     }
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "addForeignKeyConstraint": {
+                            "baseColumnNames": "post_fk",
+                            "baseTableName": "comments",
+                            "constraintName": "FK_comments__posts",
+                            "deferrable": true,
+                            "initiallyDeferred": true,
+                            "onDelete": "CASCADE",
+                            "onUpdate": "RESTRICT",
+                            "referencedColumnNames": "id",
+                            "referencedTableName": "posts"
                         }
                     }
                 ]

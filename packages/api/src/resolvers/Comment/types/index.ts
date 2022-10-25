@@ -1,2 +1,1 @@
-export * from './Post.type'
-export * from './Posts.type'
+export * from './Comment.type'
