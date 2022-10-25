@@ -26,7 +26,6 @@ import {
 
 import type { HomePostProps } from './HomePost.types'
 
-// TODO: comment count in button
 export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
     const {
         index,
@@ -158,6 +157,5 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                 </SimpleGrid>
             </Stack>
         </Paper>
-
     )
 }

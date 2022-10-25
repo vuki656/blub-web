@@ -6,6 +6,7 @@ import {
 } from 'type-graphql'
 
 import { BaseType } from '../../../shared/typegraphql-types'
+import { CommentType } from '../../Comment'
 import { VoteType } from '../../Vote'
 import { VoteTypeEnum } from '../../Vote/enums'
 
@@ -34,4 +35,7 @@ export class PostType extends BaseType {
 
     @Field(() => Int)
     public commentCount: number
+
+    @Field(() => [CommentType], { nullable: true })
+    public comments: CommentType[] | null
 }

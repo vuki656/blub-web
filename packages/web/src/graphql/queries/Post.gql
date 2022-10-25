@@ -14,3 +14,22 @@ query GetPosts($args: PostsArgs!) {
         total
     }
 }
+
+query GetPost($args: PostArgs!) {
+    post(args: $args) {
+        ...PostPayload
+        comments {
+            id
+            content
+            createdAt
+        }
+        votes {
+            positive {
+                ...VotePayload
+            }
+            negative {
+                ...VotePayload
+            }
+        }
+    }
+}

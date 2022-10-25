@@ -3,10 +3,10 @@ import { singleton } from 'tsyringe'
 import { orm } from '../../shared/orm'
 import { VoteTypeEnum } from '../Vote'
 
-import type { PostsArgs } from './args'
+import type { PostArgs, PostsArgs } from './args'
 import type { CreatePostInput } from './inputs'
 import type { CreatePostPayload } from './payloads'
-import type { PostsType } from './types'
+import type { PostsType, PostType } from './types'
 
 @singleton()
 export class PostService {
@@ -54,7 +54,42 @@ export class PostService {
                 commentCount: createdPost.comments.length,
                 userVote,
                 votes,
+                comments: null
             },
+        }
+    }
+
+    public async findOne(args: PostArgs, userId: string): Promise<PostType> {
+        const post = await orm.post.findUnique({
+            where: {
+                id: args.id,
+            },
+            include: {
+                votes: true,
+                comments: true
+            },
+            rejectOnNotFound: true,
+        })
+
+        const userVote = post.votes.find((vote) => {
+            return vote.userId === userId
+        })?.type ?? null
+
+        const votes = {
+            negative: post.votes.filter((vote) => {
+                return vote.type === VoteTypeEnum.NEGATIVE
+            }),
+            positive: post.votes.filter((vote) => {
+                return vote.type === VoteTypeEnum.POSITIVE
+            }),
+        }
+
+
+        return {
+            ...post,
+            votes,
+            commentCount: post.comments.length,
+            userVote
         }
     }
 
@@ -110,6 +145,7 @@ export class PostService {
             return {
                 ...post,
                 commentCount: post.comments.length,
+                comments: null,
                 userVote,
                 votes,
             }

@@ -5,12 +5,8 @@
 # ------------------------------------------------ #
 
 type Query {
+    post(args: PostArgs!): PostType!
     posts(args: PostsArgs!): PostsType!
-}
-
-type PostsType {
-    list: [PostType!]!
-    total: Int!
 }
 
 type PostType implements BaseType {
@@ -20,6 +16,7 @@ type PostType implements BaseType {
     userVote: VoteTypeEnum
     votes: VotesType!
     commentCount: Int!
+    comments: [CommentType!]
 }
 
 interface BaseType {
@@ -47,6 +44,21 @@ type VoteType implements BaseType {
     userId: String!
 }
 
+type CommentType implements BaseType {
+    id: ID!
+    content: String!
+    createdAt: DateTime!
+}
+
+input PostArgs {
+    id: ID!
+}
+
+type PostsType {
+    list: [PostType!]!
+    total: Int!
+}
+
 input PostsArgs {
     skip: Int!
 }
@@ -59,12 +71,6 @@ type Mutation {
 
 type CreateCommentPayload {
     comment: CommentType!
-}
-
-type CommentType implements BaseType {
-    id: ID!
-    content: String!
-    createdAt: DateTime!
 }
 
 input CreateCommentInput {
