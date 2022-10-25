@@ -17,6 +17,9 @@ export const GlobalStyles: React.FunctionComponent = () => {
                 a: {
                     textDecoration: 'none',
                 },
+                p: {
+                    margin: 0
+                },
                 body: {
                     margin: '0px',
                 },

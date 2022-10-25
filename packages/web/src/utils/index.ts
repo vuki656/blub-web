@@ -1,4 +1,5 @@
 export * from './apollo'
+export * from './date'
 export * from './constants'
 export * from './extractFormFieldError'
 export * from './googleAnalytics'

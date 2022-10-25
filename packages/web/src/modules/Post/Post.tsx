@@ -21,6 +21,7 @@ import {
 import {
     COOKIE_NAME,
     extractFormFieldErrors,
+    formatDate,
     GoogleAnalytics,
 } from '../../utils'
 
@@ -87,7 +88,6 @@ export const Post = () => {
             )
         },
     })
-
 
     const post = data?.post
 
@@ -159,7 +159,7 @@ export const Post = () => {
                         color="dimmed"
                         size="sm"
                     >
-                        {dayjs(post?.createdAt).format('MM.DD.YYYY')}
+                        {formatDate(post?.createdAt)}
                     </Text>
                     <Text>
                         {post?.text}
@@ -226,6 +226,28 @@ export const Post = () => {
                     Post
                 </Button>
             </Paper>
+            <Stack>
+                {post?.comments?.map((comment) => {
+                    return (
+                        <Paper
+                            p="md"
+                            shadow="xs"
+                        >
+                            <Stack spacing={10}>
+                                <Text
+                                    color="dimmed"
+                                    size="sm"
+                                >
+                                    {formatDate(comment.createdAt)}
+                                </Text>
+                                <Text>
+                                    {comment.content}
+                                </Text>
+                            </Stack>
+                        </Paper>
+                    )
+                })}
+            </Stack>
         </Stack>
     )
 }
