@@ -6,6 +6,7 @@ import { VoteTypeEnum } from '../Vote'
 import type { PostArgs, PostsArgs } from './args'
 import type { CreatePostInput } from './inputs'
 import type { CreatePostPayload } from './payloads'
+import { POST_DEFAULT_SELECT } from './Post.select'
 import type { PostsType, PostType } from './types'
 
 @singleton()
@@ -17,44 +18,25 @@ export class PostService {
                 text: input.text,
             },
             select: {
-                comments: {
-                    select: {
-                        id: true,
-                    },
-                },
-                createdAt: true,
-                id: true,
-                text: true,
-                votes: {
-                    select: {
-                        id: true,
-                        type: true,
-                        userId: true,
-                    },
-                },
+                comments: true,
+                votes: true,
+                ...POST_DEFAULT_SELECT()
             },
         })
 
-        const userVote = createdPost.votes.find((vote) => {
-            return vote.userId === userId
-        })?.type ?? null
-
-        const votes = {
-            negative: createdPost.votes.filter((vote) => {
-                return vote.type === VoteTypeEnum.NEGATIVE
-            }),
-            positive: createdPost.votes.filter((vote) => {
-                return vote.type === VoteTypeEnum.POSITIVE
-            }),
-        }
+        const userVote = await orm.vote.findUnique({
+            where: {
+                userId_postFk: {
+                    postFk: createdPost.id,
+                    userId,
+                }
+            }
+        })
 
         return {
             post: {
                 ...createdPost,
-                commentCount: createdPost.comments.length,
-                userVote,
-                votes,
-                comments: null
+                userVote: userVote?.type ?? null,
             },
         }
     }
@@ -66,30 +48,27 @@ export class PostService {
             },
             include: {
                 votes: true,
-                comments: true
+                comments: {
+                    orderBy: {
+                        createdAt: 'desc'
+                    }
+                }
             },
             rejectOnNotFound: true,
         })
 
-        const userVote = post.votes.find((vote) => {
-            return vote.userId === userId
-        })?.type ?? null
-
-        const votes = {
-            negative: post.votes.filter((vote) => {
-                return vote.type === VoteTypeEnum.NEGATIVE
-            }),
-            positive: post.votes.filter((vote) => {
-                return vote.type === VoteTypeEnum.POSITIVE
-            }),
-        }
-
+        const userVote = await orm.vote.findUnique({
+            where: {
+                userId_postFk: {
+                    postFk: post.id,
+                    userId,
+                }
+            }
+        })
 
         return {
             ...post,
-            votes,
-            commentCount: post.comments.length,
-            userVote
+            userVote: userVote?.type ?? null,
         }
     }
 
@@ -98,25 +77,12 @@ export class PostService {
             orderBy: {
                 createdAt: 'desc',
             },
-            select: {
-                comments: {
-                    select: {
-                        id: true,
-                    },
-                },
-                createdAt: true,
-                id: true,
-                text: true,
-                votes: {
-                    select: {
-                        id: true,
-                        type: true,
-                        userId: true,
-                    },
-                },
-            },
             skip: args.skip,
             take: 50,
+            include: {
+                votes: true,
+                    comments: true,
+            },
             where: {
                 isDeleted: false,
             },
@@ -128,26 +94,14 @@ export class PostService {
             },
         })
 
-        const list = posts.map((post) => {
+        const list: PostType[] = posts.map((post) => {
             const userVote = post.votes.find((vote) => {
                 return vote.userId === userId
             })?.type ?? null
 
-            const votes = {
-                negative: post.votes.filter((vote) => {
-                    return vote.type === VoteTypeEnum.NEGATIVE
-                }),
-                positive: post.votes.filter((vote) => {
-                    return vote.type === VoteTypeEnum.POSITIVE
-                }),
-            }
-
             return {
                 ...post,
-                commentCount: post.comments.length,
-                comments: null,
                 userVote,
-                votes,
             }
         })
 

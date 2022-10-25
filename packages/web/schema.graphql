@@ -14,8 +14,7 @@ type PostType implements BaseType {
     createdAt: DateTime!
     text: String!
     userVote: VoteTypeEnum
-    votes: VotesType!
-    commentCount: Int!
+    votes: [VoteType!]!
     comments: [CommentType!]
 }
 
@@ -31,11 +30,6 @@ scalar DateTime
 enum VoteTypeEnum {
     NEGATIVE
     POSITIVE
-}
-
-type VotesType {
-    negative: [VoteType!]!
-    positive: [VoteType!]!
 }
 
 type VoteType implements BaseType {
