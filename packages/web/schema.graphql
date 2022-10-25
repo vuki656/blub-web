@@ -19,6 +19,7 @@ type PostType implements BaseType {
     text: String!
     userVote: VoteTypeEnum
     votes: VotesType!
+    commentCount: Int!
 }
 
 interface BaseType {
@@ -67,8 +68,8 @@ type CommentType implements BaseType {
 }
 
 input CreateCommentInput {
-    postId: ID!
     content: String!
+    postId: ID!
 }
 
 type CreateVotePayload {

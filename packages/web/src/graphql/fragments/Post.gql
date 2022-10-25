@@ -3,4 +3,5 @@ fragment PostPayload on PostType {
     text
     createdAt
     userVote
+    commentCount
 }

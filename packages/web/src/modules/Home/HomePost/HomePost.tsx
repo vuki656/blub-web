@@ -151,7 +151,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                                 variant="default"
                                 sx={{ width: '100%' }}
                             >
-                                Comment
+                                {value.commentCount === 0 ? '' : value.commentCount} Comment
                             </Button>
                         </a>
                     </Link>

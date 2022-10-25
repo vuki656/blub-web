@@ -6,7 +6,6 @@ import { VoteTypeEnum } from '../Vote'
 import type { PostsArgs } from './args'
 import type { CreatePostInput } from './inputs'
 import type { CreatePostPayload } from './payloads'
-import { POST_DEFAULT_SELECT } from './Post.select'
 import type { PostsType } from './types'
 
 @singleton()
@@ -17,7 +16,23 @@ export class PostService {
                 email: input.email,
                 text: input.text,
             },
-            select: POST_DEFAULT_SELECT(),
+            select: {
+                comments: {
+                    select: {
+                        id: true,
+                    },
+                },
+                createdAt: true,
+                id: true,
+                text: true,
+                votes: {
+                    select: {
+                        id: true,
+                        type: true,
+                        userId: true,
+                    },
+                },
+            },
         })
 
         const userVote = createdPost.votes.find((vote) => {
@@ -36,6 +51,7 @@ export class PostService {
         return {
             post: {
                 ...createdPost,
+                commentCount: createdPost.comments.length,
                 userVote,
                 votes,
             },
@@ -47,7 +63,23 @@ export class PostService {
             orderBy: {
                 createdAt: 'desc',
             },
-            select: POST_DEFAULT_SELECT(),
+            select: {
+                comments: {
+                    select: {
+                        id: true,
+                    },
+                },
+                createdAt: true,
+                id: true,
+                text: true,
+                votes: {
+                    select: {
+                        id: true,
+                        type: true,
+                        userId: true,
+                    },
+                },
+            },
             skip: args.skip,
             take: 50,
             where: {
@@ -77,6 +109,7 @@ export class PostService {
 
             return {
                 ...post,
+                commentCount: post.comments.length,
                 userVote,
                 votes,
             }

@@ -1,6 +1,7 @@
 import type { VoteType as PrismaVoteType } from '@prisma/client'
 import {
     Field,
+    Int,
     ObjectType,
 } from 'type-graphql'
 
@@ -30,4 +31,7 @@ export class PostType extends BaseType {
 
     @Field(() => VotesType)
     public votes: VotesType
+
+    @Field(() => Int)
+    public commentCount: number
 }

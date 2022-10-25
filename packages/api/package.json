@@ -7,7 +7,7 @@
         "dev": "nodemon",
         "start": "NODE_ENV=production node 'dist/index.js'",
         "build": "webpack",
-        "build:schema": "ts-node './src/server/generateSchemaFile.ts'",
+        "schema:build": "ts-node './src/server/generateSchemaFile.ts'",
         "orm:generate": "prisma generate",
         "orm:sync": "prisma db pull && prettier --write './src/database/schema.prisma'",
         "database:setup": "docker-compose --env-file .env.example run --rm migration",

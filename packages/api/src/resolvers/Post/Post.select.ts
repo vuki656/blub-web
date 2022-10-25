@@ -8,6 +8,7 @@ const makePostSelect = <TSelect extends Prisma.PostSelect>(
     return select
 }
 
+// TODO: what with this
 export const POST_DEFAULT_SELECT = () => {
     return makePostSelect({
         createdAt: true,
