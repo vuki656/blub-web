@@ -16,8 +16,8 @@
         "uuid": "^9.0.0"
     },
     "devDependencies": {
-        "@rimac-technology/eslint-config": "^30.0.0",
-        "@types/node": "18.11.3",
+        "@rimac-technology/eslint-config": "^31.0.0",
+        "@types/node": "18.11.5",
         "@types/uuid": "^8.3.4",
         "cspell": "^6.12.0",
         "eslint": "8.26.0",
