@@ -55,7 +55,7 @@ export const Home: React.FunctionComponent = () => {
         <Stack
             data-cy="post-list"
             ref={rootRef}
-            sx={(theme) => ({
+            sx={(theme) => ({ // eslint-disable sort-keys-fix/sort-keys-fix
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
                 },
@@ -70,7 +70,7 @@ export const Home: React.FunctionComponent = () => {
                 },
                 '@media (min-width: 851px) and (max-width: 1250px)': {
                     padding: `${theme.spacing.sm}px 20%`,
-                },
+                }, // eslint-enable sort-keys-fix/sort-keys-fix
                 flex: 1,
                 overflow: 'auto',
             })}

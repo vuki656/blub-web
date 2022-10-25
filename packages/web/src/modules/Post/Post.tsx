@@ -1,25 +1,34 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
     Button,
     Paper,
     SimpleGrid,
     Stack,
     Text,
+    Textarea,
 } from '@mantine/core'
 import { getCookie } from 'cookies-next'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
 
 import {
+    useCreateCommentMutation,
     useCreateVoteMutation,
     useGetPostQuery,
     VoteTypeEnum,
 } from '../../graphql/types.generated'
 import {
     COOKIE_NAME,
+    extractFormFieldErrors,
     GoogleAnalytics,
 } from '../../utils'
 
-import type { PostPageQueryVariables } from './Post.types'
+import type {
+    CommentFormType,
+    PostPageQueryVariables,
+} from './Post.types'
+import { commentValidation } from './Post.validation'
 
 export const Post = () => {
     const router = useRouter()
@@ -28,8 +37,47 @@ export const Post = () => {
 
     const userId = getCookie(COOKIE_NAME)
 
+    const {
+        formState,
+        handleSubmit,
+        register,
+        reset,
+    } = useForm<CommentFormType>({
+        defaultValues: {
+            content: '',
+        },
+        resolver: zodResolver(commentValidation),
+    })
+
+    const { data, refetch } = useGetPostQuery({
+        fetchPolicy: 'network-only', // TODO: check if it can be done without this
+        variables: {
+            args: {
+                id: query.postId,
+            },
+        },
+    })
+
+    const [createCommentMutation, { loading }] = useCreateCommentMutation({
+        onCompleted: () => {
+            reset()
+
+            void refetch()
+
+            GoogleAnalytics.trackEvent(
+                'vote',
+                {
+                    category: 'engagement',
+                    label: 'comment',
+                }
+            )
+        },
+    })
+
     const [createVoteMutation] = useCreateVoteMutation({
         onCompleted: (response) => {
+            void refetch()
+
             GoogleAnalytics.trackEvent(
                 'vote',
                 {
@@ -40,14 +88,6 @@ export const Post = () => {
         },
     })
 
-    const { data, refetch } = useGetPostQuery({
-        fetchPolicy: 'network-only', // TODO: check if it can be done without this 
-        variables: {
-            args: {
-                id: query.postId,
-            },
-        },
-    })
 
     const post = data?.post
 
@@ -67,15 +107,30 @@ export const Post = () => {
                 },
             })
 
+            // TODO: update cache stead of refetch
             refetch()
         }
     }
 
+    // TODO: wrap form in <form> to comply
+    const onSubmit = (formValues: CommentFormType) => {
+        if (!post) {
+            return
+        }
+
+        void createCommentMutation({
+            variables: {
+                input: {
+                    content: formValues.content,
+                    postId: post.id,
+                },
+            },
+        })
+    }
+
     return (
-        <Paper
-            p="md"
-            shadow="xs"
-            sx={(theme) => ({
+        <Stack
+            sx={(theme) => ({ // eslint-disable sort-keys-fix/sort-keys-fix
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
                 },
@@ -90,7 +145,7 @@ export const Post = () => {
                 },
                 '@media (min-width: 851px) and (max-width: 1250px)': {
                     padding: `${theme.spacing.sm}px 20%`,
-                },
+                }, // eslint-enable sort-keys-fix/sort-keys-fix
                 flex: 1,
                 overflow: 'auto',
             })}
@@ -143,6 +198,34 @@ export const Post = () => {
                     </SimpleGrid>
                 </Stack>
             </Paper>
-        </Paper>
+            <Paper
+                p="md"
+                shadow="xs"
+                sx={(theme) => ({
+                    alignItems: 'flex-end',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    rowGap: theme.spacing.md,
+                })}
+            >
+                <Textarea
+                    {...register('content')}
+                    {...extractFormFieldErrors(formState.errors.content)}
+                    autosize={true}
+                    label="Comment"
+                    minRows={5}
+                    placeholder="What's on your mind"
+                    required={true}
+                    sx={{ width: '100%' }}
+                />
+                <Button
+                    fullWidth={false}
+                    loading={loading}
+                    onClick={handleSubmit(onSubmit)}
+                >
+                    Post
+                </Button>
+            </Paper>
+        </Stack>
     )
 }

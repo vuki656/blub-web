@@ -1,0 +1,5 @@
+fragment CommentPayload on CommentType {
+    id
+    content
+    createdAt
+}
