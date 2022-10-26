@@ -140,7 +140,6 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                     <Link href={`/posts/${value.id}`}>
                         <a>
                             <Button
-                                data-cy="next-button"
                                 sx={{ width: '100%' }}
                                 variant="default"
                             >

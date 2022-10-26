@@ -79,7 +79,7 @@ App.getInitialProps = async (appProps: any) => {
         COOKIE_NAME,
         {
             req: appProps.ctx.req,
-            res: appProps.ctx.res
+            res: appProps.ctx.res,
         }
     )
 
