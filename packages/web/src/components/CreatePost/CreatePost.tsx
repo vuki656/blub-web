@@ -135,7 +135,7 @@ export const CreatePost: React.FunctionComponent = () => {
                         data-cy="text-input-field"
                         label="Text"
                         minRows={10}
-                        placeholder="What's on your mind"
+                        placeholder="What's on your mind?"
                         required={true}
                     />
                     <TextInput

@@ -228,7 +228,7 @@ export const Post = () => {
                         autosize={true}
                         label="Comment"
                         minRows={5}
-                        placeholder="What's on your mind"
+                        placeholder="What's on your mind?"
                         required={true}
                         sx={{ width: '100%' }}
                     />

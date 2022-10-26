@@ -98,7 +98,7 @@ export const Home: React.FunctionComponent = () => {
                     })}
                 >
                     <Text align="center">
-                        Whats on your mind?
+                        What's on your mind?
                         {' '}
                         Make an
                         {' '}
