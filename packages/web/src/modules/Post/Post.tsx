@@ -8,7 +8,7 @@ import {
     Textarea,
 } from '@mantine/core'
 import { getCookie } from 'cookies-next'
-import dayjs from 'dayjs'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
@@ -51,7 +51,6 @@ export const Post = () => {
     })
 
     const { data, refetch } = useGetPostQuery({
-        fetchPolicy: 'network-only', // TODO: check if it can be done without this
         variables: {
             args: {
                 id: query.postId,
@@ -106,13 +105,9 @@ export const Post = () => {
                     },
                 },
             })
-
-            // TODO: update cache stead of refetch
-            refetch()
         }
     }
 
-    // TODO: wrap form in <form> to comply
     const onSubmit = (formValues: CommentFormType) => {
         if (!post) {
             return
@@ -127,6 +122,14 @@ export const Post = () => {
             },
         })
     }
+
+    const positiveVotes = data?.post.votes.filter((vote) => {
+        return vote.type === VoteTypeEnum.Positive
+    })
+
+    const negativeVotes = data?.post.votes.filter((vote) => {
+        return vote.type === VoteTypeEnum.Negative
+    })
 
     return (
         <Stack
@@ -150,6 +153,16 @@ export const Post = () => {
                 overflow: 'auto',
             })}
         >
+            <Link href="/">
+                <a>
+                    <Button
+                        fullWidth={false}
+                        variant="default"
+                    >
+                        Back
+                    </Button>
+                </a>
+            </Link>
             <Paper
                 p="md"
                 shadow="xs"
@@ -174,7 +187,7 @@ export const Post = () => {
                             variant="default"
                         >
                             <Text>
-                                {post?.votes.positive.length === 0 ? '' : post?.votes.positive.length}
+                                {positiveVotes?.length === 0 ? '' : positiveVotes?.length}
                             </Text>
                             <Text sx={{ paddingLeft: '5px' }}>
                                 Like
@@ -189,7 +202,7 @@ export const Post = () => {
                             variant="default"
                         >
                             <Text>
-                                {post?.votes.negative.length === 0 ? '' : post?.votes.negative.length}
+                                {negativeVotes?.length === 0 ? '' : negativeVotes?.length}
                             </Text>
                             <Text sx={{ paddingLeft: '5px' }}>
                                 Dislike
@@ -198,38 +211,41 @@ export const Post = () => {
                     </SimpleGrid>
                 </Stack>
             </Paper>
-            <Paper
-                p="md"
-                shadow="xs"
-                sx={(theme) => ({
-                    alignItems: 'flex-end',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    rowGap: theme.spacing.md,
-                })}
-            >
-                <Textarea
-                    {...register('content')}
-                    {...extractFormFieldErrors(formState.errors.content)}
-                    autosize={true}
-                    label="Comment"
-                    minRows={5}
-                    placeholder="What's on your mind"
-                    required={true}
-                    sx={{ width: '100%' }}
-                />
-                <Button
-                    fullWidth={false}
-                    loading={loading}
-                    onClick={handleSubmit(onSubmit)}
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Paper
+                    p="md"
+                    shadow="xs"
+                    sx={(theme) => ({
+                        alignItems: 'flex-end',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        rowGap: theme.spacing.md,
+                    })}
                 >
-                    Post
-                </Button>
-            </Paper>
+                    <Textarea
+                        {...register('content')}
+                        {...extractFormFieldErrors(formState.errors.content)}
+                        autosize={true}
+                        label="Comment"
+                        minRows={5}
+                        placeholder="What's on your mind"
+                        required={true}
+                        sx={{ width: '100%' }}
+                    />
+                    <Button
+                        fullWidth={false}
+                        loading={loading}
+                        type="submit"
+                    >
+                        Post
+                    </Button>
+                </Paper>
+            </form>
             <Stack>
                 {post?.comments?.map((comment) => {
                     return (
                         <Paper
+                            key={comment.id}
                             p="md"
                             shadow="xs"
                         >

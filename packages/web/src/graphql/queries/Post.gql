@@ -2,14 +2,6 @@ query GetPosts($args: PostsArgs!) {
     posts(args: $args) {
         list {
             ...PostPayload
-            votes {
-                positive {
-                    ...VotePayload
-                }
-                negative {
-                    ...VotePayload
-                }
-            }
         }
         total
     }
@@ -18,16 +10,5 @@ query GetPosts($args: PostsArgs!) {
 query GetPost($args: PostArgs!) {
     post(args: $args) {
         ...PostPayload
-        comments {
-            ...CommentPayload
-        }
-        votes {
-            positive {
-                ...VotePayload
-            }
-            negative {
-                ...VotePayload
-            }
-        }
     }
 }

@@ -1,13 +1,18 @@
 import { singleton } from 'tsyringe'
 
 import { orm } from '../../shared/orm'
-import { VoteTypeEnum } from '../Vote'
 
-import type { PostArgs, PostsArgs } from './args'
+import type {
+    PostArgs,
+    PostsArgs,
+} from './args'
 import type { CreatePostInput } from './inputs'
 import type { CreatePostPayload } from './payloads'
 import { POST_DEFAULT_SELECT } from './Post.select'
-import type { PostsType, PostType } from './types'
+import type {
+    PostsType,
+    PostType,
+} from './types'
 
 @singleton()
 export class PostService {
@@ -20,7 +25,7 @@ export class PostService {
             select: {
                 comments: true,
                 votes: true,
-                ...POST_DEFAULT_SELECT()
+                ...POST_DEFAULT_SELECT(),
             },
         })
 
@@ -29,8 +34,8 @@ export class PostService {
                 userId_postFk: {
                     postFk: createdPost.id,
                     userId,
-                }
-            }
+                },
+            },
         })
 
         return {
@@ -41,48 +46,17 @@ export class PostService {
         }
     }
 
-    public async findOne(args: PostArgs, userId: string): Promise<PostType> {
-        const post = await orm.post.findUnique({
-            where: {
-                id: args.id,
-            },
-            include: {
-                votes: true,
-                comments: {
-                    orderBy: {
-                        createdAt: 'desc'
-                    }
-                }
-            },
-            rejectOnNotFound: true,
-        })
-
-        const userVote = await orm.vote.findUnique({
-            where: {
-                userId_postFk: {
-                    postFk: post.id,
-                    userId,
-                }
-            }
-        })
-
-        return {
-            ...post,
-            userVote: userVote?.type ?? null,
-        }
-    }
-
     public async findAll(args: PostsArgs, userId: string): Promise<PostsType> {
         const posts = await orm.post.findMany({
+            include: {
+                comments: true,
+                votes: true,
+            },
             orderBy: {
                 createdAt: 'desc',
             },
             skip: args.skip,
             take: 50,
-            include: {
-                votes: true,
-                    comments: true,
-            },
             where: {
                 isDeleted: false,
             },
@@ -108,6 +82,37 @@ export class PostService {
         return {
             list,
             total,
+        }
+    }
+
+    public async findOne(args: PostArgs, userId: string): Promise<PostType> {
+        const post = await orm.post.findUnique({
+            include: {
+                comments: {
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                },
+                votes: true,
+            },
+            rejectOnNotFound: true,
+            where: {
+                id: args.id,
+            },
+        })
+
+        const userVote = await orm.vote.findUnique({
+            where: {
+                userId_postFk: {
+                    postFk: post.id,
+                    userId,
+                },
+            },
+        })
+
+        return {
+            ...post,
+            userVote: userVote?.type ?? null,
         }
     }
 }

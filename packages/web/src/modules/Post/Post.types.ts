@@ -1,5 +1,6 @@
-import { z } from "zod"
-import { commentValidation } from "./Post.validation"
+import type { z } from 'zod'
+
+import type { commentValidation } from './Post.validation'
 
 export type PostPageQueryVariables = {
     postId: string

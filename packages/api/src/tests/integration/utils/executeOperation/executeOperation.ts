@@ -12,7 +12,7 @@ export const executeOperation = async <TData, TVariables>(
     }
 ): Promise<[ResponseType<TData>]> => {
     const response = await server.executeOperation(
-        request as any, // TODO: resolve type
+        request as any,
         {
             ...params?.integrationContextArgument,
             req: {
