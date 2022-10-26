@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server'
 
-import { VOTES_PAYLOAD } from './Votes.gql'
+import { COMMENT_PAYLOAD } from './Comment.gql'
+import { VOTE_PAYLOAD } from './Vote.gql'
 
 export const POST_PAYLOAD = gql`
     fragment PostPayload on PostType {
@@ -8,9 +9,12 @@ export const POST_PAYLOAD = gql`
         text
         createdAt
         votes {
-            ...VotesPayload
+            ...VotePayload
         }
-        userVote
+        comments {
+            ...CommentPayload
+        }
     }
-    ${VOTES_PAYLOAD}
+    ${VOTE_PAYLOAD}
+    ${COMMENT_PAYLOAD}
 `

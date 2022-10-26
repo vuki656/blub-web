@@ -13,5 +13,5 @@
         "strictNullChecks": true,
         "lib": ["dom", "ESNext", "esnext.asynciterable"]
     },
-    "exclude": ["node_modules", "generator", "./src/tests"]
+    "exclude": ["node_modules", "generator"]
 }
