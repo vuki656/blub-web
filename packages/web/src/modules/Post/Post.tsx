@@ -58,6 +58,8 @@ export const Post = () => {
         },
     })
 
+    const post = data?.post
+
     const [createCommentMutation, { loading }] = useCreateCommentMutation({
         onCompleted: () => {
             reset()
@@ -88,8 +90,7 @@ export const Post = () => {
         },
     })
 
-    const post = data?.post
-
+    // TODO: triggering this on an already voted post triggers api call, investigate
     const onVote = (type: VoteTypeEnum) => {
         return async () => {
             if (!userId || !post?.id) {
@@ -123,11 +124,11 @@ export const Post = () => {
         })
     }
 
-    const positiveVotes = data?.post.votes.filter((vote) => {
+    const positiveVotes = post?.votes.filter((vote) => {
         return vote.type === VoteTypeEnum.Positive
     })
 
-    const negativeVotes = data?.post.votes.filter((vote) => {
+    const negativeVotes = post?.votes.filter((vote) => {
         return vote.type === VoteTypeEnum.Negative
     })
 
@@ -156,6 +157,7 @@ export const Post = () => {
             <Link href="/">
                 <a>
                     <Button
+                        data-cy="back-button"
                         fullWidth={false}
                         variant="default"
                     >
@@ -186,10 +188,13 @@ export const Post = () => {
                             })}
                             variant="default"
                         >
-                            <Text>
+                            <Text data-cy="positive-vote-count">
                                 {positiveVotes?.length === 0 ? '' : positiveVotes?.length}
                             </Text>
-                            <Text sx={{ paddingLeft: '5px' }}>
+                            <Text
+                                data-cy="like-button"
+                                sx={{ paddingLeft: '5px' }}
+                            >
                                 Like
                             </Text>
                         </Button>
@@ -201,10 +206,13 @@ export const Post = () => {
                             })}
                             variant="default"
                         >
-                            <Text>
+                            <Text data-cy="negative-vote-count">
                                 {negativeVotes?.length === 0 ? '' : negativeVotes?.length}
                             </Text>
-                            <Text sx={{ paddingLeft: '5px' }}>
+                            <Text
+                                data-cy="dislike-button"
+                                sx={{ paddingLeft: '5px' }}
+                            >
                                 Dislike
                             </Text>
                         </Button>
@@ -226,6 +234,7 @@ export const Post = () => {
                         {...register('content')}
                         {...extractFormFieldErrors(formState.errors.content)}
                         autosize={true}
+                        data-cy="comment-input"
                         label="Comment"
                         minRows={5}
                         placeholder="What's on your mind?"
@@ -233,6 +242,7 @@ export const Post = () => {
                         sx={{ width: '100%' }}
                     />
                     <Button
+                        data-cy="post-comment-button"
                         fullWidth={false}
                         loading={loading}
                         type="submit"
@@ -241,7 +251,7 @@ export const Post = () => {
                     </Button>
                 </Paper>
             </form>
-            <Stack>
+            <Stack data-cy="comments">
                 {post?.comments?.map((comment) => {
                     return (
                         <Paper

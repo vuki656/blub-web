@@ -102,7 +102,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                 </Text>
                 <SimpleGrid cols={3}>
                     <Button
-                        data-cy={`agree-button-${index}`}
+                        data-cy={`like-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Positive)
@@ -120,7 +120,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         </Text>
                     </Button>
                     <Button
-                        data-cy={`disagree-button-${index}`}
+                        data-cy={`dislike-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Negative)
