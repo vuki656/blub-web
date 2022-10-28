@@ -13,14 +13,14 @@
     },
     "dependencies": {
         "@apollo/client": "3.7.1",
-        "@emotion/react": "^11.10.4",
+        "@emotion/react": "^11.10.5",
         "@emotion/server": "^11.10.0",
         "@hookform/resolvers": "^2.9.10",
-        "@mantine/core": "^5.6.2",
-        "@mantine/hooks": "^5.6.2",
-        "@mantine/next": "^5.6.2",
+        "@mantine/core": "^5.6.3",
+        "@mantine/hooks": "^5.6.3",
+        "@mantine/next": "^5.6.3",
         "@react-hookz/web": "^16.1.0",
-        "@tabler/icons": "^1.107.0",
+        "@tabler/icons": "^1.108.0",
         "cookies-next": "^2.1.1",
         "next": "12.3.1",
         "next-with-apollo": "^5.3.0",
@@ -30,7 +30,7 @@
         "zod": "^3.19.1"
     },
     "devDependencies": {
-        "@graphql-codegen/cli": "^2.13.7",
+        "@graphql-codegen/cli": "^2.13.8",
         "@graphql-codegen/fragment-matcher": "^3.3.1",
         "@graphql-codegen/introspection": "^2.2.1",
         "@graphql-codegen/near-operation-file-preset": "^2.4.3",
@@ -38,8 +38,8 @@
         "@graphql-codegen/typescript-operations": "2.5.5",
         "@graphql-codegen/typescript-react-apollo": "^3.3.5",
         "@types/gtag.js": "^0.0.12",
-        "@types/react": "18.0.23",
-        "@types/react-dom": "18.0.7",
+        "@types/react": "18.0.24",
+        "@types/react-dom": "18.0.8",
         "cypress": "^10.11.0"
     }
 }

@@ -19,7 +19,7 @@ const config: Configuration = {
                 exclude: /node_modules/u,
                 loader: 'ts-loader',
                 options: {
-                    configFile: './tsconfig.production.json',
+                    configFile: 'tsconfig.json',
                 },
             },
         ],

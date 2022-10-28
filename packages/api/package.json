@@ -33,7 +33,7 @@
     },
     "devDependencies": {
         "@faker-js/faker": "^7.6.0",
-        "@graphql-codegen/cli": "^2.13.7",
+        "@graphql-codegen/cli": "^2.13.8",
         "@graphql-codegen/gql-tag-operations-preset": "^1.7.0",
         "@types/jest": "^29.2.0",
         "@types/validator": "^13.7.9",
