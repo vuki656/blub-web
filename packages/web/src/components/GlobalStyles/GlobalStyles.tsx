@@ -1,6 +1,6 @@
 import { Global } from '@mantine/core'
 
-export const GlobalStyles: React.FunctionComponent = () => {
+export const GlobalStyles = () => {
     return (
         <Global
             styles={{
@@ -27,6 +27,9 @@ export const GlobalStyles: React.FunctionComponent = () => {
                 'html, body': {
                     fontFamily: 'Montserrat',
                     height: '100%',
+                },
+                p: {
+                    margin: 0,
                 },
             }}
         />

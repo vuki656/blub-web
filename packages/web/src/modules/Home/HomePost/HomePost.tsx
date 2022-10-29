@@ -6,26 +6,23 @@ import {
     Text,
 } from '@mantine/core'
 import { getCookie } from 'cookies-next'
-import dayjs from 'dayjs'
+import Link from 'next/link'
 import { useState } from 'react'
-import { v4 as UUID } from 'uuid'
 
-import type {
-    PostType,
-    VoteType,
-} from '../../../graphql/types.generated'
+import type { PostType } from '../../../graphql/types.generated'
 import {
     useCreateVoteMutation,
     VoteTypeEnum,
 } from '../../../graphql/types.generated'
 import {
     COOKIE_NAME,
+    formatDate,
     GoogleAnalytics,
 } from '../../../utils'
 
 import type { HomePostProps } from './HomePost.types'
 
-export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
+export const HomePost = (props: HomePostProps) => {
     const {
         index,
         value,
@@ -33,7 +30,7 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
 
     const [currentPost, setCurrentPost] = useState(value)
 
-    const userId = getCookie(COOKIE_NAME)
+    const userId = getCookie(COOKIE_NAME) as string
 
     const [createVoteMutation] = useCreateVoteMutation({
         onCompleted: (response) => {
@@ -47,8 +44,12 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
         },
     })
 
-    const onVote = (post: PostType, type: VoteTypeEnum) => {
-        if (!userId || Boolean(post.userVote)) {
+    const onVote = (post: PostType, voteType: VoteTypeEnum) => {
+        if (
+            !userId ||
+            post.userVote === VoteTypeEnum.Positive ||
+            post.userVote === VoteTypeEnum.Negative
+        ) {
             return
         }
 
@@ -56,39 +57,33 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
             variables: {
                 input: {
                     postId: post.id,
-                    type,
+                    type: voteType,
                     userId: userId.toString(),
                 },
             },
         })
 
-        setCurrentPost((previousState) => {
-            const vote: VoteType = {
-                id: UUID(),
-                type,
-                userId: userId.toString(),
-            }
-
-            const negativeVotes: VoteType[] = type === VoteTypeEnum.Negative
-                ? [...previousState.votes.negative, vote]
-                : previousState.votes.negative
-
-            const positiveVotes: VoteType[] = type === VoteTypeEnum.Positive
-                ? [...previousState.votes.positive, vote]
-                : previousState.votes.positive
-
-            return {
-                ...previousState,
-                userVote: type,
-                votes: {
-                    negative: negativeVotes,
-                    positive: positiveVotes,
+        setCurrentPost({
+            ...post,
+            userVote: voteType,
+            votes: [
+                ...post.votes,
+                {
+                    id: userId,
+                    type: voteType,
+                    userId,
                 },
-            }
+            ],
         })
     }
 
-    const votes = currentPost.votes
+    const positiveVotes = currentPost.votes.filter((vote) => {
+        return vote.type === VoteTypeEnum.Positive
+    })
+
+    const negativeVotes = currentPost.votes.filter((vote) => {
+        return vote.type === VoteTypeEnum.Negative
+    })
 
     return (
         <Paper
@@ -100,14 +95,14 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                     color="dimmed"
                     size="sm"
                 >
-                    {dayjs(currentPost.createdAt).format('MM.DD.YYYY')}
+                    {formatDate(currentPost.createdAt)}
                 </Text>
                 <Text>
                     {currentPost.text}
                 </Text>
-                <SimpleGrid cols={2}>
+                <SimpleGrid cols={3}>
                     <Button
-                        data-cy={`agree-button-${index}`}
+                        data-cy={`like-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Positive)
@@ -118,14 +113,14 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         variant="default"
                     >
                         <Text data-cy={`positive-vote-count-${index}`}>
-                            {votes.positive.length === 0 ? '' : votes.positive.length}
+                            {positiveVotes.length === 0 ? '' : positiveVotes.length}
                         </Text>
                         <Text sx={{ paddingLeft: '5px' }}>
                             Like
                         </Text>
                     </Button>
                     <Button
-                        data-cy={`disagree-button-${index}`}
+                        data-cy={`dislike-button-${index}`}
                         fullWidth={true}
                         onClick={() => {
                             onVote(currentPost, VoteTypeEnum.Negative)
@@ -136,15 +131,26 @@ export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
                         variant="default"
                     >
                         <Text data-cy={`negative-vote-count-${index}`}>
-                            {votes.negative.length === 0 ? '' : votes.negative.length}
+                            {negativeVotes.length === 0 ? '' : negativeVotes.length}
                         </Text>
                         <Text sx={{ paddingLeft: '5px' }}>
                             Dislike
                         </Text>
                     </Button>
+                    <Link href={`/posts/${value.id}`}>
+                        <a>
+                            <Button
+                                sx={{ width: '100%' }}
+                                variant="default"
+                            >
+                                {value.comments?.length === 0 ? '' : value.comments?.length}
+                                {' '}
+                                Comment
+                            </Button>
+                        </a>
+                    </Link>
                 </SimpleGrid>
             </Stack>
         </Paper>
-
     )
 }

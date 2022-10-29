@@ -7,9 +7,12 @@ import {
     Resolver,
 } from 'type-graphql'
 
-import type { ContextType } from '../../shared/typescript-types'
+import { ContextType } from '../../shared/typescript-types'
 
-import { PostsArgs } from './args'
+import {
+    PostArgs,
+    PostsArgs,
+} from './args'
 import { CreatePostInput } from './inputs'
 import { CreatePostPayload } from './payloads'
 import { PostService } from './Post.service'
@@ -28,6 +31,14 @@ export class PostResolver {
         @Ctx() context: ContextType,
     ): Promise<CreatePostPayload> {
         return this.service.createOne(input, context.userId)
+    }
+
+    @Query(() => PostType)
+    public async post(
+        @Ctx() context: ContextType,
+        @Arg('args', () => PostArgs) args: PostArgs,
+    ): Promise<PostType> {
+        return this.service.findOne(args, context.userId)
     }
 
     @Query(() => PostsType)

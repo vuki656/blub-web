@@ -17,7 +17,7 @@ import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
 
-export const Home: React.FunctionComponent = () => {
+export const Home = () => {
     const router = useRouter()
 
     const { data, loading } = useGetPostsQuery({
@@ -55,7 +55,7 @@ export const Home: React.FunctionComponent = () => {
         <Stack
             data-cy="post-list"
             ref={rootRef}
-            sx={(theme) => ({
+            sx={(theme) => ({ // eslint-disable sort-keys-fix/sort-keys-fix
                 '@media (max-width: 600px)': {
                     padding: theme.spacing.sm,
                 },
@@ -70,7 +70,7 @@ export const Home: React.FunctionComponent = () => {
                 },
                 '@media (min-width: 851px) and (max-width: 1250px)': {
                     padding: `${theme.spacing.sm}px 20%`,
-                },
+                }, // eslint-enable sort-keys-fix/sort-keys-fix
                 flex: 1,
                 overflow: 'auto',
             })}
@@ -98,7 +98,7 @@ export const Home: React.FunctionComponent = () => {
                     })}
                 >
                     <Text align="center">
-                        Whats on your mind?
+                        What's on your mind?
                         {' '}
                         Make an
                         {' '}

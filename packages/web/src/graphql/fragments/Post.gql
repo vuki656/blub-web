@@ -3,4 +3,10 @@ fragment PostPayload on PostType {
     text
     createdAt
     userVote
+    comments {
+        ...CommentPayload
+    }
+    votes {
+        ...VotePayload
+    }
 }

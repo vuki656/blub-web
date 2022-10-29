@@ -5,11 +5,11 @@ export class HomeActions {
 
     constructor() {
         this.elements = {
-            agreeButton: () => cy.getBySelector('agree-button-1'),
             alreadyPostedNotification: () => cy.getBySelector('already-posted-notification'),
             cancelSubmitPostButton: () => cy.getBySelector('cancel-submit-post-button'),
-            disagreeButton: () => cy.getBySelector('disagree-button-1'),
+            dislikeButton: () => cy.getBySelector('dislike-button-1'),
             emailInputField: () => cy.getBySelector('email-input-field'),
+            likeButton: () => cy.getBySelector('like-button-1'),
             negativeVoteCount: () => cy.getBySelector('negative-vote-count-1'),
             nextButton: () => cy.getBySelector('next-button'),
             positiveVoteCount: () => cy.getBySelector('positive-vote-count-1'),
@@ -151,36 +151,6 @@ export class HomeActions {
             .should('contain.text', 'Must be a valid email.')
     }
 
-    public clickAgreeButton() {
-        return this
-            .elements
-            .agreeButton()
-            .click()
-    }
-
-    public clickAgreeButtonAndCheckCount() {
-        return this
-            .elements
-            .positiveVoteCount()
-            .then(($currentCount) => {
-                let currentCount = Number.parseFloat($currentCount.text())
-
-                if (Number.isNaN(currentCount)) {
-                    currentCount = 0
-                }
-
-                this
-                    .elements
-                    .agreeButton()
-                    .click()
-                    .then(($newCount) => {
-                        const newCount = Number.parseFloat($newCount.text())
-
-                        expect(newCount).to.eq(currentCount + 1)
-                    })
-            })
-    }
-
     public clickCancelSubmitButton() {
         return this
             .elements
@@ -188,7 +158,7 @@ export class HomeActions {
             .click()
     }
 
-    public clickDisagreeButtonAndCheckCount() {
+    public clickDislikeButtonAndCheckCount() {
         return this
             .elements
             .negativeVoteCount()
@@ -201,12 +171,44 @@ export class HomeActions {
 
                 this
                     .elements
-                    .disagreeButton()
+                    .dislikeButton()
                     .click()
-                    .then(($newCount) => {
-                        const newCount = Number.parseFloat($newCount.text())
+                    .then(() => {
+                        this
+                            .elements
+                            .negativeVoteCount()
+                            .should('contain.text', currentCount + 1)
+                    })
+            })
+    }
 
-                        expect(newCount).to.eq(currentCount + 1)
+    public clickLikeButton() {
+        return this
+            .elements
+            .likeButton()
+            .click()
+    }
+
+    public clickLikeButtonAndCheckCount() {
+        return this
+            .elements
+            .positiveVoteCount()
+            .then(($currentCount) => {
+                let currentCount = Number.parseFloat($currentCount.text())
+
+                if (Number.isNaN(currentCount)) {
+                    currentCount = 0
+                }
+
+                this
+                    .elements
+                    .likeButton()
+                    .click()
+                    .then(() => {
+                        this
+                            .elements
+                            .positiveVoteCount()
+                            .should('contain.text', currentCount + 1)
                     })
             })
     }
@@ -248,11 +250,7 @@ export class HomeActions {
     }
 
     public typeEmail(text: string) {
-        return this
-            .elements
-            .emailInputField()
-            .clear({ force: true })
-            .type(text)
+        return cy.typeText(this.elements.emailInputField, text)
     }
 
     public typeEmailOverMaxLimit() { // cspell:disable-next-line
@@ -260,11 +258,7 @@ export class HomeActions {
     }
 
     public typeText(text: string) {
-        return this
-            .elements
-            .textInputField()
-            .clear({ force: true })
-            .type(text)
+        return cy.typeText(this.elements.textInputField, text)
     }
 
     public typeTextOverMaxLimit() {

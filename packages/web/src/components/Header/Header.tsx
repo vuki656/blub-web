@@ -15,7 +15,7 @@ import Link from 'next/link'
 
 import { CreatePost } from '../CreatePost'
 
-export const Header: React.FunctionComponent = () => {
+export const Header = () => {
     const theme = useMantineTheme()
     const { colorScheme, toggleColorScheme } = useMantineColorScheme()
 

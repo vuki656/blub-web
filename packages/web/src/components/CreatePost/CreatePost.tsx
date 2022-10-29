@@ -35,7 +35,7 @@ import {
 import type { PostFormType } from './CreatePost.types'
 import { postValidation } from './CreatePost.validation'
 
-export const CreatePost: React.FunctionComponent = () => {
+export const CreatePost = () => {
     const router = useRouter()
 
     const [isOpen, openActions] = useBoolean()
@@ -135,7 +135,7 @@ export const CreatePost: React.FunctionComponent = () => {
                         data-cy="text-input-field"
                         label="Text"
                         minRows={10}
-                        placeholder="What's on your mind"
+                        placeholder="What's on your mind?"
                         required={true}
                     />
                     <TextInput

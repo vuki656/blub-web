@@ -10,7 +10,7 @@ import { COOKIE_COLORSCHEME_NAME } from '../../utils'
 
 import type { ThemeRootProps } from './ThemeRoot.types'
 
-export const ThemeRoot: React.FunctionComponent<ThemeRootProps> = (props) => {
+export const ThemeRoot = (props: ThemeRootProps) => {
     const {
         children,
         colorScheme,

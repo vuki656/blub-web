@@ -4,6 +4,7 @@ import {
     InMemoryCache,
 } from '@apollo/client'
 import { getDataFromTree } from '@apollo/client/react/ssr'
+import { Analytics } from '@vercel/analytics/react'
 import {
     getCookie,
     setCookie,
@@ -25,9 +26,7 @@ import introspectionGeneratedJSON from '../graphql/types.generated'
 import type { AppProps } from '../utils'
 import {
     COOKIE_COLORSCHEME_NAME,
-
     COOKIE_NAME,
-
     GoogleAnalytics,
     link,
 } from '../utils'
@@ -69,6 +68,7 @@ const App = (props: AppProps) => {
                 <ApolloProvider client={apollo}>
                     <Root>
                         <Component {...pageProps} />
+                        <Analytics />
                     </Root>
                 </ApolloProvider>
             </ThemeRoot>
@@ -77,14 +77,20 @@ const App = (props: AppProps) => {
 }
 
 App.getInitialProps = async (appProps: any) => {
-    const userId = getCookie(COOKIE_NAME, { req: appProps.ctx.req, res: appProps.ctx.res })
+    const userId = getCookie(
+        COOKIE_NAME,
+        {
+            req: appProps.ctx.req,
+            res: appProps.ctx.res,
+        }
+    )
 
     if (!userId) {
         setCookie(
             COOKIE_NAME,
             UUID(),
             {
-                maxAge: 2_147_483_647,
+                maxAge: 2_147_483_647, // 10 Years in seconds but browser caps at 1 year
                 req: appProps.ctx.req,
                 res: appProps.ctx.res,
             }
