@@ -4,6 +4,7 @@ import {
     InMemoryCache,
 } from '@apollo/client'
 import { getDataFromTree } from '@apollo/client/react/ssr'
+import { Analytics } from '@vercel/analytics/react'
 import {
     getCookie,
     setCookie,
@@ -67,6 +68,7 @@ const App = (props: AppProps) => {
                 <ApolloProvider client={apollo}>
                     <Root>
                         <Component {...pageProps} />
+                        <Analytics />
                     </Root>
                 </ApolloProvider>
             </ThemeRoot>
