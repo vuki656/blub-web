@@ -28,6 +28,9 @@ export const GlobalStyles: React.FunctionComponent = () => {
                     fontFamily: 'Montserrat',
                     height: '100%',
                 },
+                p: {
+                    margin: 0,
+                },
             }}
         />
     )

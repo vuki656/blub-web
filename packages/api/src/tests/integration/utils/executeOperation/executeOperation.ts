@@ -1,3 +1,5 @@
+import { v4 as UUID } from 'uuid'
+
 import { server } from '../../../../server'
 
 import type {
@@ -9,16 +11,18 @@ export const executeOperation = async <TData, TVariables>(
     request: RequestType<TVariables>,
     params?: {
         integrationContextArgument?: any
+        userId?: string
     }
 ): Promise<[ResponseType<TData>]> => {
     const response = await server.executeOperation(
-        request as any, // TODO: resolve type
+        request as any,
         {
             ...params?.integrationContextArgument,
             req: {
                 ...params?.integrationContextArgument?.req,
                 headers: {
                     ...params?.integrationContextArgument?.req?.headers,
+                    authorization: params?.userId ?? UUID(),
                 },
             },
         }

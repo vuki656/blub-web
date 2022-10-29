@@ -35,7 +35,7 @@ describe('Home module', () => {
         cy.interceptGraphQLRequest(REQUESTS.CreateVote)
         cy.visit('/?skip=0')
 
-        actions.clickAgreeButtonAndCheckCount()
+        actions.clickLikeButtonAndCheckCount()
 
         cy
             .awaitQuery(REQUESTS.CreateVote)
@@ -48,7 +48,7 @@ describe('Home module', () => {
         cy.interceptGraphQLRequest(REQUESTS.CreateVote)
         cy.visit('/?skip=0')
 
-        actions.clickDisagreeButtonAndCheckCount()
+        actions.clickDislikeButtonAndCheckCount()
 
         cy
             .awaitQuery(REQUESTS.CreateVote)

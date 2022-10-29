@@ -5,29 +5,24 @@ import {
 } from 'type-graphql'
 
 import { BaseType } from '../../../shared/typegraphql-types'
+import { CommentType } from '../../Comment'
 import { VoteType } from '../../Vote'
 import { VoteTypeEnum } from '../../Vote/enums'
 
-@ObjectType()
-export class VotesType {
-    @Field(() => [VoteType])
-    public negative: VoteType[]
-
-    @Field(() => [VoteType])
-    public positive: VoteType[]
-}
-
 @ObjectType({ implements: BaseType })
 export class PostType extends BaseType {
-    @Field(() => Date)
-    public createdAt: Date
+@Field(() => [CommentType], { nullable: true })
+    public comments: CommentType[] | null
 
-    @Field(() => String)
-    public text: string
+@Field(() => Date)
+public createdAt: Date
 
-    @Field(() => VoteTypeEnum, { nullable: true }) // eslint-disable-next-line type-graphql/invalid-decorated-type
-    public userVote: PrismaVoteType | null
+@Field(() => String)
+public text: string
 
-    @Field(() => VotesType)
-    public votes: VotesType
+@Field(() => VoteTypeEnum, { nullable: true }) // eslint-disable-next-line type-graphql/invalid-decorated-type
+public userVote: PrismaVoteType | null
+
+@Field(() => [VoteType])
+public votes: VoteType[]
 }
