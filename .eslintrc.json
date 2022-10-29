@@ -34,6 +34,11 @@
         "no-magic-numbers": "off",
         "max-len": "off",
         "sonarjs/prefer-single-boolean-return": "off",
-        "@rimac-technology/document-todos": "off"
+        "@rimac-technology/document-todos": [
+            "error",
+            {
+                "url": "https://github.com/vuki656/blub/issues"
+            }
+        ]
     }
 }

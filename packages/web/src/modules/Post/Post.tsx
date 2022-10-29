@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
     Button,
+    LoadingOverlay,
     Paper,
     SimpleGrid,
     Stack,
@@ -50,7 +51,7 @@ export const Post = () => {
         resolver: zodResolver(commentValidation),
     })
 
-    const { data, refetch } = useGetPostQuery({
+    const { data, loading: getPostLoading, refetch } = useGetPostQuery({
         variables: {
             args: {
                 id: query.postId,
@@ -60,7 +61,7 @@ export const Post = () => {
 
     const post = data?.post
 
-    const [createCommentMutation, { loading }] = useCreateCommentMutation({
+    const [createCommentMutation, { loading: createCommentLoading }] = useCreateCommentMutation({
         onCompleted: () => {
             reset()
 
@@ -90,7 +91,6 @@ export const Post = () => {
         },
     })
 
-    // TODO: triggering this on an already voted post triggers api call, investigate
     const onVote = (type: VoteTypeEnum) => {
         return async () => {
             if (!userId || !post?.id) {
@@ -168,7 +168,9 @@ export const Post = () => {
             <Paper
                 p="md"
                 shadow="xs"
+                sx={{ position: 'relative' }}
             >
+                <LoadingOverlay visible={getPostLoading} />
                 <Stack>
                     <Text
                         color="dimmed"
@@ -244,7 +246,7 @@ export const Post = () => {
                     <Button
                         data-cy="post-comment-button"
                         fullWidth={false}
-                        loading={loading}
+                        loading={createCommentLoading}
                         type="submit"
                     >
                         Post

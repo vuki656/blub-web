@@ -4,7 +4,7 @@ export namespace JQuery { }
 
 declare global {
     interface Window {
-        gtag: any // TODO: fix any
+        gtag: any
     }
     namespace Cypress {
         interface Chainable {

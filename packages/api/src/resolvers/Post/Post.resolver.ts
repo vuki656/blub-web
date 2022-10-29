@@ -7,7 +7,7 @@ import {
     Resolver,
 } from 'type-graphql'
 
-import { ContextType } from '../../shared/typescript-types'
+import type { ContextType } from '../../shared/typescript-types'
 
 import {
     PostArgs,
