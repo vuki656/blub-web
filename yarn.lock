@@ -3722,11 +3722,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rimac-technology/eslint-config@npm:^31.0.0":
-  version: 31.0.0
-  resolution: "@rimac-technology/eslint-config@npm:31.0.0"
+"@rimac-technology/eslint-config@npm:^31.1.0":
+  version: 31.1.0
+  resolution: "@rimac-technology/eslint-config@npm:31.1.0"
   dependencies:
-    "@rimac-technology/eslint-plugin": ^1.2.1
+    "@rimac-technology/eslint-plugin": ^1.4.0
     "@typescript-eslint/eslint-plugin": ^5.36.2
     "@typescript-eslint/parser": ^5.36.2
     eslint-plugin-eslint-comments: ^3.2.0
@@ -3751,16 +3751,14 @@ __metadata:
     eslint-plugin-workspaces: ^0.7.0
   peerDependencies:
     eslint: ^8
-  checksum: 8c7fd94a3b1df09a6a5fda367e8bd3f13c486b8acca5539ff370ad37c5ca5b86925e44b93a90bcd8a18a53aff8f800656247caad6782abb22ef4916f0f692827
+  checksum: 443c86320f7160752c15e5bb9e579ee50a19d63fa1c06bfff167a6f4dc06ddd1d13f1c89328922922d2eabae5520c28512b67ab4c031d20c086aed3e41cb5325
   languageName: node
   linkType: hard
 
-"@rimac-technology/eslint-plugin@npm:^1.2.1":
-  version: 1.3.0
-  resolution: "@rimac-technology/eslint-plugin@npm:1.3.0"
-  dependencies:
-    "@typescript-eslint/types": ^5.19.0
-  checksum: c10c9a84851d90ea818fcb8094c30a5470796a26dc444ba592c230c73262e555bcbaae66e446a2f90424d27df17345cd293edc60fa858e1b768bc6eda1bf779f
+"@rimac-technology/eslint-plugin@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@rimac-technology/eslint-plugin@npm:1.4.0"
+  checksum: 7e5d8d49ff4117f46bd6f2473e2aa4164482c4975bf840db6c656901a16a205c929118538d26bbf759819bde836f184f677e69c3b562c53027ba7817a92049bb
   languageName: node
   linkType: hard
 
@@ -4425,7 +4423,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:5.29.0, @typescript-eslint/types@npm:^5.19.0":
+"@typescript-eslint/types@npm:5.29.0":
   version: 5.29.0
   resolution: "@typescript-eslint/types@npm:5.29.0"
   checksum: 982ecdd69103105cabff8deac7f82f6002cf909238702ce902133e9af655cd962f977d5adf650c5ddae80d8c0e46abe1612a9141b25c7ed20ba8d662eb7ab871
@@ -5554,7 +5552,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "blub@workspace:."
   dependencies:
-    "@rimac-technology/eslint-config": ^31.0.0
+    "@rimac-technology/eslint-config": ^31.1.0
     "@types/node": 18.11.7
     "@types/uuid": ^8.3.4
     cspell: ^6.13.1
