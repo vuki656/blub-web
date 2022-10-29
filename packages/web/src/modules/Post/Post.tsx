@@ -93,7 +93,7 @@ export const Post = () => {
 
     const onVote = (type: VoteTypeEnum) => {
         return async () => {
-            if (!userId || !post?.id) {
+            if (!userId || !post?.id || post.userVote) {
                 return
             }
 

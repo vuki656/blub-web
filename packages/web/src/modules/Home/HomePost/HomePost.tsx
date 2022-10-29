@@ -45,11 +45,7 @@ export const HomePost = (props: HomePostProps) => {
     })
 
     const onVote = (post: PostType, voteType: VoteTypeEnum) => {
-        if (
-            !userId ||
-            post.userVote === VoteTypeEnum.Positive ||
-            post.userVote === VoteTypeEnum.Negative
-        ) {
+        if (!userId || post.userVote) {
             return
         }
 
