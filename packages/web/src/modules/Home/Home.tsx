@@ -17,6 +17,8 @@ import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
 
+const PAGINATED_POST_LIST_AMOUNT = 50
+
 export const Home = () => {
     const router = useRouter()
 
@@ -38,18 +40,18 @@ export const Home = () => {
     }, [])
 
     const onNextPage = async () => {
-        await router.push(`/?skip=${Number(router.query.skip) + 50}`)
+        await router.push(`/?skip=${Number(router.query.skip) + PAGINATED_POST_LIST_AMOUNT}`)
 
         rootRef.current?.scrollTo(0, 0)
     }
 
     const onPreviousPage = async () => {
-        await router.push(`/?skip=${Number(router.query.skip) - 50}`)
+        await router.push(`/?skip=${Number(router.query.skip) - PAGINATED_POST_LIST_AMOUNT}`)
 
         rootRef.current?.scrollTo(0, 0)
     }
 
-    const noMorePosts = Number(data?.posts.total) <= (Number(router.query.skip) + 50)
+    const noMorePosts = Number(data?.posts.total) <= (Number(router.query.skip) + PAGINATED_POST_LIST_AMOUNT)
 
     return (
         <Stack
@@ -114,7 +116,7 @@ export const Home = () => {
             <SimpleGrid cols={2}>
                 <Button
                     data-cy="previous-button"
-                    disabled={Number(router.query.skip) - 50 < 0}
+                    disabled={Number(router.query.skip) - PAGINATED_POST_LIST_AMOUNT < 0}
                     onClick={onPreviousPage}
                     variant="default"
                 >
