@@ -100,7 +100,13 @@ export const HomePost = (props: HomePostProps) => {
                 <Text>
                     {currentPost.text}
                 </Text>
-                <SimpleGrid cols={3}>
+                <SimpleGrid
+                    breakpoints={[
+                        { cols: 3, maxWidth: 980, spacing: 'md' },
+                        { cols: 1, maxWidth: 600, spacing: 'sm' },
+                    ]}
+                    cols={3}
+                >
                     <Button
                         data-cy={`like-button-${index}`}
                         fullWidth={true}
