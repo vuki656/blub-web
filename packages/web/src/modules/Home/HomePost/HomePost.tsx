@@ -22,7 +22,7 @@ import {
 
 import type { HomePostProps } from './HomePost.types'
 
-export const HomePost: React.FunctionComponent<HomePostProps> = (props) => {
+export const HomePost = (props: HomePostProps) => {
     const {
         index,
         value,

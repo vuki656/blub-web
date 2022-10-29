@@ -17,7 +17,7 @@ import { useGetPostsQuery } from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
 
-export const Home: React.FunctionComponent = () => {
+export const Home = () => {
     const router = useRouter()
 
     const { data, loading } = useGetPostsQuery({

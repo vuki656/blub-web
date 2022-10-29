@@ -35,7 +35,7 @@ import {
 import type { PostFormType } from './CreatePost.types'
 import { postValidation } from './CreatePost.validation'
 
-export const CreatePost: React.FunctionComponent = () => {
+export const CreatePost = () => {
     const router = useRouter()
 
     const [isOpen, openActions] = useBoolean()
