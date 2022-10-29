@@ -86,7 +86,7 @@ export class PostService {
     }
 
     public async findOne(args: PostArgs, userId: string): Promise<PostType> {
-        const post = await orm.post.findUnique({
+        const post = await orm.post.findUniqueOrThrow({
             include: {
                 comments: {
                     orderBy: {
@@ -95,7 +95,6 @@ export class PostService {
                 },
                 votes: true,
             },
-            rejectOnNotFound: true,
             where: {
                 id: args.id,
             },
