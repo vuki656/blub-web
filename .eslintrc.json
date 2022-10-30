@@ -5,19 +5,7 @@
         "@rimac-technology/eslint-config/type-graphql"
     ],
     "parser": "@typescript-eslint/parser",
-    "ignorePatterns": [
-        "**/*.json",
-        "**/*.yaml",
-        "**/*.yml",
-        "**/*.prisma",
-        "**/*.graphql",
-        "**/*.gql",
-        "**/*.generated.ts",
-        "**/generated.ts",
-        "**/dist/**/*",
-        "**/public/**/*",
-        ".next"
-    ],
+    "ignorePatterns": ["*.json", "*.yaml", "*.yml", "*.graphql", "*.gql", "*generated.ts", "public", ".next"],
     "parserOptions": {
         "project": "./tsconfig.json"
     },

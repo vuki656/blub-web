@@ -17,10 +17,10 @@ jobs:
                       node_modules
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
-            - run: yarn install
+            - run: yarn
             - run: yarn lint:ci
-    build_api:
-        name: Build API
+    build:
+        name: Build
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
@@ -31,45 +31,4 @@ jobs:
                       .yarn/cache
                   key: node_modules-${{ hashFiles('**/yarn.lock') }}
             - run: yarn install
-            - run: yarn workspace @blub/api orm:generate && yarn workspace @blub/api build
-    build_web:
-        name: Build Web
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/cache@v3
-              with:
-                  path: |
-                      node_modules
-                      .yarn/cache
-                  key: node_modules-${{ hashFiles('**/yarn.lock') }}
-            - run: yarn install
-            - run: yarn workspace @blub/web codegen && yarn workspace @blub/web build
-    test_api:
-        name: Test API
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - run: cp ./packages/api/.env.example  ./packages/api/.env
-            - run: yarn install
-            - run: yarn workspace @blub/api database:setup
-            - run: yarn workspace @blub/api test
-    # test_web:
-    #     name: Test Web
-    #     runs-on: ubuntu-20.04
-    #     steps:
-    #         - uses: actions/checkout@v3
-    #         - uses: actions/cache@v3
-    #           with:
-    #               path: |
-    #                   node_modules
-    #                   .yarn/cache
-    #               key: node_modules-${{ hashFiles('**/yarn.lock') }}
-    #         - name: Cypress run
-    #           uses: cypress-io/github-action@v4
-    #           with:
-    #               start: yarn workspace @blub/api test:e2e:setup, yarn workspace @blub/web test:e2e:setup
-    #               install-command: yarn
-    #               command: yarn workspace @blub/web test:headless
-    #               wait-on: 'http://localhost:8080, http://localhost:3000'
-    #               wait-on-timeout: 120
+            - run: yarn codegen && yarn build
