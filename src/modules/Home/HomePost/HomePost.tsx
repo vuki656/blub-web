@@ -51,7 +51,6 @@ export const HomePost = (props: HomePostProps) => {
                 input: {
                     postId: post.id,
                     type: voteType,
-                    userId: userId.toString(),
                 },
             },
         })
