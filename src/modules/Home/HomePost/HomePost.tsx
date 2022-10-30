@@ -133,18 +133,16 @@ export const HomePost = (props: HomePostProps) => {
                             Dislike
                         </Text>
                     </Button>
-                    <Link href={`/posts/${value.id}`}>
-                        <a>
-                            <Button
-                                sx={{ width: '100%' }}
-                                variant="default"
-                            >
-                                {value.comments?.length === 0 ? '' : value.comments?.length}
-                                {' '}
-                                Comment
-                            </Button>
-                        </a>
-                    </Link>
+                    <Button
+                        component={Link}
+                        href={`/posts/${value.id}`}
+                        sx={{ width: '100%' }}
+                        variant="default"
+                    >
+                        {value.comments?.length === 0 ? '' : value.comments?.length}
+                        {' '}
+                        Comment
+                    </Button>
                 </SimpleGrid>
             </Stack>
         </Paper>

@@ -153,16 +153,14 @@ export const Post = () => {
                 overflow: 'auto',
             })}
         >
-            <Link href="/">
-                <a>
-                    <Button
-                        fullWidth={false}
-                        variant="default"
-                    >
-                        Back
-                    </Button>
-                </a>
-            </Link>
+            <Button
+                component={Link}
+                fullWidth={false}
+                href="/"
+                variant="default"
+            >
+                Back
+            </Button>
             <Paper
                 p="md"
                 shadow="xs"
