@@ -31,7 +31,7 @@ export const Header = () => {
             <Group spacing="sm">
                 <IconMessageCircle2 color={theme.colors.blue[8]} />
                 <Text
-                    color="black"
+                    color={colorScheme === 'light' ? theme.black : theme.white}
                     component={Link}
                     href="/?skip=0"
                     size="lg"
