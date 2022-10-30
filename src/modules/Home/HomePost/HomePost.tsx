@@ -9,6 +9,7 @@ import { getCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { SocialShare } from '../../../components'
 import type { PostType } from '../../../graphql/types.generated'
 import {
     useCreateVoteMutation,
@@ -94,10 +95,10 @@ export const HomePost = (props: HomePostProps) => {
                 </Text>
                 <SimpleGrid
                     breakpoints={[
-                        { cols: 3, maxWidth: 980, spacing: 'md' },
-                        { cols: 1, maxWidth: 600, spacing: 'sm' },
+                        { cols: 4, maxWidth: 1000, spacing: 'md' },
+                        { cols: 2, maxWidth: 950, spacing: 'sm' },
                     ]}
-                    cols={3}
+                    cols={4}
                 >
                     <Button
                         fullWidth={true}
@@ -143,6 +144,10 @@ export const HomePost = (props: HomePostProps) => {
                         {' '}
                         Comment
                     </Button>
+                    <SocialShare
+                        id={value.id}
+                        title={value.text}
+                    />
                 </SimpleGrid>
             </Stack>
         </Paper>

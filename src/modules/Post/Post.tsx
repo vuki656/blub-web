@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
+import { SocialShare } from '../../components'
 import {
     useCreateCommentMutation,
     useCreateVoteMutation,
@@ -177,7 +178,13 @@ export const Post = () => {
                     <Text>
                         {post?.text}
                     </Text>
-                    <SimpleGrid cols={2}>
+                    <SimpleGrid
+                        breakpoints={[
+                            { cols: 3, maxWidth: 1000, spacing: 'md' },
+                            { cols: 2, maxWidth: 650, spacing: 'sm' },
+                        ]}
+                        cols={3}
+                    >
                         <Button
                             fullWidth={true}
                             onClick={onVote(VoteTypeEnum.Positive)}
@@ -208,6 +215,10 @@ export const Post = () => {
                                 Dislike
                             </Text>
                         </Button>
+                        <SocialShare
+                            id={post?.id ?? ''}
+                            title={post?.text ?? ''}
+                        />
                     </SimpleGrid>
                 </Stack>
             </Paper>
