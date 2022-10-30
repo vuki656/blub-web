@@ -28,31 +28,29 @@ export const Header = () => {
                 padding: `${theme.spacing.sm}px ${theme.spacing.md}px`,
             }}
         >
-            <Link href="/?skip=0">
-                <Group
-                    spacing="sm"
-                    sx={{ cursor: 'pointer' }}
+            <Group spacing="sm">
+                <IconMessageCircle2 color={theme.colors.blue[8]} />
+                <Text
+                    color="black"
+                    component={Link}
+                    href="/?skip=0"
+                    size="lg"
+                    weight="bold"
                 >
-                    <IconMessageCircle2 color={theme.colors.blue[8]} />
-                    <Text
-                        size="lg"
-                        weight="bold"
-                    >
-                        Blub
-                    </Text>
-                    <Text
-                        color="dimmed"
-                        size="sm"
-                        sx={{
-                            '@media (max-width: 600px)': {
-                                display: 'none',
-                            },
-                        }}
-                    >
-                        What's on your mind?
-                    </Text>
-                </Group>
-            </Link>
+                    Blub
+                </Text>
+                <Text
+                    color="dimmed"
+                    size="sm"
+                    sx={{
+                        '@media (max-width: 600px)': {
+                            display: 'none',
+                        },
+                    }}
+                >
+                    What's on your mind?
+                </Text>
+            </Group>
             <Group>
                 <CreatePost />
                 <ActionIcon

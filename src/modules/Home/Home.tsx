@@ -74,6 +74,7 @@ export const Home = () => {
                 }, // eslint-enable sort-keys-fix/sort-keys-fix
                 flex: 1,
                 overflow: 'auto',
+                position: 'relative',
             })}
         >
             <LoadingOverlay visible={loading} />
