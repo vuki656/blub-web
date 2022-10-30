@@ -11,15 +11,21 @@ type Query {
 
 type PostType implements BaseType {
     id: ID!
+    comments: [CommentType!]
     createdAt: DateTime!
     text: String!
     userVote: VoteTypeEnum
     votes: [VoteType!]!
-    comments: [CommentType!]
 }
 
 interface BaseType {
     id: ID!
+}
+
+type CommentType implements BaseType {
+    id: ID!
+    content: String!
+    createdAt: DateTime!
 }
 
 """
@@ -36,12 +42,6 @@ type VoteType implements BaseType {
     id: ID!
     type: VoteTypeEnum!
     userId: String!
-}
-
-type CommentType implements BaseType {
-    id: ID!
-    content: String!
-    createdAt: DateTime!
 }
 
 input PostArgs {
@@ -79,7 +79,6 @@ type CreateVotePayload {
 input CreateVoteInput {
     postId: ID!
     type: VoteTypeEnum!
-    userId: String!
 }
 
 type CreatePostPayload {

@@ -92,17 +92,16 @@ export const Post = () => {
     })
 
     const onVote = (type: VoteTypeEnum) => {
-        return async () => {
+        return () => {
             if (!userId || !post?.id || post.userVote) {
                 return
             }
 
-            await createVoteMutation({
+            void createVoteMutation({
                 variables: {
                     input: {
                         postId: post.id,
                         type,
-                        userId: userId.toString(),
                     },
                 },
             })
