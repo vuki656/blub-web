@@ -49,6 +49,7 @@ export const SocialShare = (props: SocialShareProps) => {
                 onClose={openActions.close}
                 opened={isOpen}
                 title="Share"
+                centered={true}
             >
                 <Stack>
                     <Group spacing={10}>
