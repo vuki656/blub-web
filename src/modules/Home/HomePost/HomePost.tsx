@@ -7,6 +7,7 @@ import {
 } from '@mantine/core'
 import { getCookie } from 'cookies-next'
 import Link from 'next/link'
+import { event } from 'nextjs-google-analytics'
 import { useState } from 'react'
 
 import { SocialShare } from '../../../components'
@@ -18,7 +19,6 @@ import {
 import {
     COOKIE_NAME,
     formatDate,
-    GoogleAnalytics,
 } from '../../../utils'
 
 import type { HomePostProps } from './HomePost.types'
@@ -32,13 +32,10 @@ export const HomePost = (props: HomePostProps) => {
 
     const [createVoteMutation] = useCreateVoteMutation({
         onCompleted: (response) => {
-            GoogleAnalytics.trackEvent(
-                'vote',
-                {
-                    category: 'engagement',
-                    label: response.createVote?.vote.type.toString(),
-                }
-            )
+            event('vote', {
+                category: 'engagement',
+                label: response.createVote?.vote.type.toString(),
+            })
         },
     })
 

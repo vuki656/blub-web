@@ -14,6 +14,7 @@ import {
 } from 'cookies-next'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
+import { event } from 'nextjs-google-analytics'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -23,7 +24,6 @@ import {
 import {
     COOKIE_POST_DATE,
     extractFormFieldErrors,
-    GoogleAnalytics,
     useBoolean,
 } from '../../utils'
 
@@ -49,7 +49,7 @@ export const CreatePost = () => {
                 { maxAge: 86_400 }
             )
 
-            GoogleAnalytics.trackEvent('create_post', { category: 'engagement' })
+            event('create_post', { category: 'engagement' })
         },
         refetchQueries: [{
             query: GetPostsDocument,

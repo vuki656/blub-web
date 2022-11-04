@@ -4,17 +4,19 @@ import {
     InMemoryCache,
 } from '@apollo/client'
 import { getDataFromTree } from '@apollo/client/react/ssr'
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics as NextjsAnalytics } from '@vercel/analytics/react'
 import {
     getCookie,
     setCookie,
 } from 'cookies-next'
 import withApollo from 'next-with-apollo'
+import type { NextWebVitalsMetric } from 'next/app'
 import NextApp from 'next/app'
-import getConfig from 'next/config'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import {
+    event,
+    GoogleAnalytics,
+} from 'nextjs-google-analytics'
 import { v4 as UUID } from 'uuid'
 
 import {
@@ -28,11 +30,17 @@ import type { AppProps } from '../utils'
 import {
     COOKIE_COLORSCHEME_NAME,
     COOKIE_NAME,
-    GoogleAnalytics,
     link,
 } from '../utils'
 
-const { publicRuntimeConfig } = getConfig()
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+    event(metric.name, {
+        category: metric.label === 'web-vital' ? 'Web Vitals' : 'Next.js custom metric',
+        label: metric.id,
+        nonInteraction: true,
+        value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+    })
+}
 
 const App = (props: AppProps) => {
     const {
@@ -41,30 +49,6 @@ const App = (props: AppProps) => {
         colorScheme,
         pageProps,
     } = props
-
-    const router = useRouter()
-
-    const userId = getCookie(COOKIE_NAME)
-
-    useEffect(() => {
-        const handleRouteChange = (url: string) => {
-            GoogleAnalytics.trackPageView(url)
-        }
-
-        GoogleAnalytics.initialize({
-            page: router.pathname,
-            trackingId: publicRuntimeConfig.GA_TRACKING_ID,
-            userId: userId?.toString() ?? 'Unknown',
-        })
-
-        GoogleAnalytics.trackPageView(router.pathname)
-
-        router.events.on('routeChangeComplete', handleRouteChange)
-
-        return () => {
-            router.events.off('routeChangeComplete', handleRouteChange)
-        }
-    }, [router.events])
 
     return (
         <>
@@ -79,7 +63,8 @@ const App = (props: AppProps) => {
                 <ApolloProvider client={apollo}>
                     <Root>
                         <Component {...pageProps} />
-                        <Analytics />
+                        <GoogleAnalytics trackPageViews={true} />
+                        <NextjsAnalytics />
                     </Root>
                 </ApolloProvider>
             </ThemeRoot>
