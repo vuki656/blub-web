@@ -32,9 +32,9 @@
         "next": "13.0.0",
         "next-share": "^0.19.0",
         "next-with-apollo": "^5.3.0",
+        "nextjs-google-analytics": "^2.2.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-ga": "^3.3.1",
         "react-hook-form": "^7.38.0",
         "uuid": "^9.0.0",
         "zod": "^3.19.1"

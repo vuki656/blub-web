@@ -11,6 +11,7 @@ import {
 import { getCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { event } from 'nextjs-google-analytics'
 import { useForm } from 'react-hook-form'
 
 import { SocialShare } from '../../components'
@@ -24,7 +25,6 @@ import {
     COOKIE_NAME,
     extractFormFieldErrors,
     formatDate,
-    GoogleAnalytics,
 } from '../../utils'
 
 import type {
@@ -68,13 +68,10 @@ export const Post = () => {
 
             void refetch()
 
-            GoogleAnalytics.trackEvent(
-                'vote',
-                {
-                    category: 'engagement',
-                    label: 'comment',
-                }
-            )
+            event('comment', {
+                category: 'engagement',
+                label: 'comment',
+            })
         },
     })
 
@@ -82,13 +79,10 @@ export const Post = () => {
         onCompleted: (response) => {
             void refetch()
 
-            GoogleAnalytics.trackEvent(
-                'vote',
-                {
-                    category: 'engagement',
-                    label: response.createVote?.vote.type.toString(),
-                }
-            )
+            event('vote', {
+                category: 'engagement',
+                label: response.createVote?.vote.type.toString(),
+            })
         },
     })
 

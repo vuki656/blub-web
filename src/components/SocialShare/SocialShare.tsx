@@ -14,7 +14,6 @@ import {
 } from '@tabler/icons'
 import {
     FacebookIcon,
-    FacebookMessengerIcon,
     FacebookShareButton,
     RedditIcon,
     RedditShareButton,
@@ -25,6 +24,7 @@ import {
     WhatsappIcon,
     WhatsappShareButton,
 } from 'next-share'
+import { event } from 'nextjs-google-analytics'
 
 import type { SocialShareProps } from './SocialShare.types'
 
@@ -39,8 +39,19 @@ export const SocialShare = (props: SocialShareProps) => {
 
     const [isOpen, openActions] = useDisclosure(false)
 
+    const onGoogleAnalyticsTrack = (label: string) => {
+        return () => {
+            event('share', {
+                category: 'engagement',
+                label,
+            })
+        }
+    }
+
     const onCopy = () => {
         void navigator.clipboard.writeText(DOMAIN + id)
+
+        onGoogleAnalyticsTrack('URL Copy')
     }
 
     return (
@@ -53,17 +64,28 @@ export const SocialShare = (props: SocialShareProps) => {
             >
                 <Stack>
                     <Group spacing={10}>
-                        <FacebookShareButton
-                            hashtag={HASHTAG}
-                            quote={title}
+                        <WhatsappShareButton
+                            onClick={onGoogleAnalyticsTrack('WhatsApp')}
+                            title={title}
                             url={DOMAIN + id}
                         >
-                            <FacebookIcon
+                            <WhatsappIcon
                                 round={true}
                                 size={32}
                             />
-                        </FacebookShareButton>
+                        </WhatsappShareButton>
+                        <TwitterShareButton
+                            onClick={onGoogleAnalyticsTrack('Twitter')}
+                            title={title}
+                            url={DOMAIN + id}
+                        >
+                            <TwitterIcon
+                                round={true}
+                                size={32}
+                            />
+                        </TwitterShareButton>
                         <RedditShareButton
+                            onClick={onGoogleAnalyticsTrack('Reddit')}
                             title={title}
                             url={DOMAIN + id}
                         >
@@ -73,6 +95,7 @@ export const SocialShare = (props: SocialShareProps) => {
                             />
                         </RedditShareButton>
                         <TelegramShareButton
+                            onClick={onGoogleAnalyticsTrack('Telegram')}
                             title={title}
                             url={DOMAIN + id}
                         >
@@ -81,29 +104,13 @@ export const SocialShare = (props: SocialShareProps) => {
                                 size={32}
                             />
                         </TelegramShareButton>
-                        <TwitterShareButton
-                            title={title}
-                            url={DOMAIN + id}
-                        >
-                            <TwitterIcon
-                                round={true}
-                                size={32}
-                            />
-                        </TwitterShareButton>
-                        <WhatsappShareButton
-                            title={title}
-                            url={DOMAIN + id}
-                        >
-                            <WhatsappIcon
-                                round={true}
-                                size={32}
-                            />
-                        </WhatsappShareButton>
                         <FacebookShareButton
-                            title={title}
+                            hashtag={HASHTAG}
+                            onClick={onGoogleAnalyticsTrack('Facebook')}
+                            quote={title}
                             url={DOMAIN + id}
                         >
-                            <FacebookMessengerIcon
+                            <FacebookIcon
                                 round={true}
                                 size={32}
                             />
