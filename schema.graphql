@@ -54,7 +54,17 @@ type PostsType {
 }
 
 input PostsArgs {
+    """
+    Posts in between today and today minus day amount. If 30, it will be between today and 30 days ago
+    """
+    days: Int
     skip: Int!
+    sort: PostsSortEnum!
+}
+
+enum PostsSortEnum {
+    NEW
+    POPULAR
 }
 
 type Mutation {
