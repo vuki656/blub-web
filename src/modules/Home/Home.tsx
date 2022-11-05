@@ -1,19 +1,30 @@
 import {
     Button,
+    Center,
+    Group,
     LoadingOverlay,
     Paper,
+    SegmentedControl,
     SimpleGrid,
     Stack,
     Text,
 } from '@mantine/core'
+import {
+    IconClock,
+    IconStar,
+} from '@tabler/icons'
 import { useRouter } from 'next/router'
 import {
     useEffect,
     useRef,
+    useState,
 } from 'react'
 
 import { CreatePost } from '../../components'
-import { useGetPostsQuery } from '../../graphql/types.generated'
+import {
+    PostsSortEnum,
+    useGetPostsQuery,
+} from '../../graphql/types.generated'
 
 import { HomePost } from './HomePost'
 
@@ -22,11 +33,17 @@ const PAGINATED_POST_LIST_AMOUNT = 50
 export const Home = () => {
     const router = useRouter()
 
+    const [sortDays, setSortDays] = useState<number | null>(null)
+    const [sortType, setSortType] = useState(PostsSortEnum.New)
+
     const { data, loading } = useGetPostsQuery({
+        fetchPolicy: 'cache-and-network',
         ssr: false,
         variables: {
             args: {
+                days: sortDays,
                 skip: Number(router.query.skip),
+                sort: sortType,
             },
         },
     })
@@ -49,6 +66,22 @@ export const Home = () => {
         await router.push(`/?skip=${Number(router.query.skip) - PAGINATED_POST_LIST_AMOUNT}`)
 
         rootRef.current?.scrollTo(0, 0)
+    }
+
+    const onSortTypeChange = (type: PostsSortEnum) => {
+        setSortType(type)
+
+        if (type === PostsSortEnum.New) {
+            setSortDays(null)
+
+            return
+        }
+
+        setSortDays(30)
+    }
+
+    const onSortDaysChange = (days: string) => {
+        setSortDays(Number(days))
     }
 
     const noMorePosts = Number(data?.posts.total) <= (Number(router.query.skip) + PAGINATED_POST_LIST_AMOUNT)
@@ -78,6 +111,46 @@ export const Home = () => {
             })}
         >
             <LoadingOverlay visible={loading} />
+            <Group>
+                <SegmentedControl
+                    data={[
+                        {
+                            label: (
+                                <Center>
+                                    <IconClock size={15} />
+                                    <Center pl={5}>
+                                        New
+                                    </Center>
+                                </Center>
+                            ),
+                            value: PostsSortEnum.New,
+                        },
+                        {
+                            label: (
+                                <Center>
+                                    <IconStar size={15} />
+                                    <Center pl={5}>
+                                        Popular
+                                    </Center>
+                                </Center>
+                            ),
+                            value: PostsSortEnum.Popular,
+                        },
+                    ]}
+                    onChange={onSortTypeChange}
+                />
+                {sortDays === null ? null : (
+                    <SegmentedControl
+                        data={[
+                            { label: '30 Days', value: '30' },
+                            { label: '60 Days', value: '60' },
+                            { label: '90 Days', value: '90' },
+                            { label: 'All Time', value: '10_000' },
+                        ]}
+                        onChange={onSortDaysChange}
+                    />
+                )}
+            </Group>
             {data?.posts.list.map((post) => {
                 return (
                     <HomePost
