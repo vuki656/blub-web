@@ -28,7 +28,7 @@ import {
 
 import { HomePost } from './HomePost'
 
-const PAGINATED_POST_LIST_AMOUNT = 50
+const PAGINATED_POST_LIST_AMOUNT = 20
 
 export const Home = () => {
     const router = useRouter()
