@@ -104,6 +104,7 @@ export const Contest = () => {
                     </Title>
                     <Text>
                         Every two weeks we reward the most popular post (likes + dislikes) with
+                        {' '}
                         <strong>
                             100$
                         </strong>
