@@ -1,4 +1,7 @@
 export type SocialShareProps = {
-    id: string
-    title: string
+    dialogTitle?: string
+    id?: string
+    isOpen: boolean
+    linkTitle: string
+    onClose(): void
 }

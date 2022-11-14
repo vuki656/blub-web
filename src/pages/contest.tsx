@@ -1,19 +1,19 @@
 import type { NextPage } from 'next'
 import NextHead from 'next/head'
 
-import { Post } from '../../modules'
+import { Contest } from '../modules/Contest/Contest'
 
-const PostPage: NextPage = () => {
+const ContestPage: NextPage = () => {
     return (
         <>
             <NextHead>
                 <title>
-                    Post
+                    Contest
                 </title>
             </NextHead>
-            <Post />
+            <Contest />
         </>
     )
 }
 
-export default PostPage
+export default ContestPage

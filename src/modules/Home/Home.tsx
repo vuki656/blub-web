@@ -13,6 +13,7 @@ import {
     IconClock,
     IconStar,
 } from '@tabler/icons'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import {
     useEffect,
@@ -28,7 +29,8 @@ import {
 
 import { HomePost } from './HomePost'
 
-const PAGINATED_POST_LIST_AMOUNT = 50
+const PAGINATED_POST_LIST_AMOUNT = 20
+const SORT_BY_NEW_DAYS_AMOUNT = 100_000
 
 export const Home = () => {
     const router = useRouter()
@@ -50,9 +52,13 @@ export const Home = () => {
 
     const rootRef = useRef<HTMLDivElement>(null)
 
+    const resetPagination = () => {
+        void router.push('/?skip=0', undefined, { shallow: true })
+    }
+
     useEffect(() => {
         if (!router.query.skip) {
-            void router.push('/?skip=0', undefined, { shallow: true })
+            resetPagination()
         }
     }, [])
 
@@ -74,10 +80,12 @@ export const Home = () => {
         if (type === PostsSortEnum.New) {
             setSortDays(null)
 
-            return
-        }
+            resetPagination()
+        } else {
+            setSortDays(SORT_BY_NEW_DAYS_AMOUNT)
 
-        setSortDays(30)
+            resetPagination()
+        }
     }
 
     const onSortDaysChange = (days: string) => {
@@ -151,6 +159,13 @@ export const Home = () => {
                     />
                 )}
             </Group>
+            <div>
+                <Link href="/contest">
+                    <Button fullWidth={true}>
+                        Enter The Contest
+                    </Button>
+                </Link>
+            </div>
             {data?.posts.list.map((post) => {
                 return (
                     <HomePost

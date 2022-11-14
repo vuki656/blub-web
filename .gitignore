@@ -32,9 +32,5 @@ packages/api/schema.graphql
 **/*.generated.json
 **/generated.ts
 
-# API Build
-dist
-
-# Cypress
-*.mp4
-*.png
+# Idea
+.idea

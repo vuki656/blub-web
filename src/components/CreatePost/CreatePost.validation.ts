@@ -1,19 +1,11 @@
 import { z } from 'zod'
 
-export const postValidation = z.object({
-    email: z
-        .string()
-        .max(100, 'Can\'t be longer than 100 characters')
-        .refine((email) => {
-            if (email.length > 0 && !email.includes('@')) {
-                return false
-            }
+const MIN_TEXT_LENGTH = 4
+const MAX_TEXT_LENGTH = 15_000
 
-            return true
-        }, { message: 'Must be a valid email.' })
-        .optional(),
+export const postValidation = z.object({
     text: z
         .string()
-        .min(4, 'Has to be more than 4 characters')
-        .max(15_000, 'Can\'t be longer than 15000 characters'),
+        .min(MIN_TEXT_LENGTH, `Has to be more than ${MIN_TEXT_LENGTH} characters`)
+        .max(MAX_TEXT_LENGTH, 'Can\'t be longer than 15 000 characters'),
 })
