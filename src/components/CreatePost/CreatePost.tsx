@@ -44,7 +44,8 @@ export const CreatePost = () => {
 
             setCookie(
                 COOKIE_POST_DATE,
-                dayjs().endOf('day')
+                dayjs()
+                    .endOf('day')
                     .toISOString(),
                 { maxAge: 86_400 }
             )
@@ -68,7 +69,6 @@ export const CreatePost = () => {
         reset,
     } = useForm<PostFormType>({
         defaultValues: {
-            email: '',
             text: '',
         },
         resolver: zodResolver(postValidation),

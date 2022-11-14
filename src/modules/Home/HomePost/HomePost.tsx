@@ -5,6 +5,8 @@ import {
     Stack,
     Text,
 } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { IconShare } from '@tabler/icons'
 import { getCookie } from 'cookies-next'
 import Link from 'next/link'
 import { event } from 'nextjs-google-analytics'
@@ -27,6 +29,7 @@ export const HomePost = (props: HomePostProps) => {
     const { value } = props
 
     const [currentPost, setCurrentPost] = useState(value)
+    const [isSocialShareOpen, setIsSocialShareOpen] = useDisclosure(false)
 
     const userId = getCookie(COOKIE_NAME) as string
 
@@ -76,77 +79,87 @@ export const HomePost = (props: HomePostProps) => {
     })
 
     return (
-        <Paper
-            p="md"
-            shadow="xs"
-        >
-            <Stack>
-                <Text
-                    color="dimmed"
-                    size="sm"
-                >
-                    {formatDate(currentPost.createdAt)}
-                </Text>
-                <Text>
-                    {currentPost.text}
-                </Text>
-                <SimpleGrid
-                    breakpoints={[
-                        { cols: 4, maxWidth: 1000, spacing: 'md' },
-                        { cols: 2, maxWidth: 950, spacing: 'sm' },
-                    ]}
-                    cols={4}
-                >
-                    <Button
-                        fullWidth={true}
-                        onClick={() => {
-                            onVote(currentPost, VoteTypeEnum.Positive)
-                        }}
-                        sx={(theme) => ({
-                            borderColor: currentPost.userVote === VoteTypeEnum.Positive ? theme.colors.blue[4] : '',
-                        })}
-                        variant="default"
+        <>
+            <Paper
+                p="md"
+                shadow="xs"
+            >
+                <Stack>
+                    <Text
+                        color="dimmed"
+                        size="sm"
                     >
-                        <Text>
-                            {positiveVotes.length === 0 ? '' : positiveVotes.length}
-                        </Text>
-                        <Text sx={{ paddingLeft: '5px' }}>
-                            Like
-                        </Text>
-                    </Button>
-                    <Button
-                        fullWidth={true}
-                        onClick={() => {
-                            onVote(currentPost, VoteTypeEnum.Negative)
-                        }}
-                        sx={(theme) => ({
-                            borderColor: currentPost.userVote === VoteTypeEnum.Negative ? theme.colors.blue[4] : '',
-                        })}
-                        variant="default"
+                        {formatDate(currentPost.createdAt)}
+                    </Text>
+                    <Text>
+                        {currentPost.text}
+                    </Text>
+                    <SimpleGrid
+                        breakpoints={[
+                            { cols: 4, maxWidth: 1000, spacing: 'md' },
+                            { cols: 2, maxWidth: 950, spacing: 'sm' },
+                        ]}
+                        cols={4}
                     >
-                        <Text>
-                            {negativeVotes.length === 0 ? '' : negativeVotes.length}
-                        </Text>
-                        <Text sx={{ paddingLeft: '5px' }}>
-                            Dislike
-                        </Text>
-                    </Button>
-                    <Button
-                        component={Link}
-                        href={`/posts/${value.id}`}
-                        sx={{ width: '100%' }}
-                        variant="default"
-                    >
-                        {value.comments?.length === 0 ? '' : value.comments?.length}
-                        {' '}
-                        Comment
-                    </Button>
-                    <SocialShare
-                        id={value.id}
-                        title={value.text}
-                    />
-                </SimpleGrid>
-            </Stack>
-        </Paper>
+                        <Button
+                            fullWidth={true}
+                            onClick={() => {
+                                onVote(currentPost, VoteTypeEnum.Positive)
+                            }}
+                            sx={(theme) => ({
+                                borderColor: currentPost.userVote === VoteTypeEnum.Positive ? theme.colors.blue[4] : '',
+                            })}
+                            variant="default"
+                        >
+                            <Text>
+                                {positiveVotes.length === 0 ? '' : positiveVotes.length}
+                            </Text>
+                            <Text sx={{ paddingLeft: '5px' }}>
+                                Like
+                            </Text>
+                        </Button>
+                        <Button
+                            fullWidth={true}
+                            onClick={() => {
+                                onVote(currentPost, VoteTypeEnum.Negative)
+                            }}
+                            sx={(theme) => ({
+                                borderColor: currentPost.userVote === VoteTypeEnum.Negative ? theme.colors.blue[4] : '',
+                            })}
+                            variant="default"
+                        >
+                            <Text>
+                                {negativeVotes.length === 0 ? '' : negativeVotes.length}
+                            </Text>
+                            <Text sx={{ paddingLeft: '5px' }}>
+                                Dislike
+                            </Text>
+                        </Button>
+                        <Button
+                            component={Link}
+                            href={`/posts/${value.id}`}
+                            sx={{ width: '100%' }}
+                            variant="default"
+                        >
+                            {value.comments?.length === 0 ? '' : value.comments?.length}
+                            {' '}
+                            Comment
+                        </Button>
+                        <Button
+                            onClick={setIsSocialShareOpen.open}
+                            variant="default"
+                        >
+                            <IconShare size={20} />
+                        </Button>
+                    </SimpleGrid>
+                </Stack>
+            </Paper>
+            <SocialShare
+                id={value.id}
+                isOpen={isSocialShareOpen}
+                linkTitle={value.text}
+                onClose={setIsSocialShareOpen.close}
+            />
+        </>
     )
 }

@@ -10,6 +10,8 @@ import { COOKIE_COLORSCHEME_NAME } from '../../utils'
 
 import type { ThemeRootProps } from './ThemeRoot.types'
 
+const THIRTY_DAYS_IN_SECONDS = 2_592_000
+
 export const ThemeRoot = (props: ThemeRootProps) => {
     const {
         children,
@@ -27,7 +29,7 @@ export const ThemeRoot = (props: ThemeRootProps) => {
 
         setCurrentColorScheme(nextColorScheme)
 
-        setCookie(COOKIE_COLORSCHEME_NAME, nextColorScheme, { maxAge: 60 * 60 * 24 * 30 })
+        setCookie(COOKIE_COLORSCHEME_NAME, nextColorScheme, { maxAge: THIRTY_DAYS_IN_SECONDS })
     }
 
     return (

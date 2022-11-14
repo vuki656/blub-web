@@ -8,6 +8,8 @@ import {
     Text,
     Textarea,
 } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { IconShare } from '@tabler/icons'
 import { getCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -39,6 +41,8 @@ export const Post = () => {
     const query = router.query as PostPageQueryVariables
 
     const userId = getCookie(COOKIE_NAME)
+
+    const [isSocialShareOpen, setIsSocialShareOpen] = useDisclosure(false)
 
     const {
         formState,
@@ -127,148 +131,158 @@ export const Post = () => {
     })
 
     return (
-        <Stack
-            sx={(theme) => ({ // eslint-disable sort-keys-fix/sort-keys-fix
-                '@media (max-width: 600px)': {
-                    padding: theme.spacing.sm,
-                },
-                '@media (min-width: 1251px) and (max-width: 2000px)': {
-                    padding: `${theme.spacing.sm}px 30%`,
-                },
-                '@media (min-width: 2001px)': {
-                    padding: `${theme.spacing.sm}px 35%`,
-                },
-                '@media (min-width: 601px) and (max-width: 850px)': {
-                    padding: `${theme.spacing.sm}px 15%`,
-                },
-                '@media (min-width: 851px) and (max-width: 1250px)': {
-                    padding: `${theme.spacing.sm}px 20%`,
-                }, // eslint-enable sort-keys-fix/sort-keys-fix
-                flex: 1,
-                overflow: 'auto',
-            })}
-        >
-            <Button
-                component={Link}
-                fullWidth={false}
-                href="/"
-                variant="default"
+        <>
+            <Stack
+                sx={(theme) => ({ // eslint-disable sort-keys-fix/sort-keys-fix
+                    '@media (max-width: 600px)': {
+                        padding: theme.spacing.sm,
+                    },
+                    '@media (min-width: 1251px) and (max-width: 2000px)': {
+                        padding: `${theme.spacing.sm}px 30%`,
+                    },
+                    '@media (min-width: 2001px)': {
+                        padding: `${theme.spacing.sm}px 35%`,
+                    },
+                    '@media (min-width: 601px) and (max-width: 850px)': {
+                        padding: `${theme.spacing.sm}px 15%`,
+                    },
+                    '@media (min-width: 851px) and (max-width: 1250px)': {
+                        padding: `${theme.spacing.sm}px 20%`,
+                    }, // eslint-enable sort-keys-fix/sort-keys-fix
+                    flex: 1,
+                    overflow: 'auto',
+                })}
             >
-                Back
-            </Button>
-            <Paper
-                p="md"
-                shadow="xs"
-                sx={{ position: 'relative' }}
-            >
-                <LoadingOverlay visible={getPostLoading} />
-                <Stack>
-                    <Text
-                        color="dimmed"
-                        size="sm"
-                    >
-                        {formatDate(post?.createdAt)}
-                    </Text>
-                    <Text>
-                        {post?.text}
-                    </Text>
-                    <SimpleGrid
-                        breakpoints={[
-                            { cols: 3, maxWidth: 1000, spacing: 'md' },
-                            { cols: 2, maxWidth: 650, spacing: 'sm' },
-                        ]}
-                        cols={3}
-                    >
-                        <Button
-                            fullWidth={true}
-                            onClick={onVote(VoteTypeEnum.Positive)}
-                            sx={(theme) => ({
-                                borderColor: post?.userVote === VoteTypeEnum.Positive ? theme.colors.blue[4] : '',
-                            })}
-                            variant="default"
-                        >
-                            <Text>
-                                {positiveVotes?.length === 0 ? '' : positiveVotes?.length}
-                            </Text>
-                            <Text sx={{ paddingLeft: '5px' }}>
-                                Like
-                            </Text>
-                        </Button>
-                        <Button
-                            fullWidth={true}
-                            onClick={onVote(VoteTypeEnum.Negative)}
-                            sx={(theme) => ({
-                                borderColor: post?.userVote === VoteTypeEnum.Negative ? theme.colors.blue[4] : '',
-                            })}
-                            variant="default"
-                        >
-                            <Text>
-                                {negativeVotes?.length === 0 ? '' : negativeVotes?.length}
-                            </Text>
-                            <Text sx={{ paddingLeft: '5px' }}>
-                                Dislike
-                            </Text>
-                        </Button>
-                        <SocialShare
-                            id={post?.id ?? ''}
-                            title={post?.text ?? ''}
-                        />
-                    </SimpleGrid>
-                </Stack>
-            </Paper>
-            <form onSubmit={handleSubmit(onSubmit)}>
+                <Button
+                    component={Link}
+                    fullWidth={false}
+                    href="/"
+                    variant="default"
+                >
+                    Back
+                </Button>
                 <Paper
                     p="md"
                     shadow="xs"
-                    sx={(theme) => ({
-                        alignItems: 'flex-end',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        rowGap: theme.spacing.md,
-                    })}
+                    sx={{ position: 'relative' }}
                 >
-                    <Textarea
-                        {...register('content')}
-                        {...extractFormFieldErrors(formState.errors.content)}
-                        autosize={true}
-                        label="Comment"
-                        minRows={5}
-                        placeholder="What's on your mind?"
-                        required={true}
-                        sx={{ width: '100%' }}
-                    />
-                    <Button
-                        fullWidth={false}
-                        loading={createCommentLoading}
-                        type="submit"
-                    >
-                        Post
-                    </Button>
-                </Paper>
-            </form>
-            <Stack>
-                {post?.comments?.map((comment) => {
-                    return (
-                        <Paper
-                            key={comment.id}
-                            p="md"
-                            shadow="xs"
+                    <LoadingOverlay visible={getPostLoading} />
+                    <Stack>
+                        <Text
+                            color="dimmed"
+                            size="sm"
                         >
-                            <Stack spacing={10}>
-                                <Text
-                                    color="dimmed"
-                                    size="sm"
-                                >
-                                    {formatDate(comment.createdAt)}
-                                </Text>
+                            {formatDate(post?.createdAt)}
+                        </Text>
+                        <Text>
+                            {post?.text}
+                        </Text>
+                        <SimpleGrid
+                            breakpoints={[
+                                { cols: 3, maxWidth: 1000, spacing: 'md' },
+                                { cols: 2, maxWidth: 650, spacing: 'sm' },
+                            ]}
+                            cols={3}
+                        >
+                            <Button
+                                fullWidth={true}
+                                onClick={onVote(VoteTypeEnum.Positive)}
+                                sx={(theme) => ({
+                                    borderColor: post?.userVote === VoteTypeEnum.Positive ? theme.colors.blue[4] : '',
+                                })}
+                                variant="default"
+                            >
                                 <Text>
-                                    {comment.content}
+                                    {positiveVotes?.length === 0 ? '' : positiveVotes?.length}
                                 </Text>
-                            </Stack>
-                        </Paper>
-                    )
-                })}
+                                <Text sx={{ paddingLeft: '5px' }}>
+                                    Like
+                                </Text>
+                            </Button>
+                            <Button
+                                fullWidth={true}
+                                onClick={onVote(VoteTypeEnum.Negative)}
+                                sx={(theme) => ({
+                                    borderColor: post?.userVote === VoteTypeEnum.Negative ? theme.colors.blue[4] : '',
+                                })}
+                                variant="default"
+                            >
+                                <Text>
+                                    {negativeVotes?.length === 0 ? '' : negativeVotes?.length}
+                                </Text>
+                                <Text sx={{ paddingLeft: '5px' }}>
+                                    Dislike
+                                </Text>
+                            </Button>
+                            <Button
+                                onClick={setIsSocialShareOpen.open}
+                                variant="default"
+                            >
+                                <IconShare size={20} />
+                            </Button>
+                        </SimpleGrid>
+                    </Stack>
+                </Paper>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Paper
+                        p="md"
+                        shadow="xs"
+                        sx={(theme) => ({
+                            alignItems: 'flex-end',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            rowGap: theme.spacing.md,
+                        })}
+                    >
+                        <Textarea
+                            {...register('content')}
+                            {...extractFormFieldErrors(formState.errors.content)}
+                            autosize={true}
+                            label="Comment"
+                            minRows={5}
+                            placeholder="What's on your mind?"
+                            required={true}
+                            sx={{ width: '100%' }}
+                        />
+                        <Button
+                            fullWidth={false}
+                            loading={createCommentLoading}
+                            type="submit"
+                        >
+                            Post
+                        </Button>
+                    </Paper>
+                </form>
+                <Stack>
+                    {post?.comments?.map((comment) => {
+                        return (
+                            <Paper
+                                key={comment.id}
+                                p="md"
+                                shadow="xs"
+                            >
+                                <Stack spacing={10}>
+                                    <Text
+                                        color="dimmed"
+                                        size="sm"
+                                    >
+                                        {formatDate(comment.createdAt)}
+                                    </Text>
+                                    <Text>
+                                        {comment.content}
+                                    </Text>
+                                </Stack>
+                            </Paper>
+                        )
+                    })}
+                </Stack>
             </Stack>
-        </Stack>
+            <SocialShare
+                id={post?.id ?? ''}
+                isOpen={isSocialShareOpen}
+                linkTitle={post?.text ?? ''}
+                onClose={setIsSocialShareOpen.close}
+            />
+        </>
     )
 }

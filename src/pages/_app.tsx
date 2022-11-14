@@ -10,13 +10,9 @@ import {
     setCookie,
 } from 'cookies-next'
 import withApollo from 'next-with-apollo'
-import type { NextWebVitalsMetric } from 'next/app'
 import NextApp from 'next/app'
 import Head from 'next/head'
-import {
-    event,
-    GoogleAnalytics,
-} from 'nextjs-google-analytics'
+import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { v4 as UUID } from 'uuid'
 
 import {
@@ -32,15 +28,6 @@ import {
     COOKIE_NAME,
     link,
 } from '../utils'
-
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-    event(metric.name, {
-        category: metric.label === 'web-vital' ? 'Web Vitals' : 'Next.js custom metric',
-        label: metric.id,
-        nonInteraction: true,
-        value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
-    })
-}
 
 const App = (props: AppProps) => {
     const {

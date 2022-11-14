@@ -8,7 +8,7 @@ const HomePage: NextPage = () => {
         <>
             <NextHead>
                 <title>
-                    Blub: Home
+                    Home
                 </title>
             </NextHead>
             <Home />
