@@ -50,9 +50,13 @@ export const Home = () => {
 
     const rootRef = useRef<HTMLDivElement>(null)
 
+    const resetPagination = () => {
+        void router.push('/?skip=0', undefined, { shallow: true })
+    }
+
     useEffect(() => {
         if (!router.query.skip) {
-            void router.push('/?skip=0', undefined, { shallow: true })
+            resetPagination()
         }
     }, [])
 
@@ -74,10 +78,12 @@ export const Home = () => {
         if (type === PostsSortEnum.New) {
             setSortDays(null)
 
-            return
-        }
+            resetPagination()
+        } else {
+            setSortDays(30)
 
-        setSortDays(30)
+            resetPagination()
+        }
     }
 
     const onSortDaysChange = (days: string) => {
