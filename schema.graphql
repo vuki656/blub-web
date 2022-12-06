@@ -96,6 +96,6 @@ type CreatePostPayload {
 }
 
 input CreatePostInput {
-    email: String
+    contestId: String
     text: String!
 }
