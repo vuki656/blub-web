@@ -1,42 +1,54 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+    ActionIcon,
     Button,
     Center,
+    Checkbox,
+    CopyButton,
+    Group,
     Stack,
     Text,
     Textarea,
     TextInput,
     Title,
+    Tooltip,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useRouter } from 'next/router'
+import {
+    IconBrandInstagram,
+    IconBrandTiktok,
+    IconCheck,
+    IconCopy,
+} from '@tabler/icons'
+import Link from 'next/link'
 import { event } from 'nextjs-google-analytics'
 import * as React from 'react'
-import { useForm } from 'react-hook-form'
+import {
+    Controller,
+    useForm,
+} from 'react-hook-form'
+import { v4 } from 'uuid'
 
 import { SocialShare } from '../../components'
-import {
-    GetPostsDocument,
-    useCreatePostMutation,
-} from '../../graphql/types.generated'
+import { useCreatePostMutation } from '../../graphql/types.generated'
 import { extractFormFieldErrors } from '../../utils'
 
 import type { ContestFormType } from './Contest.types'
 import { contestValidation } from './Contest.validation'
 
 export const Contest = () => {
-    const router = useRouter()
-
     const [isSocialShareOpen, setIsSocialShareOpen] = useDisclosure(false)
 
     const {
+        control,
         formState,
         handleSubmit,
         register,
         reset,
     } = useForm<ContestFormType>({
         defaultValues: {
-            email: '',
+            contestId: v4(),
+            copyContestIdConfirmation: false,
             text: '',
         },
         resolver: zodResolver(contestValidation),
@@ -50,21 +62,13 @@ export const Contest = () => {
 
             setIsSocialShareOpen.open()
         },
-        refetchQueries: [{
-            query: GetPostsDocument,
-            variables: {
-                args: {
-                    skip: Number(router.query.skip),
-                },
-            },
-        }],
     })
 
     const onSubmit = (formValue: ContestFormType) => {
         void createPostMutation({
             variables: {
                 input: {
-                    email: formValue.email,
+                    contestId: formValue.contestId,
                     text: formValue.text,
                 },
             },
@@ -112,17 +116,23 @@ export const Contest = () => {
                     </Text>
                     <Text>
                         All you have to do is create a post by entering your story and
-                        your email so we can contact you if you win and that's it.
+                        save the contest ID.
                     </Text>
-                    <Text sx={{ fontWeight: 'bold' }}>
-                        Your email will only be used to contact you if you win
+                    <Text>
+                        We post the winner on Instagram and TikTok.
                         {' '}
-                        and
+                        <br />
                         {' '}
-                        <u>
-                            will never be made public.
-                        </u>
+                        Follow us:
                     </Text>
+                    <Group>
+                        <Link href="https://www.tiktok.com/@blubtalk">
+                            <IconBrandTiktok />
+                        </Link>
+                        <Link href="https://www.instagram.com/blubtalk/">
+                            <IconBrandInstagram />
+                        </Link>
+                    </Group>
                     <Textarea
                         {...register('text')}
                         {...extractFormFieldErrors(formState.errors.text)}
@@ -132,12 +142,44 @@ export const Contest = () => {
                         placeholder="What's on your mind?"
                         required={true}
                     />
-                    <TextInput
-                        {...register('email')}
-                        {...extractFormFieldErrors(formState.errors.email)}
-                        label="Email"
-                        placeholder="Your email so we can contact you if you win"
-                        withAsterisk={true}
+                    <Controller
+                        control={control}
+                        name="contestId"
+                        render={({ field }) => {
+                            return (
+                                <TextInput
+                                    label="Contest ID"
+                                    readOnly={true}
+                                    rightSection={(
+                                        <CopyButton
+                                            timeout={2000}
+                                            value={field.value}
+                                        >
+                                            {({ copied, copy }) => (
+                                                <Tooltip
+                                                    label={copied ? 'Copied' : 'Copy'}
+                                                    position="right"
+                                                    withArrow={true}
+                                                >
+                                                    <ActionIcon
+                                                        color={copied ? 'teal' : 'gray'}
+                                                        onClick={copy}
+                                                    >
+                                                        {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+                                                    </ActionIcon>
+                                                </Tooltip>
+                                            )}
+                                        </CopyButton>
+                                    )}
+                                    value={field.value}
+                                />
+                            )
+                        }}
+                    />
+                    <Checkbox
+                        {...register('copyContestIdConfirmation')}
+                        {...extractFormFieldErrors(formState.errors.copyContestIdConfirmation)}
+                        label="I have saved/screenshotted the contest ID"
                     />
                     <Button
                         loading={loading}
