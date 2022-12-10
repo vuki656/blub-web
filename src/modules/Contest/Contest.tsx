@@ -119,6 +119,13 @@ export const Contest = () => {
                         save the contest ID.
                     </Text>
                     <Text>
+                        Next winner draw date:
+                        {' '}
+                        <strong>
+                            12.20.2022
+                        </strong>
+                    </Text>
+                    <Text>
                         We post the winner on Instagram and TikTok.
                         {' '}
                         <br />
