@@ -13,6 +13,8 @@ import withApollo from 'next-with-apollo'
 import NextApp from 'next/app'
 import Head from 'next/head'
 import { GoogleAnalytics } from 'nextjs-google-analytics'
+import { useEffect } from 'react'
+import Smartlook from 'smartlook-client'
 import { v4 as UUID } from 'uuid'
 
 import {
@@ -36,6 +38,12 @@ const App = (props: AppProps) => {
         colorScheme,
         pageProps,
     } = props
+
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'production') {
+            Smartlook.init(process.env.NEXT_PUBLIC_SMARTLOOK_ID ?? '')
+        }
+    })
 
     return (
         <>

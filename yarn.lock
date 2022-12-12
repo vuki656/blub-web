@@ -3719,6 +3719,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-hook-form: ^7.40.0
+    smartlook-client: ^8.0.0
     typescript: 4.9.3
     uuid: ^9.0.0
     zod: ^3.19.1
@@ -8550,6 +8551,13 @@ __metadata:
   version: 4.2.0
   resolution: "smart-buffer@npm:4.2.0"
   checksum: b5167a7142c1da704c0e3af85c402002b597081dd9575031a90b4f229ca5678e9a36e8a374f1814c8156a725d17008ae3bde63b92f9cfd132526379e580bec8b
+  languageName: node
+  linkType: hard
+
+"smartlook-client@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "smartlook-client@npm:8.0.0"
+  checksum: 70d7e337e01c16f7a12a213c2af0e84f94eaab6c20e45ade3206484a09a2890f8d592d1eec9a3493114747af54889d9142a9fdecf8f9187c5be3cfdd6be67b14
   languageName: node
   linkType: hard
 
