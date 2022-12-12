@@ -43,7 +43,11 @@ const App = (props: AppProps) => {
         if (process.env.NODE_ENV === 'production') {
             Smartlook.init(process.env.NEXT_PUBLIC_SMARTLOOK_ID ?? '')
         }
-    })
+
+        return () => {
+            Smartlook.pause()
+        }
+    }, [])
 
     return (
         <>
